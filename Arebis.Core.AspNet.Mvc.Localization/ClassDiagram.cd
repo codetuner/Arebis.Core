@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.ControllerResultLocalizationFilter">
+    <Position X="4.25" Y="4.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>ControllerResultLocalizationFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.InstallerExtensions">
+    <Position X="4.25" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAABAIAAA=</HashCode>
+      <FileName>InstallerExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.LocalizationOptions">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAACAAAAAAAQAEAAAAQIAAAAA=</HashCode>
+      <FileName>LocalizationOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.Localizer&lt;T&gt;">
+    <Position X="11.5" Y="5.25" Width="2.75" />
+    <Members>
+      <Method Name="Localizer" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Localizer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.Localizer">
+    <Position X="11.5" Y="2.5" Width="2.75" />
+    <Members>
+      <Field Name="candidateCultures" Hidden="true" />
+      <Property Name="ContextTypeName" Hidden="true" />
+      <Method Name="GetCandidateCulturesFor" Hidden="true" />
+      <Method Name="GetRawString" Hidden="true" />
+      <Method Name="GetValueFromExpressionPath" Hidden="true" />
+      <Property Name="IHtmlLocalizer.this" Hidden="true" />
+      <Property Name="IStringLocalizer.this" Hidden="true" />
+      <Field Name="localizationOptions" Hidden="true" />
+      <Method Name="Localizer" Hidden="true" />
+      <Field Name="logger" Hidden="true" />
+      <Property Name="RouteDataStringKey" Hidden="true" />
+      <Property Name="UIRouteDataStringKey" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAhAAAAAAAACBAACAAAABAAgACAAAAEBAJAAgIAAAAQ=</HashCode>
+      <FileName>Localizer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.StringLocalizerFactory" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="0.5" Width="2.75" />
+    <Members>
+      <Field Name="localizer" Hidden="true" />
+      <Method Name="StringLocalizerFactory" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>StringLocalizerFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.ModelBindingLocalizationConfiguration" BaseTypeListCollapsed="true">
+    <Position X="4.25" Y="2.75" Width="3.25" />
+    <Members>
+      <Field Name="localizer" Hidden="true" />
+      <Method Name="ModelBindingLocalizationConfiguration" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgBAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelBindingLocalizationConfiguration.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.ModelStateLocalizationFilter">
+    <Position X="8" Y="0.5" Width="3" />
+    <Members>
+      <Field Name="logger" Hidden="true" />
+      <Method Name="ModelStateLocalizationFilter" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACA4AAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelStateLocalizationFilter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mapping" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.ModelStateLocalizationMapping">
+    <Position X="8" Y="2.75" Width="3" />
+    <Members>
+      <Method Name="LoadMappings" Hidden="true" />
+      <Field Name="logger" Hidden="true" />
+      <Method Name="ModelStateLocalizationMapping" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Arebis.Core.AspNet.Mvc.Localization.ModelStateLocalizationMapping.Record">
+        <TypeIdentifier>
+          <NewMemberFileName>ModelStateLocalizationMapping.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Arebis.Core.AspNet.Mvc.Localization.ModelStateLocalizationMapping.Map">
+        <Members>
+          <Method Name="Map" Hidden="true" />
+        </Members>
+        <TypeIdentifier>
+          <NewMemberFileName>ModelStateLocalizationMapping.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAACAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>ModelStateLocalizationMapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.BinaryFileLocalizationResourcePersistor">
+    <Position X="0.5" Y="5" Width="3" />
+    <Members>
+      <Method Name="BinaryFileLocalizationResourcePersistor" Hidden="true" />
+      <Field Name="localizationOptions" Hidden="true" />
+      <Field Name="logger" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAACgAAAAAA=</HashCode>
+      <FileName>BinaryFileLocalizationResourcePersistor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Arebis.Core.AspNet.Mvc.Localization.JsonFileLocalizationResourcePersistor" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.25" Width="3" />
+    <Members>
+      <Method Name="JsonFileLocalizationResourcePersistor" Hidden="true" />
+      <Field Name="localizationOptions" Hidden="true" />
+      <Field Name="logger" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAACgAAAAAA=</HashCode>
+      <FileName>JsonFileLocalizationResourcePersistor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

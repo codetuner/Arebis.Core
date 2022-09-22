@@ -1,0 +1,30 @@
+﻿
+General articles:
+=================
+
+https://www.codemag.com/Article/2009081/A-Deep-Dive-into-ASP.NET-Core-Localization
+
+https://www.telerik.com/blogs/how-to-use-localization-aspnet-core
+
+https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization?view=aspnetcore-6.0#provide-localized-resources-for-the-languages-and-cultures-you-support
+
+https://joonasw.net/view/aspnet-core-localization-deep-dive
+
+
+Alternatives:
+=============
+
+https://www.ezzylearning.net/tutorial/asp-net-core-localization-from-database
+
+
+Specific issues:
+================
+
+https://github.com/dotnet/aspnetcore/issues/10324
+see class CustomValidationAttributeAdapterProvider : IValidationAttributeAdapterProvider
+
+https://stackoverflow.com/questions/39029344/factory-pattern-with-open-generics
+
+
+
+
