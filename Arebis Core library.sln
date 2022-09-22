@@ -15,9 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.Data", "Arebis.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.AspNet.Mvc.Localization", "Arebis.Core.AspNet.Mvc.Localization\Arebis.Core.AspNet.Mvc.Localization.csproj", "{A60B9631-345A-4784-9B8F-4D1127857F00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.Tests", "Arebis.Core.Tests\Arebis.Core.Tests.csproj", "{EE0927D9-9ABC-4E4A-B48C-AD9E041C86DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.Tests", "Arebis.Core.Tests\Arebis.Core.Tests.csproj", "{EE0927D9-9ABC-4E4A-B48C-AD9E041C86DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test Projects", "Test Projects", "{BAEADC8D-C8F8-436B-9CB3-AFCF79381A18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9D08FD4E-57BC-449D-92C5-089F5EA36224}"
+	ProjectSection(SolutionItems) = preProject
+		PublishPackage.cmd = PublishPackage.cmd
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
