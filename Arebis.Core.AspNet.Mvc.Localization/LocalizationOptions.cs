@@ -36,13 +36,13 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         /// The key that contains the culture name.
         /// Defaults to "culture".
         /// </summary>
-        public string? RouteDataStringKey { get; internal set; }
+        public string? RouteDataStringKey { get; set; }
 
         /// <summary>
         /// The key that contains the UI culture name.
         /// If not specified or no value is found, RouteDataStringKey will be used.
         /// Defaults to "ui-culture".
         /// </summary>
-        public string? UIRouteDataStringKey { get; internal set; }
+        public string? UIRouteDataStringKey { get; set; }
     }
 }
