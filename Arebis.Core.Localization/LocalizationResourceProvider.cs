@@ -18,7 +18,7 @@ namespace Arebis.Core.Localization
     {
         private static readonly Object SyncObject = new();
 
-        private readonly ILocalizationSource localizationSource;
+        private readonly ILocalizationSource? localizationSource;
         private readonly ILocalizationResourcePersistor? localizationResourcePersistor;
         private readonly ILogger<LocalizationResourceProvider> logger;
 
@@ -27,7 +27,7 @@ namespace Arebis.Core.Localization
         /// <summary>
         /// Constructs a LocalizationResourceProvider.
         /// </summary>
-        public LocalizationResourceProvider(ILogger<LocalizationResourceProvider> logger, ILocalizationSource localizationSource, ILocalizationResourcePersistor? localizationResourcePersistor = null)
+        public LocalizationResourceProvider(ILogger<LocalizationResourceProvider> logger, ILocalizationSource? localizationSource = null, ILocalizationResourcePersistor? localizationResourcePersistor = null)
         {
             this.localizationSource = localizationSource;
             this.localizationResourcePersistor = localizationResourcePersistor;
@@ -107,6 +107,11 @@ namespace Arebis.Core.Localization
         [MemberNotNull(nameof(resourceSet))]
         public void Refresh()
         {
+            if (this.localizationSource == null)
+            {
+                throw new InvalidOperationException("Cannot reload localization from source if no ILocalizationSource service was registered.");
+            }
+
             lock (SyncObject)
             {
                 this.resourceSet = this.localizationSource.GetResourceSet();

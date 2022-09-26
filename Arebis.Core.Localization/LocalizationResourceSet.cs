@@ -39,31 +39,33 @@ namespace Arebis.Core.Localization
         /// <returns>True if the given resource has been added to the set.</returns>
         public bool AddResource(string key, LocalizationResource resource, bool overwrite)
         {
+            var resourceForPath = resource.ForPath ?? String.Empty;
+
             if (this.Resources.TryGetValue(key, out var list))
             {
                 // Key found, check whether the list already contains a resource for the same path,
                 // else add item in right position in list (such that list is ordered by length of paths, longest first):
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (list[i].ForPath?.Length < resource.ForPath?.Length)
+                    var listItem = list[i];
+                    var listItemForPath = listItem.ForPath ?? String.Empty;
+
+                    if (listItemForPath.Equals(resourceForPath))
+                    {
+                        if (overwrite)
+                        {
+                            list[i] = resource;
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else if (resourceForPath.StartsWith(listItemForPath))
                     {
                         list.Insert(i, resource);
                         return true;
-                    }
-                    else if (list[i].ForPath?.Length == resource.ForPath?.Length)
-                    {
-                        if (String.Equals(list[i].ForPath, resource.ForPath))
-                        {
-                            if (overwrite)
-                            {
-                                list[i] = resource;
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
                     }
                 }
                 list.Add(resource);
