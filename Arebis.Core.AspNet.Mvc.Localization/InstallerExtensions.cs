@@ -22,7 +22,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         /// <summary>
         /// Installs base Localization From Source services with configuration.
         /// </summary>
-        public static IServiceCollection AddLocalizationFromSource(this IServiceCollection services, IConfiguration configuration, Action<LocalizationOptions> optionsAction)
+        public static IServiceCollection AddLocalizationFromSource(this IServiceCollection services, IConfiguration configuration, Action<LocalizationOptions>? optionsAction = null)
         {
             // Configure LocalizationOptions:
             services.Configure<LocalizationOptions>(options => {
@@ -41,6 +41,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         {
             // Setting up services:
             services.AddTransient<ILocalizationResourcePersistor, JsonFileLocalizationResourcePersistor>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddSingleton<ILocalizationResourceProvider, LocalizationResourceProvider>();
             services.TryAddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
             services.TryAddSingleton<IStringLocalizer, Localizer>();
@@ -54,8 +55,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         }
 
         /// <summary>
-        /// Adds Model Binding Localization From Source. Localizes binding errors and sets-up the
-        /// DataAnnotationLocalizationActionFilter to localize data annotations without resource keys or strings.
+        /// Adds Model Binding Localization From Source. Allows localizing model binding errors.
         /// </summary>
         /// <remarks>Must execute before .AddMvc() .AddControllersWithViews().</remarks>
         public static IServiceCollection AddModelBindingLocalizationFromSource(this IServiceCollection services)
