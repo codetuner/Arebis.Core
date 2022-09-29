@@ -85,6 +85,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                     if (!modelErrorHasBeenLocalized)
                     {
                         item.Value.Errors.Add(err);
+                        logger.LogWarning("No ModelStateLocalization pattern matched error \"{errorMessage}\" for key \"{key}\".", err.ErrorMessage, item.Key);
                     }
                 }
             }
