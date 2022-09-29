@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Arebis.Core.AspNet.Mvc.Localization
 {
@@ -129,7 +130,12 @@ namespace Arebis.Core.AspNet.Mvc.Localization
             return (value != null) ? new LocalizedString(name, String.Format(value, arguments)) : new LocalizedString(name, String.Format(name, arguments), true);
         }
 
-        private string? GetRawString(string name)
+        /// <summary>
+        /// Gets the raw string (without arguments substituted- for the given localiation key name.
+        /// </summary>
+        /// <param name="name">Name of the localization key.</param>
+        /// <param name="viewContext">ViewContext, if any.</param>
+        public string? GetRawString(string name, ViewContext? viewContext = null)
         {
             if (this.localizationOptions.Value.AllowLocalizeFormat)
             {
@@ -203,22 +209,33 @@ namespace Arebis.Core.AspNet.Mvc.Localization
             // Substitute extra fields if any:
             if (res.SubstitutionFields != null)
             {
-                ViewResult? viewResult = null;
-                if (this.httpContextAccessor?.HttpContext?.Items.TryGetValue("_Localization_ControllerResult", out var viewResultObject) ?? false)
-                {
-                    viewResult = viewResultObject as ViewResult;
-                }
                 foreach (var substKey in res.SubstitutionFields)
                 {
                     if ("{{culture:name}}".Equals(substKey))
                     {
                         str = str.Replace(substKey, (this.httpContextAccessor?.HttpContext?.Features.Get<IRequestCultureFeature>()?.RequestCulture.Culture ?? System.Threading.Thread.CurrentThread.CurrentCulture).Name);
-                        continue;
                     }
                     else if ("{{uiculture:name}}".Equals(substKey))
                     {
                         str = str.Replace(substKey, uiculture.Name);
-                        continue;
+                    }
+                    else if (substKey.StartsWith("{{route:"))
+                    {
+                        var routesegment = substKey[8..^2];
+                        if (this.httpContextAccessor?.HttpContext?.Request.RouteValues.TryGetValue(routesegment, out var value) ?? false)
+                        {
+                            str = str.Replace(substKey, value?.ToString() ?? String.Empty);
+                        }
+                        else
+                        {
+                            str = str.Replace(substKey, String.Empty);
+                            this.logger.LogWarning("No Route section \"{routesegment}\" found while localizing \"{name}\".", routesegment, name);
+                        }
+                    }
+                    else if ("{{user:name}}".Equals(substKey))
+                    {
+                        var username = this.httpContextAccessor?.HttpContext?.User?.Identity?.Name;
+                        str = str.Replace(substKey, username);
                     }
                     else if (substKey.StartsWith("{{localizer:"))
                     {
@@ -227,34 +244,31 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                         if (resval != null)
                         {
                             str = str.Replace(substKey, resval);
-                            continue;
                         }
                     }
-                    else if (substKey.StartsWith("{{model:") && viewResult?.Model != null)
+                    else if (substKey.StartsWith("{{model:") && viewContext != null)
                     {
                         // Parse format "{{model:<path>[:<format>]}}":
                         var parts = substKey[8..^2].Split(':');
                         // Get value from expression path:
-                        var value = GetValueFromExpressionPath(viewResult.Model, parts[0]);
+                        var value = GetValueFromExpressionPath(viewContext.ViewData.Model, parts[0]);
                         // Render value:
                         if (parts.Length >= 2)
                         {
                             str = str.Replace(substKey, String.Format("{0:" + parts[1] + "}", value));
-                            continue;
                         }
                         else
                         {
                             str = str.Replace(substKey, value?.ToString());
-                            continue;
                         }
                     }
-                    else if (substKey.StartsWith("{{view:") && viewResult?.ViewData != null)
+                    else if (substKey.StartsWith("{{view:") && viewContext != null)
                     {
-                        // Parse format "{{model:<path>[:<format>]}}":
+                        // Parse format "{{view:<path>[:<format>]}}":
                         var parts = substKey[7..^2].Split(':');
                         // Get first element in expression path:
                         var pathparts = parts[0].Split('.', 2);
-                        if (viewResult.ViewData.TryGetValue(pathparts[0], out var value))
+                        if (viewContext.ViewData.TryGetValue(pathparts[0], out var value))
                         {
                             // Get remainer of expression path:
                             if (pathparts.Length > 1) value = GetValueFromExpressionPath(value, pathparts[1]);
@@ -262,13 +276,16 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                             if (parts.Length >= 2)
                             {
                                 str = str.Replace(substKey, String.Format("{0:" + parts[1] + "}", value));
-                                continue;
                             }
                             else
                             {
                                 str = str.Replace(substKey, value?.ToString());
-                                continue;
                             }
+                        }
+                        else
+                        {
+                            str = str.Replace(substKey, String.Empty);
+                            this.logger.LogWarning("No ViewData item with key \"{viewdatakey}\" found while localizing \"{name}\".", pathparts[0], name);
                         }
                     }
                 }

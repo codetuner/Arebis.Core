@@ -40,7 +40,12 @@ namespace Arebis.Core.AspNet.Mvc.Localization
             {
                 using (var stream = new FileStream("ModelStateLocalization.json", FileMode.Open, FileAccess.Read))
                 {
-                    var records = JsonSerializer.Deserialize<Record[]>(stream);
+                    var options = new JsonSerializerOptions()
+                    { 
+                        AllowTrailingCommas = true,
+                        ReadCommentHandling = JsonCommentHandling.Skip
+                    };
+                    var records = JsonSerializer.Deserialize<Record[]>(stream, options);
                     logger.LogInformation("DataAnnotationLocalization loaded form file.");
 
                     if (records != null)

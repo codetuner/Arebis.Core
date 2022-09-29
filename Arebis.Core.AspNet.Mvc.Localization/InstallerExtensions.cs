@@ -40,15 +40,18 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         internal static IServiceCollection AddLocalizationFromSource(this IServiceCollection services)
         {
             // Setting up services:
-            services.AddTransient<ILocalizationResourcePersistor, JsonFileLocalizationResourcePersistor>();
+            services.TryAddTransient<ILocalizationResourcePersistor, JsonFileLocalizationResourcePersistor>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddSingleton<ILocalizationResourceProvider, LocalizationResourceProvider>();
+            services.TryAddSingleton<ModelStateLocalizationMapping>();
             services.TryAddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
             services.TryAddSingleton<IStringLocalizer, Localizer>();
             services.TryAddSingleton(typeof(IStringLocalizer<>), typeof(Localizer<>));
             services.TryAddSingleton<IHtmlLocalizer, Localizer>();
             services.TryAddSingleton(typeof(IHtmlLocalizer<>), typeof(Localizer<>));
-            services.TryAddSingleton<IViewLocalizer, Localizer>();
+            //services.TryAddSingleton<IViewLocalizer, Localizer>();
+            services.TryAddSingleton<Localizer>();
+            services.TryAddTransient<IViewLocalizer, ContextAwareViewLocalizer>();
 
             // Return services for fluent syntax support:
             return services;
@@ -64,11 +67,6 @@ namespace Arebis.Core.AspNet.Mvc.Localization
             // (Must execute before the program's services.AddMvc() or services.AddControllersWithViews(),
             //  or must be configured during those calls, see https://stackoverflow.com/a/41669552/323122)
             services.TryAddSingleton<IConfigureOptions<MvcOptions>, ModelBindingLocalizationConfiguration>();
-
-            // Add ActionFilter to localize DataAnnotation attributes that do not have a resource key, as:
-            // [Required]
-            // (ActionFilter must be installed on controllers)
-            services.TryAddSingleton<ModelStateLocalizationMapping>();
 
             // Return services for fluent syntax support:
             return services;

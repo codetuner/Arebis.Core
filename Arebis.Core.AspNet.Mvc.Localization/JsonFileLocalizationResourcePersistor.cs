@@ -37,22 +37,28 @@ namespace Arebis.Core.AspNet.Mvc.Localization
             // If cache file name defined, try loading from cache file:
             if (this.localizationOptions.Value.CacheFileName != null)
             {
+                var filename = Environment.ExpandEnvironmentVariables(this.localizationOptions.Value.CacheFileName);
                 try
                 {
-                    using (var stream = new FileStream(this.localizationOptions.Value.CacheFileName, FileMode.Open, FileAccess.Read))
+                    using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
                     {
-                        var resources = JsonSerializer.Deserialize<LocalizationResourceSet>(stream);
-                        logger.LogInformation("Localization resources loaded form cache file.");
+                        var options = new JsonSerializerOptions()
+                        {
+                            AllowTrailingCommas = true,
+                            ReadCommentHandling = JsonCommentHandling.Skip
+                        };
+                        var resources = JsonSerializer.Deserialize<LocalizationResourceSet>(stream, options);
+                        logger.LogInformation("Localization resources loaded form cache file \"{filename}\".", filename);
                         return resources;
                     }
                 }
                 catch (FileNotFoundException)
                 {
-                    logger.LogInformation("Localization cache file not found.");
+                    logger.LogInformation("Localization cache file \"{filename}\" not found.", filename);
                 }
                 catch (Exception ex)
                 {
-                    logger.LogWarning(ex, "Unexpected exception while reading localization cache file.");
+                    logger.LogWarning(ex, "Unexpected exception while reading localization cache file \"{filename}\".", filename);
                 }
             }
 
@@ -65,30 +71,32 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         {
             if (this.localizationOptions.Value.CacheFileName != null)
             {
+                var filename = Environment.ExpandEnvironmentVariables(this.localizationOptions.Value.CacheFileName);
+
                 if (resourceSet != null)
                 {
                     try
                     {
-                        using (var stream = new FileStream(this.localizationOptions.Value.CacheFileName, FileMode.Create, FileAccess.Write))
+                        using (var stream = new FileStream(filename, FileMode.Create, FileAccess.Write))
                         {
                             JsonSerializer.Serialize(stream, resourceSet);
                         }
-                        logger.LogInformation("Localization resources saved to cache file.");
+                        logger.LogInformation("Localization resources saved to cache file \"{filename}\".", filename);
                     }
                     catch (Exception ex)
                     {
-                        logger.LogWarning(ex, "Unexpected exception while writing localization cache file.");
+                        logger.LogWarning(ex, "Unexpected exception while writing localization cache file \"{filename}\".", filename);
                     }
                 }
                 else
                 {
                     try
                     {
-                        System.IO.File.Delete(this.localizationOptions.Value.CacheFileName);
+                        System.IO.File.Delete(filename);
                     }
                     catch (Exception ex)
                     {
-                        logger.LogWarning(ex, "Unexpected exception while deleting localization cache file.");
+                        logger.LogWarning(ex, "Unexpected exception while deleting localization cache file \"{filename}\".", filename);
                     }
                 }
             }
