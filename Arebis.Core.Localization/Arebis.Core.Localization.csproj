@@ -9,7 +9,7 @@
     <DelaySign>False</DelaySign>
     <AssemblyOriginatorKeyFile>C:\SRCRB\Github\CodeTuner\Github.Codetuner.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Codetuner</Authors>
     <Company>AREBIS BV (www.arebis.be)</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
