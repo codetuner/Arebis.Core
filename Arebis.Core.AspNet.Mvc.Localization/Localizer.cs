@@ -240,7 +240,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                     else if (substKey.StartsWith("{{localizer:"))
                     {
                         var reskey = substKey[12..^2];
-                        var resval = this.GetRawString(reskey);
+                        var resval = this.GetRawString(reskey, viewContext);
                         if (resval != null)
                         {
                             str = str.Replace(substKey, resval);
@@ -255,12 +255,24 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                         // Render value:
                         if (parts.Length >= 2)
                         {
-                            str = str.Replace(substKey, String.Format("{0:" + parts[1] + "}", value));
+                            // With a format string:
+                            if ("localize".Equals(parts[1]))
+                            {
+                                // If format string is "localize" (i.e. "{model:StartDay.Weekday:localize}"), then localize the model value:
+                                str = str.Replace(substKey, this.GetRawString(value?.ToString() ?? String.Empty, viewContext));
+                            }
+                            else
+                            {
+                                // Otherwise use the formatting string as regular formatting string (i.e. "{model:Amount:#,##0.00}"):
+                                str = str.Replace(substKey, String.Format("{0:" + parts[1] + "}", value));
+                            }
                         }
                         else
                         {
+                            // Without format string:
                             str = str.Replace(substKey, value?.ToString());
                         }
+
                     }
                     else if (substKey.StartsWith("{{view:") && viewContext != null)
                     {
@@ -275,10 +287,21 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                             // Render value:
                             if (parts.Length >= 2)
                             {
-                                str = str.Replace(substKey, String.Format("{0:" + parts[1] + "}", value));
+                                // With a format string:
+                                if ("localize".Equals(parts[1]))
+                                {
+                                    // If format string is "localize" (i.e. "{view:StartDay.Weekday:localize}"), then localize the model value:
+                                    str = str.Replace(substKey, this.GetRawString(value?.ToString() ?? String.Empty, viewContext));
+                                }
+                                else
+                                {
+                                    // Otherwise use the formatting string as regular formatting string (i.e. "{view:Amount:#,##0.00}"):
+                                    str = str.Replace(substKey, String.Format("{0:" + parts[1] + "}", value));
+                                }
                             }
                             else
                             {
+                                // Without format string:
                                 str = str.Replace(substKey, value?.ToString());
                             }
                         }
