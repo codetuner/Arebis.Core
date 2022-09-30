@@ -259,7 +259,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                             if ("localize".Equals(parts[1]))
                             {
                                 // If format string is "localize" (i.e. "{model:StartDay.Weekday:localize}"), then localize the model value:
-                                str = str.Replace(substKey, this.GetRawString(value?.ToString() ?? String.Empty, viewContext));
+                                str = str.Replace(substKey, this.GetRawString(value?.ToString() ?? String.Empty, viewContext) ?? value?.ToString());
                             }
                             else
                             {
@@ -291,7 +291,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                                 if ("localize".Equals(parts[1]))
                                 {
                                     // If format string is "localize" (i.e. "{view:StartDay.Weekday:localize}"), then localize the model value:
-                                    str = str.Replace(substKey, this.GetRawString(value?.ToString() ?? String.Empty, viewContext));
+                                    str = str.Replace(substKey, this.GetRawString(value?.ToString() ?? String.Empty, viewContext) ?? value?.ToString());
                                 }
                                 else
                                 {
