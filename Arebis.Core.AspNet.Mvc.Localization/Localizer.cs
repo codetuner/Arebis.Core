@@ -14,6 +14,8 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Arebis.Core.AspNet.Mvc.Localization
 {
@@ -309,6 +311,29 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                         {
                             str = str.Replace(substKey, String.Empty);
                             this.logger.LogWarning("No ViewData item with key \"{viewdatakey}\" found while localizing \"{name}\".", pathparts[0], name);
+                        }
+                    }
+                    else if (substKey.StartsWith("{{partial:") && viewContext != null)
+                    {
+                        // Parse format "{{partial:<name>}}":
+                        var partial = substKey[10..^2];
+                        if (partial.StartsWith("view:")) partial = (string?)viewContext.ViewData[partial[5..^0]];
+
+                        // Try to retrieve a HtmlHelper:                        
+                        var helper = (IHtmlHelper<dynamic>?)viewContext.HttpContext.RequestServices.GetService(typeof(IHtmlHelper<dynamic>));
+                        if (helper != null && !String.IsNullOrWhiteSpace(partial))
+                        {
+                            // Contextualize helper if needed:
+                            if (helper is IViewContextAware cahelper)
+                            {
+                                cahelper.Contextualize(viewContext);
+                            }
+                            // Render the partial page:
+                            using (var sw = new StringWriter())
+                            {
+                                helper.Partial(partial).WriteTo(sw, HtmlEncoder.Default);
+                                str = str.Replace(substKey, sw.ToString());
+                            }
                         }
                     }
                 }
