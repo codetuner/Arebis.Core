@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// DateTimeOffset extension methods.
+    /// </summary>
     public static class DateTimeOffsetExtensions
     {
         /// <summary>
@@ -14,14 +17,14 @@ namespace Arebis.Core.Extensions
         /// If one of both dates is null, the other is returned.
         /// If both dates are null, null is returned.
         /// </summary>
-        [return: NotNullIfNotNull("val1")]
-        [return: NotNullIfNotNull("val2")]
-        public static DateTimeOffset? Min(DateTimeOffset? val1, DateTimeOffset? val2)
+        [return: NotNullIfNotNull("dto1")]
+        [return: NotNullIfNotNull("dto2")]
+        public static DateTimeOffset? Min(DateTimeOffset? dto1, DateTimeOffset? dto2)
         {
-            if (val1.HasValue && val2.HasValue)
-                return (val1 < val2) ? val1 : val2;
+            if (dto1.HasValue && dto2.HasValue)
+                return (dto1 < dto2) ? dto1 : dto2;
             else
-                return val1 ?? val2;
+                return dto1 ?? dto2;
         }
 
         /// <summary>
@@ -29,34 +32,34 @@ namespace Arebis.Core.Extensions
         /// If one of both dates is null, the other is returned.
         /// If both dates are null, null is returned.
         /// </summary>
-        [return: NotNullIfNotNull("val1")]
-        [return: NotNullIfNotNull("val2")]
-        public static DateTimeOffset? Max(DateTimeOffset? val1, DateTimeOffset? val2)
+        [return: NotNullIfNotNull("dto1")]
+        [return: NotNullIfNotNull("dto2")]
+        public static DateTimeOffset? Max(DateTimeOffset? dto1, DateTimeOffset? dto2)
         {
-            if (val1.HasValue && val2.HasValue)
-                return (val1 > val2) ? val1 : val2;
+            if (dto1.HasValue && dto2.HasValue)
+                return (dto1 > dto2) ? dto1 : dto2;
             else
-                return val1 ?? val2;
+                return dto1 ?? dto2;
         }
 
         /// <summary>
         /// The age in full years. Time component is ignored.
         /// </summary>
-        public static int AgeInYears(this DateTimeOffset dt, DateTimeOffset onDate)
+        public static int AgeInYears(this DateTimeOffset dto, DateTimeOffset onDate)
         {
-            var age = (onDate.Year - dt.Year);
-            if (dt.Month > onDate.Month || (dt.Month == onDate.Month && dt.Day < onDate.Day)) age--;
+            var age = (onDate.Year - dto.Year);
+            if (dto.Month > onDate.Month || (dto.Month == onDate.Month && dto.Day < onDate.Day)) age--;
             return age;
         }
 
         /// <summary>
         /// The age in full months. Time component is ignored.
         /// </summary>
-        public static int AgeInMonths(this DateTimeOffset dt, DateTimeOffset onDate)
+        public static int AgeInMonths(this DateTimeOffset dto, DateTimeOffset onDate)
         {
-            var age = (onDate.Year - dt.Year) * 12
-            + (onDate.Month - dt.Month)
-            + ((onDate.Day < dt.Day) ? -1 : 0);
+            var age = (onDate.Year - dto.Year) * 12
+            + (onDate.Month - dto.Month)
+            + ((onDate.Day < dto.Day) ? -1 : 0);
 
             return age;
         }
@@ -64,22 +67,21 @@ namespace Arebis.Core.Extensions
         /// <summary>
         /// Whether the datetime is in the past.
         /// </summary>
-        /// <param name="dt">The DateTimeOffset to evaluate.</param>
-        public static bool IsInThePast(this DateTimeOffset dt)
+        /// <param name="dto">The DateTimeOffset to evaluate.</param>
+        public static bool IsInThePast(this DateTimeOffset dto)
         {
-            return (dt.ToUniversalTime() < Current.DateTimeOffset.UtcNow);
+            return (dto.ToUniversalTime() < Current.DateTimeOffset.UtcNow);
         }
 
         /// <summary>
         /// Whether the datetime is in the future.
         /// </summary>
-        /// <param name="dt">The DateTimeOffset to evaluate.</param>
-        /// <param name="unspecifiedDefaultKind">When Kind is Unspecified, assume it's of this kind.</param>
-        public static bool IsInTheFuture(this DateTimeOffset dt)
+        /// <param name="dto">The DateTimeOffset to evaluate.</param>
+        public static bool IsInTheFuture(this DateTimeOffset dto)
         {
             // As Current.DateTimeOffset is volatile, we do not consider dt == Current.DateTimeOffset as an 'InThePresent' case.
             // If it's not in the past, it's in the future...
-            return !IsInThePast(dt);
+            return !IsInThePast(dto);
         }
     }
 }

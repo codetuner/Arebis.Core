@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// Collection extension methods.
+    /// </summary>
     public static class CollectionExtension
     {
         /// <summary>

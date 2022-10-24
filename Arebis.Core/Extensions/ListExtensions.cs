@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// List extension methods.
+    /// </summary>
     public static class ListExtensions
     {
         /// <summary>

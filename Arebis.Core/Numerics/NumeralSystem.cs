@@ -27,9 +27,15 @@ namespace Arebis.Core.Numerics
             this.Base = @base;
         }
 
+        /// <summary>
+        /// The base of this numeral system.
+        /// </summary>
         [DataMember]
         public int Base { get; private set; }
 
+        /// <summary>
+        /// Parses the value into a byte.
+        /// </summary>
         public byte ParseByte(string s)
         {
             s = PrepareForParse(s);
@@ -44,6 +50,9 @@ namespace Arebis.Core.Numerics
             return result;
         }
 
+        /// <summary>
+        /// Parses the value into a short int.
+        /// </summary>
         public short ParseInt16(string s)
         {
             s = PrepareForParse(s);
@@ -58,6 +67,9 @@ namespace Arebis.Core.Numerics
             return result;
         }
 
+        /// <summary>
+        /// Parses the value into an int.
+        /// </summary>
         public int ParseInt32(string s)
         {
             s = PrepareForParse(s);
@@ -72,6 +84,9 @@ namespace Arebis.Core.Numerics
             return result;
         }
 
+        /// <summary>
+        /// Parses the value into a long int.
+        /// </summary>
         public long ParseInt64(string s)
         {
             s = PrepareForParse(s);
@@ -165,16 +180,25 @@ namespace Arebis.Core.Numerics
             return targetNumeralSystem.FromBigInteger(this.ParseBigInteger(value), fixedLength, groupSize, groupSeparator);
         }
 
+        /// <summary>
+        /// Gets the character symbol for the given value.
+        /// </summary>
         public virtual char GetSymbolFor(int value)
         {
             return (char)value;
         }
 
+        /// <summary>
+        /// Gets the value of the given character symbol.
+        /// </summary>
         public virtual int GetValueForSymbol(char symbol)
         {
             return (int)symbol;
         }
 
+        /// <summary>
+        /// Prepares the string for parsing.
+        /// </summary>
         public virtual string PrepareForParse(string s)
         {
             return s;

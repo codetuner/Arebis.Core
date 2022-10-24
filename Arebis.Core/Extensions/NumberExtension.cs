@@ -5,15 +5,24 @@ using System.Text;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// Number extension methods.
+    /// </summary>
     public static class NumberExtension
     {
         private const string hexalfabet = "0123456789ABCDEF";
 
+        /// <summary>
+        /// Converts to hexadecimal.
+        /// </summary>
         public static string ToHex(this byte value)
         {
             return String.Empty + hexalfabet[value / 16] + hexalfabet[value % 16];
         }
 
+        /// <summary>
+        /// Converts to hexadecimal.
+        /// </summary>
         public static string? ToHex(this byte[] value)
         {
             if (value == null)
@@ -32,6 +41,9 @@ namespace Arebis.Core.Extensions
             }
         }
 
+        /// <summary>
+        /// Converts to hexadecimal.
+        /// </summary>
         public static string ToHex(this System.UInt32 value, int minlength = 1)
         {
             var result = new StringBuilder();

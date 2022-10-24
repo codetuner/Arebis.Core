@@ -12,19 +12,36 @@ namespace Arebis.Core.Source
     /// </summary>
     public class HardcodedSection : IDisposable
     {
+        /// <summary>
+        /// Marks a hard coded section.
+        /// </summary>
         public HardcodedSection()
         { }
 
+        /// <summary>
+        /// Marks a hard coded section.
+        /// </summary>
         public HardcodedSection(string filterExpression)
         { }
 
+        /// <summary>
+        /// Marks a hard coded section.
+        /// </summary>
         public HardcodedSection(string filterExpression, bool toRefactor = false)
         { }
 
+        /// <summary>
+        /// Marks a hard coded section.
+        /// </summary>
         public HardcodedSection(string filterExpression, string documentation, bool toRefactor = false)
         { }
 
+        /// <summary>
+        /// Ends a hard coded section.
+        /// </summary>
         public void Dispose()
-        { }
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

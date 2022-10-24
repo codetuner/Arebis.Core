@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// Enumerable extension methods.
+    /// </summary>
     public static class EnumerableExtensions
     {
+        /// <summary>
+        /// If the enumerable is an array, return it, otherwise convert it into an array.
+        /// </summary>
         [return:NotNullIfNotNull("enumerable")]
         public static T[]? AsArray<T>(this IEnumerable<T>? enumerable)
         {
@@ -26,6 +32,9 @@ namespace Arebis.Core.Extensions
             }
         }
 
+        /// <summary>
+        /// If the enumerable is a list, return it, otherwise convert it into a list.
+        /// </summary>
         [return: NotNullIfNotNull("enumerable")]
         public static List<T>? AsList<T>(this IEnumerable<T>? enumerable)
         {

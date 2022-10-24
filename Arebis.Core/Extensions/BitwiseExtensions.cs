@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// Bit-wise helper extensions.
+    /// </summary>
     public static class BitwiseExtensions
     {
         /// <summary>

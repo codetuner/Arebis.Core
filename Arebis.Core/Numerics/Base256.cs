@@ -26,6 +26,9 @@ namespace Arebis.Core.Numerics
             : base(256)
         { }
         
+        /// <summary>
+        /// Returns a byte array representation of the given number.
+        /// </summary>
         public static byte[]? ToBytes(string b256)
         {
             if (b256 == null) return null;
@@ -39,6 +42,9 @@ namespace Arebis.Core.Numerics
             return arr;
         }
 
+        /// <summary>
+        /// Converts the byte array representation into a Base256 value.
+        /// </summary>
         public static string? FromBytes(byte[] bytes)
         {
             if (bytes == null) return null;

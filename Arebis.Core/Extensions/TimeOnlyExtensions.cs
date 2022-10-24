@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// TimeOnly extension methods.
+    /// </summary>
     public static class TimeOnlyExtensions
     {
     }

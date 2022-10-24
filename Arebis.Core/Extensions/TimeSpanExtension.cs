@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// TimeSpan extension methods.
+    /// </summary>
     public static class TimeSpanExtension
     {
         /// <summary>

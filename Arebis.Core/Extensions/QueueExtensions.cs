@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// Queue extension methods.
+    /// </summary>
     public static class QueueExtensions
     {
         /// <summary>

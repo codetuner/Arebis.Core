@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// Type extension methods.
+    /// </summary>
     public static class TypeExtension
     {
         /// <summary>

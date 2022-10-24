@@ -18,7 +18,7 @@ namespace Arebis.Core.Source
         /// <param name="sourceUrl">URL to the original source of the code.</param>
         /// <param name="authorName">Name of the code author.</param>
         /// <param name="copyright">Copyright of the code.</param>
-        public CodeSourceAttribute(string sourceUrl, string? authorName = null, string? copyright = null)
+        public CodeSourceAttribute(string? sourceUrl, string? authorName = null, string? copyright = null)
         {
             this.SourceUrl = sourceUrl;
             this.AuthorName = authorName;
@@ -28,7 +28,7 @@ namespace Arebis.Core.Source
         /// <summary>
         /// URL to the original source of the code.
         /// </summary>
-        public string SourceUrl { get; private set; }
+        public string? SourceUrl { get; private set; }
 
         /// <summary>
         /// Name of the code author.

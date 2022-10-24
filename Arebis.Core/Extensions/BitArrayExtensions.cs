@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// BitArray extension methods.
+    /// </summary>
     public static class BitArrayExtensions
     {
+        /// <summary>
+        /// Converts this BitArray to an array of bytes.
+        /// </summary>
         public static Byte[] ToByteArray(this BitArray array)
         {
             var result = new Byte[(int)((array.Length + 7) / 8)];
@@ -16,6 +22,9 @@ namespace Arebis.Core.Extensions
             return result;
         }
 
+        /// <summary>
+        /// Converts this BitArray to an array of ints.
+        /// </summary>
         public static Int32[] ToInt32Array(this BitArray array)
         {
             var result = new Int32[(int)((array.Length + 31) / 32)];
@@ -23,6 +32,9 @@ namespace Arebis.Core.Extensions
             return result;
         }
 
+        /// <summary>
+        /// Enumerates the bits set.
+        /// </summary>
         public static IEnumerable<int> EnumerateBitsSet(this BitArray array)
         {
             for (int i = 0; i < array.Length; i++)
@@ -31,11 +43,25 @@ namespace Arebis.Core.Extensions
             }
         }
 
+        /// <summary>
+        /// Sets the bits at the given indexes.
+        /// </summary>
         public static void SetBits(this BitArray array, int[] bitIndexes)
         {
             foreach (var i in bitIndexes)
             {
                 array.Set(i, true);
+            }
+        }
+
+        /// <summary>
+        /// Clears the bits at the given indexes.
+        /// </summary>
+        public static void ClearBits(this BitArray array, int[] bitIndexes)
+        {
+            foreach (var i in bitIndexes)
+            {
+                array.Set(i, false);
             }
         }
     }

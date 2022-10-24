@@ -26,6 +26,9 @@ namespace Arebis.Core.Numerics
             : base(36)
         { }
 
+        /// <summary>
+        /// Prepares the given string for case-insensitive parsing.
+        /// </summary>
         public override string PrepareForParse(string s)
         {
             return s.ToUpperInvariant();

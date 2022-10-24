@@ -44,11 +44,13 @@ namespace Arebis.Core.Numerics
         [DataMember]
         public string Symbols { get; private set; }
         
+        /// <inheritdoc/>
         public override char GetSymbolFor(int value)
         {
             return this.Symbols[value % this.Base];
         }
 
+        /// <inheritdoc/>
         public override int GetValueForSymbol(char symbol)
         {
             return this.Symbols.IndexOf(symbol);

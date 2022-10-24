@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// Dictionary extension methods.
+    /// </summary>
     public static class DictionaryExtensions
     {
         /// <summary>

@@ -9,8 +9,14 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Numerics
 {
+    /// <summary>
+    /// Numeral system extension methods.
+    /// </summary>
     public static class NumeralSystemExtension
     {
+        /// <summary>
+        /// Parses a value in this numeral system into a BigInteger.
+        /// </summary>
         public static BigInteger ParseBigInteger(this NumeralSystem system, string s)
         {
             s = system.PrepareForParse(s);
@@ -25,6 +31,9 @@ namespace Arebis.Core.Numerics
             return result;
         }
 
+        /// <summary>
+        /// Converts a BigInteger into a value in this numeral system.
+        /// </summary>
         public static string FromBigInteger(this NumeralSystem system, BigInteger value, int fixedLength = 0, int groupSize = 0, string groupSeparator = " ")
         {
             var chars = new char[20];
@@ -56,6 +65,9 @@ namespace Arebis.Core.Numerics
             return result;
         }
 
+        /// <summary>
+        /// Converts this numeral value into a BigInteger.
+        /// </summary>
         public static BigInteger ToBigInteger(this NumeralValue value)
         {
             return value.System.ParseBigInteger(value.Value);

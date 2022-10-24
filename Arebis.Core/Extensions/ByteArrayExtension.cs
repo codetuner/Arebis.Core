@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// Byte array extension methods.
+    /// </summary>
     public static class ByteArrayExtension
     {
         /// <summary>

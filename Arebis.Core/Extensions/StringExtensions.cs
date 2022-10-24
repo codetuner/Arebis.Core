@@ -219,6 +219,25 @@ namespace Arebis.Core.Extensions
         }
 
         /// <summary>
+        /// Returns the given string shortened (truncated) to the given max length. If shortened, a tail can be appended.
+        /// I.e. "United Kingdom".MaxLength(12, "...") would return "United Ki...".
+        /// </summary>
+        [return: NotNullIfNotNull("value")]
+        public static string? MaxLength(this string? value, int length, string? tailOnTrunc = null)
+        {
+            if (value == null) return null;
+            if (value.Length <= length) return value;
+            if (tailOnTrunc == null)
+            {
+                return value[..length];
+            }
+            else
+            {
+                return string.Concat(value.AsSpan(0, length - tailOnTrunc.Length), tailOnTrunc);
+            }
+        }
+
+        /// <summary>
         /// Shortens the given string to the given length minus the length of the prefix and
         /// the postfix. The returned string is made of prefix + shortened string + postfix.
         /// </summary>
@@ -330,11 +349,17 @@ namespace Arebis.Core.Extensions
                 return value.Substring(startIndex, length);
         }
 
+        /// <summary>
+        /// If null or empty, return alternative value.
+        /// </summary>
         public static string IfNullOrEmpty(this string? value, string altValue)
         {
             return (String.IsNullOrEmpty(value)) ? altValue : value;
         }
 
+        /// <summary>
+        /// If null or white space, return alternative value.
+        /// </summary>
         public static string IfNullOrWhiteSpace(this string? value, string altValue)
         {
             return (String.IsNullOrWhiteSpace(value)) ? altValue : value;

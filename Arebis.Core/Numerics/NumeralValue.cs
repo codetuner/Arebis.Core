@@ -62,76 +62,93 @@ namespace Arebis.Core.Numerics
             return Convert.ToBoolean(this.System.ParseInt64(this.Value));
         }
 
+        /// <summary>
+        /// Converts this value into a byte.
+        /// </summary>
         public byte ToByte(IFormatProvider? provider)
         {
             return this.System.ParseByte(this.Value);
         }
 
+        /// <inheritdoc/>
         char IConvertible.ToChar(IFormatProvider? provider)
         {
             return Convert.ToChar(this.System.ParseInt64(this.Value));
         }
 
+        /// <inheritdoc/>
         DateTime IConvertible.ToDateTime(IFormatProvider? provider)
         {
             return Convert.ToDateTime(this.System.ParseInt64(this.Value));
         }
 
+        /// <inheritdoc/>
         decimal IConvertible.ToDecimal(IFormatProvider? provider)
         {
             return Convert.ToDecimal(this.System.ParseInt64(this.Value));
         }
 
+        /// <inheritdoc/>
         double IConvertible.ToDouble(IFormatProvider? provider)
         {
             return Convert.ToDouble(this.System.ParseInt64(this.Value));
         }
 
+        /// <inheritdoc/>
         public short ToInt16(IFormatProvider? provider)
         {
             return this.System.ParseInt16(this.Value);
         }
 
+        /// <inheritdoc/>
         public int ToInt32(IFormatProvider? provider)
         {
             return this.System.ParseInt32(this.Value);
         }
 
+        /// <inheritdoc/>
         public long ToInt64(IFormatProvider? provider)
         {
             return this.System.ParseInt64(this.Value);
         }
 
+        /// <inheritdoc/>
         sbyte IConvertible.ToSByte(IFormatProvider? provider)
         {
             return Convert.ToSByte(this.System.ParseInt64(this.Value));
         }
 
+        /// <inheritdoc/>
         float IConvertible.ToSingle(IFormatProvider? provider)
         {
             return Convert.ToSingle(this.System.ParseInt64(this.Value));
         }
 
+        /// <inheritdoc/>
         string IConvertible.ToString(IFormatProvider? provider)
         {
             return this.ToString();
         }
 
+        /// <inheritdoc/>
         object IConvertible.ToType(Type conversionType, IFormatProvider? provider)
         {
             return Convert.ChangeType(this.System.ParseInt64(this.Value), conversionType);
         }
 
+        /// <inheritdoc/>
         ushort IConvertible.ToUInt16(IFormatProvider? provider)
         {
             return Convert.ToUInt16(this.System.ParseInt64(this.Value));
         }
 
+        /// <inheritdoc/>
         uint IConvertible.ToUInt32(IFormatProvider? provider)
         {
             return Convert.ToUInt32(this.System.ParseInt64(this.Value));
         }
 
+        /// <inheritdoc/>
         ulong IConvertible.ToUInt64(IFormatProvider? provider)
         {
             return Convert.ToUInt64(this.System.ParseInt64(this.Value));
@@ -141,6 +158,7 @@ namespace Arebis.Core.Numerics
 
         #region IComparable<> and IComparable implementations
 
+        /// <inheritdoc/>
         public int CompareTo(NumeralValue? other)
         {
             var tbd = this.System.ParseBigInteger(this.Value);
@@ -148,6 +166,7 @@ namespace Arebis.Core.Numerics
             return tbd.CompareTo(obd);
         }
 
+        /// <inheritdoc/>
         int IComparable.CompareTo(object? obj)
         {
             if (obj is not NumeralValue other) return 1;
@@ -160,6 +179,7 @@ namespace Arebis.Core.Numerics
 
         #region IEquatable<> implementation
 
+        /// <inheritdoc/>
         public bool Equals(NumeralValue? other)
         {
             var tbd = this.System.ParseBigInteger(this.Value);

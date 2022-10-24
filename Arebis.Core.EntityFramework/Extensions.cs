@@ -1,14 +1,51 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Arebis.Core.Source;
 
 namespace Arebis.Core.EntityFramework
 {
+    /// <summary>
+    /// Entity Framework extension methods.
+    /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Get the DbContext of a DbSet.
+        /// </summary>
+        [CodeSource("https://dev.to/j_sakamoto/how-to-get-a-dbcontext-from-a-dbset-in-entityframework-core-c6m", "jsakamoto")]
+        public static DbContext? GetDbContext<T>(this DbSet<T> dbSet) where T : class
+        {
+            var infrastructure = dbSet as IInfrastructure<IServiceProvider>;
+            var serviceProvider = infrastructure.Instance;
+            var currentDbContext = serviceProvider.GetService(typeof(ICurrentDbContext)) as ICurrentDbContext;
+            return currentDbContext?.Context;
+        }
+
+        /// <summary>
+        /// Marks a contextual entity as modified.
+        /// </summary>
+        public static void MarkModified<TDbContext>(this IContextualEntity<TDbContext> entity)
+            where TDbContext : DbContext
+        {
+            var context = entity.Context;
+            var entry = context.Entry(entity);
+            switch (entry.State)
+            {
+                case EntityState.Unchanged:
+                    entry.State = EntityState.Modified;
+                    break;
+                case EntityState.Detached:
+                    entry.State = EntityState.Modified;
+                    break;
+            }
+        }
+
         /// <summary>
         /// Performs ordering given a string expression.
         /// </summary>
@@ -70,7 +107,6 @@ namespace Arebis.Core.EntityFramework
 
             MethodCallExpression orderByCall = Expression.Call(typeof(Queryable), orderByMethod, new Type[] { query.ElementType, me.Type }, query.Expression
                 , Expression.Quote(Expression.Lambda(me, pe)));
-
 
             if (terms.Length == 1)
             {

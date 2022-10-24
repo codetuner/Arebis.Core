@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Arebis.Core.Extensions
 {
+    /// <summary>
+    /// Exception extension methods.
+    /// </summary>
     public static class ExceptionExtensions
     {
         /// <summary>

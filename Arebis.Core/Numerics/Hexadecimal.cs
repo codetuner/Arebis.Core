@@ -26,6 +26,9 @@ namespace Arebis.Core.Numerics
             : base(16)
         { }
 
+        /// <summary>
+        /// Returns a byte array representation of the given number.
+        /// </summary>
         public static byte[]? ToBytes(string hex)
         {
             if (hex == null) return null;
@@ -43,6 +46,9 @@ namespace Arebis.Core.Numerics
             return arr;
         }
 
+        /// <summary>
+        /// Converts the byte array representation into a Hexadecimal value.
+        /// </summary>
         public static string? FromBytes(byte[] values, string separator = "")
         {
             var symbols = "0123456789ABCDEF";
@@ -64,6 +70,7 @@ namespace Arebis.Core.Numerics
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
         public override string PrepareForParse(string s)
         {
             return s.ToUpperInvariant();
