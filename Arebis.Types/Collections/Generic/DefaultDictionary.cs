@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arebis.Core.Types.Collections.Generic
+namespace Arebis.Types.Collections.Generic
 {
     /// <summary>
     /// A Dictionary where querying a missing key does not result in KeyNotFoundException but in returning default(TValue).

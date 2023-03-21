@@ -29,7 +29,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Arebis.Core.Types\Arebis.Core.Types.csproj" />
+	  <ProjectReference Include="..\Arebis.Types\Arebis.Types.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

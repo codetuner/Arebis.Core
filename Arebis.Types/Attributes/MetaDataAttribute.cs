@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Arebis.Core.Types.Attributes
+namespace Arebis.Types.Attributes
 {
     /// <summary>
     /// A MateDataAttribute allows adding metadata to code elements.

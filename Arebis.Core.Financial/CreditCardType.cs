@@ -1,4 +1,4 @@
-﻿using Arebis.Core.Types.Attributes;
+﻿using Arebis.Types.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Text;
