@@ -13,12 +13,15 @@ A base class for DbContext offering extra services:
 - Support for Context aware entitites
 - Support for intercepting entities
 
-Includes default Converters for:
+Includes default Converters and Comparers for:
 
 - Dictionaries
 - Lists
+- DateOnly
+- TimeOnly
 - TimeSpan in Days
 - TimeSpan in Hours
+- TimeSpan as Ticks
 - UtcDateTime
 
 As well as a generic JsonConverter.

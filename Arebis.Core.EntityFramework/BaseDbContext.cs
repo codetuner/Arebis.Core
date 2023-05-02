@@ -43,6 +43,21 @@ namespace Arebis.Core.EntityFramework
             // Base impementation:
             base.OnModelCreating(modelBuilder);
 
+            // Configure default converters:
+            var defaultConverters = new Dictionary<Type, ConverterAttribute?>();
+            defaultConverters.Add(typeof(System.Boolean), null);
+            defaultConverters.Add(typeof(System.Byte), null);
+            defaultConverters.Add(typeof(System.Int16), null);
+            defaultConverters.Add(typeof(System.Int32), null);
+            defaultConverters.Add(typeof(System.Int64), null);
+            defaultConverters.Add(typeof(System.Decimal), null);
+            defaultConverters.Add(typeof(System.String), null);
+            defaultConverters.Add(typeof(System.DateTime), null);
+            defaultConverters.Add(typeof(System.DateOnly), null);
+            defaultConverters.Add(typeof(System.TimeOnly), null);
+            defaultConverters.Add(typeof(System.TimeSpan), null);
+            ConfigureDefaultConverters(defaultConverters);
+
             // Handle data annotations on context type:
             foreach (Attribute attribute in this.GetType().GetCustomAttributes(true).Cast<Attribute>())
             {
@@ -75,22 +90,21 @@ namespace Arebis.Core.EntityFramework
                 }
 
                 // On model properties:
-                var keyProperties = new List<PropertyInfo>();
                 foreach (var property in entityType.ClrType.GetProperties())
                 {
+                    var notMapped = false;
+                    var hasConversion = false;
                     foreach (Attribute attribute in property.GetCustomAttributes(false).Cast<Attribute>())
                     {
-                        // Handle KeyAttribute:
-                        if (attribute is KeyAttribute kattr)
-                        {
-                            // Store the property. We'll only handle the case of composite keys not supported by EF Core:
-                            keyProperties.Add(property);
-                        }
                         // Handle ConverterAttribute:
                         if (attribute is ConverterAttribute cattr)
                         {
                             modelBuilder.Entity(entityType.ClrType).Property(property.Name)
-                                .HasConversion((ValueConverter?)Activator.CreateInstance(cattr.ConverterType, cattr.ConstructorArgs));
+                                .HasConversion(
+                                    (ValueConverter?)Activator.CreateInstance(cattr.ConverterType, cattr.ConverterConstructorArgs),
+                                    (cattr.ComparerType != null) ? (ValueComparer?)Activator.CreateInstance(cattr.ComparerType, cattr.ComparerConstructorArgs) : null
+                                );
+                            hasConversion = true;
                         }
                         // Handle TypeDiscriminatorAttribute:
                         else if (attribute is TypeDiscriminatorAttribute dattr)
@@ -98,21 +112,48 @@ namespace Arebis.Core.EntityFramework
                             modelBuilder.Entity(entityType.ClrType)
                                 .HasDiscriminator(property.Name, property.PropertyType);
                         }
+                        // Handle NotMapped:
+                        else if (attribute is NotMappedAttribute)
+                        {
+                            notMapped = true;
+                        }
                     }
-                }
-
-                // Handle composite keys otherwise giving the exception:
-                // System.InvalidOperationException: Entity type '...' has composite primary key defined with data annotations. To set composite primary key, use fluent API.
-                if (keyProperties.Count > 1)
-                {
-                    var propertyNames = new string[keyProperties.Count];
-                    foreach (var property in keyProperties)
-                        propertyNames[property.GetCustomAttribute<ColumnAttribute>()?.Order ?? 0] = property.Name;
-                    if (propertyNames.Any(n => n == null)) throw new InvalidOperationException($"Entity type '{entityType.Name}' has composite primary key with data annotations, but no Column annotation setting a unique zero-based order on each property.");
-                    modelBuilder.Entity(entityType.ClrType).HasKey(propertyNames);
+                    // Check for a Converter attribute defined as default:
+                    var propertyTypeNotNullable = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                    if (!notMapped && !hasConversion && defaultConverters.TryGetValue(propertyTypeNotNullable, out ConverterAttribute? cattr2))
+                    {
+                        if (cattr2 != null)
+                        {
+                            modelBuilder.Entity(entityType.ClrType).Property(property.Name)
+                                .HasConversion(
+                                    (ValueConverter?)Activator.CreateInstance(cattr2.ConverterType, cattr2.ConverterConstructorArgs),
+                                    (cattr2.ComparerType != null) ? (ValueComparer?)Activator.CreateInstance(cattr2.ComparerType, cattr2.ComparerConstructorArgs) : null
+                                );
+                        }
+                    }
+                    // Or check for Converter attribute defined on property's PropertyType:
+                    else if (!notMapped && !hasConversion)
+                    {
+                        var cattr3 = (ConverterAttribute?)propertyTypeNotNullable.GetCustomAttribute(typeof(ConverterAttribute));
+                        defaultConverters.Add(propertyTypeNotNullable, cattr3);
+                        if (cattr3 != null)
+                        {
+                            modelBuilder.Entity(entityType.ClrType).Property(property.Name)
+                                .HasConversion(
+                                    (ValueConverter?)Activator.CreateInstance(cattr3.ConverterType, cattr3.ConverterConstructorArgs),
+                                    (cattr3.ComparerType != null) ? (ValueComparer?)Activator.CreateInstance(cattr3.ComparerType, cattr3.ComparerConstructorArgs) : null
+                                );
+                        }
+                    }
                 }
             }
         }
+
+        /// <summary>
+        /// Override this method to configure default converter attributes for property types.
+        /// </summary>
+        protected virtual void ConfigureDefaultConverters(IDictionary<Type, ConverterAttribute?> converters)
+        { }
 
         #endregion
 
