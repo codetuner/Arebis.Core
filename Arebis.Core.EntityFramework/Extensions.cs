@@ -34,15 +34,18 @@ namespace Arebis.Core.EntityFramework
             where TDbContext : DbContext
         {
             var context = entity.Context;
-            var entry = context.Entry(entity);
-            switch (entry.State)
+            if (context != null)
             {
-                case EntityState.Unchanged:
-                    entry.State = EntityState.Modified;
-                    break;
-                case EntityState.Detached:
-                    entry.State = EntityState.Modified;
-                    break;
+                var entry = context.Entry(entity);
+                switch (entry.State)
+                {
+                    case EntityState.Unchanged:
+                        entry.State = EntityState.Modified;
+                        break;
+                    case EntityState.Detached:
+                        entry.State = EntityState.Modified;
+                        break;
+                }
             }
         }
 

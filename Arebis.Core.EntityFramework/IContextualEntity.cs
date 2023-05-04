@@ -16,6 +16,6 @@ namespace Arebis.Core.EntityFramework
         /// <summary>
         /// Context of the entity.
         /// </summary>
-        TContext Context { get; set; }
+        TContext? Context { get; set; }
     }
 }

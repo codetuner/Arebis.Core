@@ -13,6 +13,9 @@ namespace Arebis.Core.EntityFramework
         /// <summary>
         /// Called when saving this entity.
         /// </summary>
-        void OnSaving(EntityEntry entityEntry);
+        /// <returns>
+        /// True if the method may have perofrmed changes on entities, false otherwise.
+        /// </returns>
+        bool OnSaving(EntityEntry entityEntry);
     }
 }

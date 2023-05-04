@@ -12,11 +12,16 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// </summary>
     public class JsonConverter<T> : ValueConverter<T, string?>
     {
+        /// <summary>
+        /// Options to use when (de)serializing values.
+        /// </summary>
+        public static JsonSerializerOptions? SerializerOptions { get; set; }
+
         /// <inheritdoc/>
         public JsonConverter()
             : base(
-                  value => JsonSerializer.Serialize(value, (JsonSerializerOptions?)null),
-                  value => JsonSerializer.Deserialize<T>(value ?? "null", (JsonSerializerOptions?)null)!,
+                  value => JsonSerializer.Serialize(value, SerializerOptions),
+                  value => JsonSerializer.Deserialize<T>(value ?? "null", SerializerOptions)!,
                   null)
         { }
     }

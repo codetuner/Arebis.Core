@@ -191,8 +191,20 @@ namespace Arebis.Core.EntityFramework
         /// <inheritdoc/>
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
+            // Perform pre-saving operations:
             ContextSaving();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
+
+            // Then effectively save changes;
+            // ContextSaving already triggered change-detection, therefore avoid to redo change-detection:
+            try
+            {
+                ChangeTracker.AutoDetectChangesEnabled = false;
+                return base.SaveChanges(acceptAllChangesOnSuccess);
+            }
+            finally
+            {
+                ChangeTracker.AutoDetectChangesEnabled = true;
+            }
         }
 
         /// <inheritdoc/>
@@ -204,30 +216,55 @@ namespace Arebis.Core.EntityFramework
         /// <inheritdoc/>
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
+            // Perform pre-saving operations:
             ContextSaving();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+
+            // Then effectively save changes;
+            // ContextSaving already triggered change-detection, therefore avoid to redo change-detection:
+            try
+            {
+                ChangeTracker.AutoDetectChangesEnabled = false;
+                return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            }
+            finally
+            {
+                ChangeTracker.AutoDetectChangesEnabled = true;
+            }
         }
 
         private void ContextSaving()
         {
             // Handle individual changed/added/deleted entries:
+            // (ChangeTracker.Entries() also triggers change-detection)
+            var mayHaveChanges = false;
             foreach (var entry in this.ChangeTracker.Entries())
             {
                 if (entry.State == EntityState.Detached) continue;
                 if (entry.State == EntityState.Unchanged) continue;
                 if (entry.Entity is IInterceptingEntity interceptable)
                 {
-                    interceptable.OnSaving(entry);
+                    mayHaveChanges = mayHaveChanges || interceptable.OnSaving(entry);
                 }
-                this.OnEntitySaving(entry);
+                mayHaveChanges = mayHaveChanges || this.OnEntitySaving(entry);
+
+                // If changes may have occured, redo detect changes:
+                if (mayHaveChanges)
+                {
+                    this.ChangeTracker.DetectChanges();
+                }
             }
         }
 
         /// <summary>
         /// Called before saving an added, changed or deleted entity.
         /// </summary>
-        public virtual void OnEntitySaving(EntityEntry entry)
-        { }
+        /// <returns>
+        /// True if the method may have perofrmed changes on entities, false otherwise.
+        /// </returns>
+        public virtual bool OnEntitySaving(EntityEntry entry)
+        {
+            return false;
+        }
 
         #endregion
     }
