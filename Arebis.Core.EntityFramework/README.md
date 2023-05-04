@@ -9,11 +9,11 @@ BaseDbContext<T>
 
 A base class for DbContext offering extra services:
 
-- Broader support for Data Annotations (setting default schema, setting composite primary keys, mapped fields, type discriminator, converters)
+- Broader support for Data Annotations (setting default schema, mapped fields, type discriminator, converters)
 - Support for Context aware entitites
 - Support for intercepting entities
 
-Includes default Converters and Comparers for:
+Includes default Converters (and Comparers) for:
 
 - Dictionaries
 - Lists

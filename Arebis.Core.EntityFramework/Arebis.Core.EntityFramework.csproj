@@ -11,7 +11,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>Codetuner</Authors>
 		<Company>AREBIS BV (www.arebis.be)</Company>
-		<Copyright>Copyright 2022 Rudi Breedenraedt</Copyright>
+		<Copyright>Copyright 2022-2023 Rudi Breedenraedt</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>arebis;core;data;entity;entityframework;EF;entityframeworkcore;EFCore;dbcontext</PackageTags>
 		<PackAsTool>False</PackAsTool>
