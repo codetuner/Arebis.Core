@@ -11,10 +11,9 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>Codetuner</Authors>
 		<Company>AREBIS BV (www.arebis.be)</Company>
-		<Copyright>Copyright 2022 Rudi Breedenraedt</Copyright>
+		<Copyright>Copyright 2023 Rudi Breedenraedt</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageTags>arebis;core;aspnet;aspnetcore</PackageTags>
-		<PackAsTool>False</PackAsTool>
+		<PackageTags>arebis;core</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
@@ -27,18 +26,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Arebis.Core\Arebis.Core.csproj" />
+		<ProjectReference Include="..\Arebis.Core.AspNet\Arebis.Core.AspNet.csproj" />
 	</ItemGroup>
-
-  <ItemGroup>
-    <None Update="README.md">
-      <PackagePath>\</PackagePath>
-      <Pack>True</Pack>
-    </None>
-  </ItemGroup>
+	
+	<ItemGroup>
+		<None Update="README.md">
+			<PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+		</None>
+	</ItemGroup>
 
 </Project>
