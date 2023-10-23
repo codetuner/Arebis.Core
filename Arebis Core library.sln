@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.Financial", "Ar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Types", "Arebis.Types\Arebis.Types.csproj", "{498D0D2E-A7AF-4808-ABF5-EA8313B3781D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.AspNet.Mvc", "Arebis.Core.AspNet.Mvc\Arebis.Core.AspNet.Mvc.csproj", "{0619751A-2BC1-4CCB-92A1-D514E799354F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.AspNet.Mvc", "Arebis.Core.AspNet.Mvc\Arebis.Core.AspNet.Mvc.csproj", "{0619751A-2BC1-4CCB-92A1-D514E799354F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.AspNet.Mvc.Sircl", "Arebis.Core.AspNet.Mvc.Sircl\Arebis.Core.AspNet.Mvc.Sircl.csproj", "{11E453CE-074D-421D-900B-79114DA15570}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,10 @@ Global
 		{0619751A-2BC1-4CCB-92A1-D514E799354F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0619751A-2BC1-4CCB-92A1-D514E799354F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0619751A-2BC1-4CCB-92A1-D514E799354F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11E453CE-074D-421D-900B-79114DA15570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11E453CE-074D-421D-900B-79114DA15570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11E453CE-074D-421D-900B-79114DA15570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11E453CE-074D-421D-900B-79114DA15570}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
