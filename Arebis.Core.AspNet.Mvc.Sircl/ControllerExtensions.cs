@@ -1,7 +1,6 @@
-﻿using Arebis.Core.AspNet.Mvc.Sircl;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SirclDemo.FurnitureOrders.Controllers
+namespace Arebis.Core.AspNet.Mvc.Sircl
 {
     /// <summary>
     /// ASP.NET MVC Controller extension methods to support Sircl.
@@ -62,20 +61,37 @@ namespace SirclDemo.FurnitureOrders.Controllers
         }
 
         /// <summary>
-        /// Sets the X-Sircl-History header to instruct back navigation.
+        /// Sets the X-Sircl-History header to instruct back navigation and returns a 204 (NoContent).
         /// </summary>
-        public static IActionResult SirclBack(this Controller controller, bool allowCaching = true)
+        public static IActionResult SirclBack(this Controller controller, bool allowCaching = true, bool allowClosing = true, string? allowClosingPrompt = null)
         {
             controller.Response.Headers["X-Sircl-History"] = allowCaching ? "back" : "back-uncached";
+            if (allowClosing)
+            {
+                if (allowClosingPrompt == null)
+                {
+                    controller.Response.Headers["X-Sircl-History-AllowClose"] = "true";
+                }
+                else
+                {
+                    controller.Response.Headers["X-Sircl-History-AllowClose"] = allowClosingPrompt;
+                }
+            }
             return controller.StatusCode(204);
         }
 
         /// <summary>
-        /// Sets the X-Sircl-History header to instruct a main target refresh.
+        /// Sets the X-Sircl-History header to instruct a main target reload and returns a 204 (NoContent).
         /// </summary>
-        public static IActionResult SirclRefresh(this Controller controller)
+        /// <param name="controller">The controller.</param>
+        /// <param name="fullPage">Whether to perform a full page reload.</param>
+        public static IActionResult SirclRefresh(this Controller controller, bool fullPage = false)
         {
-            controller.Response.Headers["X-Sircl-History"] = "refresh";
+            controller.Response.Headers["X-Sircl-History"] = "reload";
+            if (fullPage)
+            {
+                controller.Response.Headers["X-Sircl-Target"] = "_self";
+            }
             return controller.StatusCode(204);
         }
 
