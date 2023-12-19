@@ -82,7 +82,7 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
                     WritePage(builder, name, value, pages[i]);
                 }
             }
-            WritePage(builder, name, value, (value == Max ? Min - 1 : value + 1), "&raquo;", "ArrowRight");
+            WritePage(builder, name, value, (value >= Max ? Min - 1 : value + 1), "&raquo;", "ArrowRight");
             builder.Append("</ul>");
 
             output.Content.SetHtmlContent(builder.ToString());
