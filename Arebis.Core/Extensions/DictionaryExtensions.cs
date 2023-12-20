@@ -107,8 +107,9 @@ namespace Arebis.Core.Extensions
 
         /// <summary>
         /// Merges the value of the other dictionary in this one.
+        /// The other dictionary may overwrite values of the current one.
         /// </summary>
-        public static void Merge<TKey, TValue>(this IDictionary<TKey, TValue> dict, IDictionary<TKey, TValue> other)
+        public static void Merge<TKey, TValue>(this IDictionary<TKey, TValue> dict, IEnumerable<KeyValuePair<TKey, TValue>> other)
         {
             foreach (var pair in other)
             {
