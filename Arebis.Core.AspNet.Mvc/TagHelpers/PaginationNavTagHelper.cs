@@ -13,6 +13,7 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
     /// A Pagination tag-helper.
     /// </summary>
     [HtmlTargetElement("pagination-nav", Attributes = "asp-for, max")]
+    [HtmlTargetElement("pagination-nav", Attributes = "asp-for, hasnext")]
     public class PaginationNavTagHelper : TagHelper
     {
         /// <summary>
@@ -28,10 +29,16 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         public int Min { get; set; } = 1;
 
         /// <summary>
-        /// The maximum page number (last page's number).
+        /// If set, the maximum page number (last page's number).
         /// </summary>
         [HtmlAttributeName("max")]
-        public int Max { get; set; }
+        public int? Max { get; set; }
+
+        /// <summary>
+        /// Whether there is a next page.
+        /// </summary>
+        [HtmlAttributeName("hasnext")]
+        public bool? HasNextPage { get; set; }
 
         /// <summary>
         /// Process the TagHelper.
@@ -40,49 +47,61 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         {
             var name = For!.Name;
             var value = (int)For!.Model;
-    
+
             output.TagName = "nav";
             output.TagMode = TagMode.StartTagAndEndTag;
 
             var builder = new StringBuilder();
             builder.Append("<ul class=\"pagination\">");
             WritePage(builder, name, value, (value == Min ? Min - 1 : value - 1), "&laquo;", "ArrowLeft");
-            if ((Max - Min) < 7)
+            if (Max.HasValue)
             {
-                for (int p = Min; p <= Max; p++)
+                if ((Max.Value - Min) < 7)
                 {
-                    WritePage(builder, name, value, p);
+                    for (int p = Min; p <= Max.Value; p++)
+                    {
+                        WritePage(builder, name, value, p);
+                    }
                 }
+                else
+                {
+                    var pages = new int[] { value - 3, value - 2, value - 1, value, value + 1, value + 2, value + 3 };
+                    if (pages[0] < Min)
+                    {
+                        var delta = Min - pages[0];
+                        for (int i = 0; i < pages.Length; i++) pages[i] += delta;
+                    }
+                    else if (pages[^1] > Max.Value)
+                    {
+                        var delta = pages[^1] - Max.Value;
+                        for (int i = 0; i < pages.Length; i++) pages[i] -= delta;
+                    }
+                    if (pages[0] > Min)
+                    {
+                        pages[0] = Min;
+                        pages[1] = Min - 1;
+                    }
+                    if (pages[^1] < Max.Value)
+                    {
+                        pages[^2] = Min - 1;
+                        pages[^1] = Max.Value;
+                    }
+                    for (int i = 0; i < pages.Length; i++)
+                    {
+                        WritePage(builder, name, value, pages[i]);
+                    }
+                }
+                WritePage(builder, name, value, (value < Max ? value + 1 : Min - 1), "&raquo;", "ArrowRight");
+            }
+            else if (HasNextPage.HasValue)
+            {
+                WritePage(builder, name, value, value);
+                WritePage(builder, name, value, (HasNextPage.Value ? value + 1 : Min - 1), "&raquo;", "ArrowRight");
             }
             else
             {
-                var pages = new int[] { value - 3, value - 2, value - 1, value, value + 1, value + 2, value + 3 };
-                if (pages[0] < Min)
-                {
-                    var delta = Min - pages[0];
-                    for (int i = 0; i < pages.Length; i++) pages[i] += delta;
-                }
-                else if (pages[^1] > Max)
-                {
-                    var delta = pages[^1] - Max;
-                    for (int i = 0; i < pages.Length; i++) pages[i] -= delta;
-                }
-                if (pages[0] > Min)
-                {
-                    pages[0] = Min;
-                    pages[1] = Min - 1;
-                }
-                if (pages[^1] < Max)
-                {
-                    pages[^2] = Min - 1;
-                    pages[^1] = Max;
-                }
-                for (int i = 0; i < pages.Length; i++)
-                {
-                    WritePage(builder, name, value, pages[i]);
-                }
+                WritePage(builder, name, value, (value + 1), "&raquo;", "ArrowRight");
             }
-            WritePage(builder, name, value, (value >= Max ? Min - 1 : value + 1), "&raquo;", "ArrowRight");
             builder.Append("</ul>");
 
             output.Content.SetHtmlContent(builder.ToString());
@@ -93,7 +112,7 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
             var active = (page == value);
             builder.Append($"<li class=\"page-item{(active ? " active" : "")}{((page < Min) ? " disabled" : "")}\">");
             builder.Append($"<label class=\"page-link\">");
-            if (page >= Min) builder.Append($"<input type=\"radio\" name=\"{name}\" value=\"{page}\"{ ((shortCut == null) ? "" : $" onkeydown-click=\"{ shortCut }\"") } />");
+            if (page >= Min) builder.Append($"<input type=\"radio\" name=\"{name}\" value=\"{page}\"{((shortCut == null) ? "" : $" onkeydown-click=\"{shortCut}\"")} />");
             if (text != null) builder.Append(text);
             else if (page < Min) builder.Append("...");
             else builder.Append(page);
