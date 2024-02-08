@@ -22,7 +22,7 @@ namespace Arebis.Core.Extensions
         /// <summary>
         /// Adds the given items to the collection and returns the collection for fluent syntax.
         /// </summary>
-        public static ICollection<T> With<T>(this ICollection<T> collection, IEnumerable<T> items)
+        public static ICollection<T> WithAll<T>(this ICollection<T> collection, IEnumerable<T> items)
         {
             foreach(var item in items)
                 collection.Add(item);
@@ -48,7 +48,7 @@ namespace Arebis.Core.Extensions
         /// <summary>
         /// Removes all instances of the given item from the collection and returns the collection for fluent syntax.
         /// </summary>
-        public static ICollection<T> Without<T>(this ICollection<T> collection, IEnumerable<T> items, bool removeFirstOccurencesOnly = true)
+        public static ICollection<T> WithoutAll<T>(this ICollection<T> collection, IEnumerable<T> items, bool removeFirstOccurencesOnly = true)
         {
             foreach (var item in items)
             {

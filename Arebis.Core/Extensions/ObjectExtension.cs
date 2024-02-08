@@ -23,15 +23,20 @@ namespace Arebis.Core.Extensions
         /// Returns null if given object is null.
         /// </summary>
         /// <param name="obj">The object to translate into a dictionary.</param>
+        /// <param name="includeNullValues">Whether to include properties where the value is null in the returned dictionary.</param>
         [return: NotNullIfNotNull("obj")]
-        public static IDictionary<string, object?>? ToDictionary(this object? obj)
+        public static IDictionary<string, object?>? ToDictionary(this object? obj, bool includeNullValues = false)
         {
             if (obj == null) return null;
 
             var result = new Dictionary<string, object?>();
             foreach (PropertyInfo property in obj.GetType().GetProperties())
             {
-                result[property.Name] = property.GetValue(obj);
+                var value = property.GetValue(obj);
+                if (value != null || includeNullValues)
+                {
+                    result[property.Name] = value;
+                }
             }
 
             return result;
