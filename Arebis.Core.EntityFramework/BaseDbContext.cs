@@ -1,5 +1,4 @@
-﻿using Arebis.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
@@ -111,6 +110,14 @@ namespace Arebis.Core.EntityFramework
                         {
                             modelBuilder.Entity(entityType.ClrType)
                                 .HasDiscriminator(property.Name, property.PropertyType);
+                        }
+                        // Handle StoreEmptyAsNullAttribute:
+                        else if (attribute is StoreEmptyAsNullAttribute easnattr)
+                        {
+                            // Mark property as not required in the database as it must be able to store NULL values:
+                            modelBuilder.Entity(entityType.ClrType)
+                                .Property(property.Name)
+                                .IsRequired(false);
                         }
                         // Handle NotMapped:
                         else if (attribute is NotMappedAttribute)
@@ -259,7 +266,7 @@ namespace Arebis.Core.EntityFramework
         /// Called before saving an added, changed or deleted entity.
         /// </summary>
         /// <returns>
-        /// True if the method may have perofrmed changes on entities, false otherwise.
+        /// True if the method may have performed changes on entities, false otherwise.
         /// </returns>
         public virtual bool OnEntitySaving(EntityEntry entry)
         {

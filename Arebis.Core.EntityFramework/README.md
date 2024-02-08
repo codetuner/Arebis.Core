@@ -12,6 +12,7 @@ A base class for DbContext offering extra services:
 - Broader support for Data Annotations (setting default schema, mapped fields, type discriminator, converters)
 - Support for Context aware entitites
 - Support for intercepting entities
+- Support for validation
 
 Includes default Converters (and Comparers) for:
 
