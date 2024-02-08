@@ -19,7 +19,7 @@ namespace Arebis.Core.Tests.Extensions
             Assert.IsNull(n.AsArray());
             Assert.AreSame(a, a.AsArray());
             Assert.AreNotSame(a, a.ToArray());
-            Assert.AreNotSame(l, l.AsArray());
+            Assert.AreNotSame<object>(l, l.AsArray());
             Assert.AreEqual(l[0], l.AsArray()![0]);
         }
 
@@ -32,7 +32,7 @@ namespace Arebis.Core.Tests.Extensions
             Assert.IsNull(n.AsList());
             Assert.AreSame(l, l.AsList());
             Assert.AreNotSame(l, l.ToList());
-            Assert.AreNotSame(a, a.AsList());
+            Assert.AreNotSame<object>(a, a.AsList());
             Assert.AreEqual(a[0], a.AsList()![0]);
         }
     }
