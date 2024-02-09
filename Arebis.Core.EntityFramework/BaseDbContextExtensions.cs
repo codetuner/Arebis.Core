@@ -30,9 +30,21 @@ namespace Arebis.Core.EntityFramework
         /// <summary>
         /// Installs an interceptor to support [StoreEmptyAsNull] attributes.
         /// </summary>
+        /// <param name="optionsBuilder">OnConfiguring method parameter</param>
         public static DbContextOptionsBuilder UseStoreEmptyAsNullAttributes(this DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.AddInterceptors(new StoreEmptyAsNullInterceptor());
+            return optionsBuilder;
+        }
+
+        /// <summary>
+        /// Installs an interceptor to trim changed strings before storing them.
+        /// </summary>
+        /// <param name="optionsBuilder">OnConfiguring method parameter</param>
+        /// <param name="storeEmptyAsNull">Whether to store empty strings as null if the property is nullable.</param>
+        public static DbContextOptionsBuilder UseStoreEmptyAsNullAttributes(this DbContextOptionsBuilder optionsBuilder, bool storeEmptyAsNull = true)
+        {
+            optionsBuilder.AddInterceptors(new StringTrimmingInterceptor(storeEmptyAsNull));
             return optionsBuilder;
         }
     }
