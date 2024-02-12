@@ -42,7 +42,7 @@ namespace Arebis.Core.EntityFramework
         /// </summary>
         /// <param name="optionsBuilder">OnConfiguring method parameter</param>
         /// <param name="storeEmptyAsNull">Whether to store empty strings as null if the property is nullable.</param>
-        public static DbContextOptionsBuilder UseStoreEmptyAsNullAttributes(this DbContextOptionsBuilder optionsBuilder, bool storeEmptyAsNull = true)
+        public static DbContextOptionsBuilder UseStringTrimming(this DbContextOptionsBuilder optionsBuilder, bool storeEmptyAsNull = true)
         {
             optionsBuilder.AddInterceptors(new StringTrimmingInterceptor(storeEmptyAsNull));
             return optionsBuilder;

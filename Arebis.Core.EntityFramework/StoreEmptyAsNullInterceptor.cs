@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Arebis.Core.EntityFramework
 {
@@ -16,7 +17,7 @@ namespace Arebis.Core.EntityFramework
     /// </summary>
     public class StoreEmptyAsNullInterceptor : ISaveChangesInterceptor, IMaterializationInterceptor
     {
-        private static ConcurrentDictionary<Type, PropertyInfo[]> metaCache = new ConcurrentDictionary<Type, PropertyInfo[]>();
+        private static ConcurrentDictionary<Type, Tuple<StoreEmptyAsNullAttribute, PropertyInfo>[]> metaCache = new ConcurrentDictionary<Type, Tuple<StoreEmptyAsNullAttribute, PropertyInfo>[]>();
 
         /// <inheritdoc/>
         public InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
@@ -46,11 +47,22 @@ namespace Arebis.Core.EntityFramework
                 var entity = entry.Entity;
                 foreach (var property in GetNullOnEmptyPropertiesFor(entity.GetType()))
                 {
-                    //var currentValue = (string?)property.GetValue(entity);
-                    var currentValue = (string?)entry.Property(property.Name).CurrentValue;
-                    if (currentValue != null && String.IsNullOrWhiteSpace(currentValue))
+                    if (property.Item2.PropertyType == typeof(string))
                     {
-                        entry.Property(property.Name).CurrentValue = null;
+                        //var currentValue = (string?)property.GetValue(entity);
+                        var currentValue = (string?)entry.Property(property.Item2.Name).CurrentValue;
+                        if (currentValue != null && String.IsNullOrWhiteSpace(currentValue))
+                        {
+                            entry.Property(property.Item2.Name).CurrentValue = null;
+                        }
+                    }
+                    else
+                    {
+                        var currentValue = (IEnumerable?)entry.Property(property.Item2.Name).CurrentValue;
+                        if (currentValue != null && IsEnumerableEmpty(currentValue))
+                        {
+                            entry.Property(property.Item2.Name).CurrentValue = null;
+                        }
                     }
                 }
             }
@@ -61,13 +73,19 @@ namespace Arebis.Core.EntityFramework
         {
             foreach (var property in GetNullOnEmptyPropertiesFor(entity.GetType()))
             {
-                if (property.GetValue(entity) == null) property.SetValue(entity, String.Empty);
+                if (property.Item2.GetValue(entity) == null)
+                {
+                    var value = (property.Item2.PropertyType == typeof(string))
+                        ? String.Empty
+                        : Activator.CreateInstance(property.Item1.InstanceType ?? property.Item2.PropertyType);
+                    property.Item2.SetValue(entity, value);
+                }
             }
 
             return entity;
         }
 
-        private PropertyInfo[] GetNullOnEmptyPropertiesFor(Type type)
+        private Tuple<StoreEmptyAsNullAttribute, PropertyInfo>[] GetNullOnEmptyPropertiesFor(Type type)
         {
             if (metaCache.TryGetValue(type, out var properties))
             {
@@ -75,12 +93,14 @@ namespace Arebis.Core.EntityFramework
             }
             else
             {
-                var propertiesList = new List<PropertyInfo>();
+                var propertiesList = new List<Tuple<StoreEmptyAsNullAttribute, PropertyInfo>>();
                 foreach (var property in type.GetProperties())
                 {
-                    if (property.GetCustomAttributes(typeof(StoreEmptyAsNullAttribute), true).Any())
+                    var attributes = property.GetCustomAttributes(typeof(StoreEmptyAsNullAttribute), true);
+                    if (attributes.Any())
                     {
-                        propertiesList.Add(property);
+                        var attribute = (StoreEmptyAsNullAttribute)attributes[0];
+                        propertiesList.Add( new Tuple<StoreEmptyAsNullAttribute, PropertyInfo>(attribute, property));
                     }
                 }
                 if (propertiesList.Count > 0)
@@ -89,9 +109,15 @@ namespace Arebis.Core.EntityFramework
                 }
                 else
                 {
-                    return metaCache[type] = Array.Empty<PropertyInfo>();
+                    return metaCache[type] = Array.Empty<Tuple<StoreEmptyAsNullAttribute, PropertyInfo>>();
                 }
             }
+        }
+
+        private static bool IsEnumerableEmpty(IEnumerable e)
+        {
+            foreach (var item in e) return false;
+            return true;
         }
     }
 }
