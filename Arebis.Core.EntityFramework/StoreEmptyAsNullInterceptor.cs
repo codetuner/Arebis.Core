@@ -45,23 +45,24 @@ namespace Arebis.Core.EntityFramework
             foreach (EntityEntry entry in context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added))
             {
                 var entity = entry.Entity;
-                foreach (var property in GetNullOnEmptyPropertiesFor(entity.GetType()))
+                foreach (var property in GetNullOnEmptyPropertiesFor(entity.GetType(), context))
                 {
+                    var entryProperty = entry.Property(property.Item2.Name);
                     if (property.Item2.PropertyType == typeof(string))
                     {
                         //var currentValue = (string?)property.GetValue(entity);
-                        var currentValue = (string?)entry.Property(property.Item2.Name).CurrentValue;
+                        var currentValue = (string?)entryProperty.CurrentValue;
                         if (currentValue != null && String.IsNullOrWhiteSpace(currentValue))
                         {
-                            entry.Property(property.Item2.Name).CurrentValue = null;
+                            entryProperty.CurrentValue = null;
                         }
                     }
                     else
                     {
-                        var currentValue = (IEnumerable?)entry.Property(property.Item2.Name).CurrentValue;
+                        var currentValue = entryProperty.CurrentValue as IEnumerable;
                         if (currentValue != null && IsEnumerableEmpty(currentValue))
                         {
-                            entry.Property(property.Item2.Name).CurrentValue = null;
+                            entryProperty.CurrentValue = null;
                         }
                     }
                 }
@@ -71,7 +72,7 @@ namespace Arebis.Core.EntityFramework
         /// <inheritdoc/>
         public object InitializedInstance(MaterializationInterceptionData materializationData, object entity)
         {
-            foreach (var property in GetNullOnEmptyPropertiesFor(entity.GetType()))
+            foreach (var property in GetNullOnEmptyPropertiesFor(entity.GetType(), materializationData.Context))
             {
                 if (property.Item2.GetValue(entity) == null)
                 {
@@ -85,7 +86,7 @@ namespace Arebis.Core.EntityFramework
             return entity;
         }
 
-        private Tuple<StoreEmptyAsNullAttribute, PropertyInfo>[] GetNullOnEmptyPropertiesFor(Type type)
+        private Tuple<StoreEmptyAsNullAttribute, PropertyInfo>[] GetNullOnEmptyPropertiesFor(Type type, DbContext context)
         {
             if (metaCache.TryGetValue(type, out var properties))
             {
@@ -94,7 +95,8 @@ namespace Arebis.Core.EntityFramework
             else
             {
                 var propertiesList = new List<Tuple<StoreEmptyAsNullAttribute, PropertyInfo>>();
-                foreach (var property in type.GetProperties())
+                var clrtype = context.Model.FindRuntimeEntityType(type)?.ClrType ?? type;
+                foreach (var property in clrtype.GetProperties())
                 {
                     var attributes = property.GetCustomAttributes(typeof(StoreEmptyAsNullAttribute), true);
                     if (attributes.Any())
