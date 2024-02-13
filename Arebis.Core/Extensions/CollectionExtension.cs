@@ -80,5 +80,61 @@ namespace Arebis.Core.Extensions
                 }
             }
         }
+
+        /// <summary>
+        /// Returns and removes the first element of the collection.
+        /// </summary>
+        public static T? PopFirstOrDefault<T>(this ICollection<T> collection)
+        {
+            var en = collection.GetEnumerator();
+            if (en.MoveNext())
+            {
+                var first = en.Current;
+                en.Dispose();
+                collection.Remove(first);
+                return first;
+            }
+            else
+            {
+                // If none found:
+                en.Dispose();
+                return default(T);
+            }
+        }
+
+        /// <summary>
+        /// Returns and removes the first element of the collection that matches the given predicate.
+        /// </summary>
+        public static T? PopFirstOrDefault<T>(this ICollection<T> collection, Func<T, bool> predicate)
+        {
+            using var en = collection.GetEnumerator();
+            while (en.MoveNext())
+            { 
+                if (predicate(en.Current))
+                {
+                    var first = en.Current;
+                    en.Dispose();
+                    collection.Remove(first);
+                    return first;
+                }
+            }
+
+            // If none found:
+            en.Dispose();
+            return default(T);
+        }
+
+        /// <summary>
+        /// Returns and removes all elements of the collection that match the given predicate.
+        /// </summary>
+        public static IEnumerable<T> PopAll<T>(this ICollection<T> collection, Func<T, bool> predicate)
+        {
+            // Search for matches:
+            foreach (var item in collection.Where(predicate).ToList())
+            {
+                collection.Remove(item);
+                yield return item;
+            }
+        }
     }
 }
