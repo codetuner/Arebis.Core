@@ -33,9 +33,14 @@ namespace Arebis.Core.EntityFramework
         /// <param name="optionsBuilder">OnConfiguring method parameter</param>
         public static DbContextOptionsBuilder UseStoreEmptyAsNullAttributes(this DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.AddInterceptors(new StoreEmptyAsNullInterceptor());
+            // StoreEmptyAsNullInterceptor is a IMaterializationInterceptor which is a type of ISingletonInterceptor
+            // and should be reused, see: https://github.com/dotnet/efcore/issues/29330
+            cachedStoreEmptyAsNullInterceptor ??= new StoreEmptyAsNullInterceptor();
+            optionsBuilder.AddInterceptors(cachedStoreEmptyAsNullInterceptor);
             return optionsBuilder;
         }
+
+        private static StoreEmptyAsNullInterceptor? cachedStoreEmptyAsNullInterceptor = null;
 
         /// <summary>
         /// Installs an interceptor to trim changed strings before storing them.
