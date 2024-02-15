@@ -10,7 +10,7 @@ namespace Arebis.Core.Extensions
     /// <summary>
     /// Array extension methods.
     /// </summary>
-    public static class ArrayExtension
+    public static class ArrayExtensions
     {
         /// <summary>
         /// Compares this array to the given one. Returns true if they are

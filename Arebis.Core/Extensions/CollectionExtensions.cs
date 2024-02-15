@@ -8,7 +8,7 @@ namespace Arebis.Core.Extensions
     /// <summary>
     /// Collection extension methods.
     /// </summary>
-    public static class CollectionExtension
+    public static class CollectionExtensions
     {
         /// <summary>
         /// Adds the given item to the collection and returns the collection for fluent syntax.

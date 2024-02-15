@@ -10,7 +10,7 @@ namespace Arebis.Core.Extensions
     /// <summary>
     /// Byte array extension methods.
     /// </summary>
-    public static class ByteArrayExtension
+    public static class ByteArrayExtensions
     {
         /// <summary>
         /// Compares this byte array to the given one. Returns true if they are

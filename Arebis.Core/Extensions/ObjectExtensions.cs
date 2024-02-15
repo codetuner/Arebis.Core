@@ -16,7 +16,7 @@ namespace Arebis.Core.Extensions
 	/// As Extension Methods will be supported by the C# language, these
 	/// methods will be changed into real Extension Methods.
 	/// </remarks>
-	public static class ObjectExtension
+	public static class ObjectExtensions
 	{
         /// <summary>
         /// Returns a dictionary with all properties of the object and their values.

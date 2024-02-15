@@ -9,7 +9,7 @@ namespace Arebis.Core.Extensions
     /// <summary>
     /// TimeSpan extension methods.
     /// </summary>
-    public static class TimeSpanExtension
+    public static class TimeSpanExtensions
     {
         /// <summary>
         /// Returns the absolute value of the timestamp (an anways positive value).

@@ -8,7 +8,7 @@ namespace Arebis.Core.Extensions
     /// <summary>
     /// Number extension methods.
     /// </summary>
-    public static class NumberExtension
+    public static class NumberExtensions
     {
         private const string hexalfabet = "0123456789ABCDEF";
 
@@ -103,6 +103,18 @@ namespace Arebis.Core.Extensions
         public static bool IsBetween(this int i, int lower, int higher)
         {
             return (i >= lower && i <= higher);
+        }
+
+        /// <summary>
+        /// If condition matches, alternative value is returned, otherwise the int itself is returned.
+        /// </summary>
+        /// <param name="i">The int itself.</param>
+        /// <param name="condition">The condition.</param>
+        /// <param name="matchValue">The alternative value.</param>
+        /// <returns></returns>
+        public static int If(this int i, Func<int, bool> condition, int matchValue)
+        {
+            return condition(i) ? matchValue : i;
         }
     }
 }

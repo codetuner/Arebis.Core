@@ -10,7 +10,7 @@ namespace Arebis.Core.Extensions
     /// <summary>
     /// Type extension methods.
     /// </summary>
-    public static class TypeExtension
+    public static class TypeExtensions
     {
         /// <summary>
         /// Returns an array of PropertyInfo objects that translates a property path as "Customer.Address.Town"

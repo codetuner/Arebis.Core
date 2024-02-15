@@ -13,6 +13,14 @@ namespace Arebis.Core.Extensions
     public static class EnumerableExtensions
     {
         /// <summary>
+        /// Returns true if none of the elements satisfy the predicate. Inverse of Any().
+        /// </summary>
+        public static bool None<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
+        {
+            return !enumerable.Any(predicate);
+        }
+
+        /// <summary>
         /// If the enumerable is an array, return it, otherwise convert it into an array.
         /// </summary>
         [return:NotNullIfNotNull("enumerable")]
