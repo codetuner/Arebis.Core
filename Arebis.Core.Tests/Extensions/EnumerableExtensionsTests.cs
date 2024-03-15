@@ -35,5 +35,68 @@ namespace Arebis.Core.Tests.Extensions
             Assert.AreNotSame<object>(a, a.AsList());
             Assert.AreEqual(a[0], a.AsList()![0]);
         }
+
+        [TestMethod]
+        public void SynchroniseWithTests()
+        {
+            {
+                var source = new int[] { 5, 6, 7 };
+                var target = new List<int>();
+                var added = new List<int>();
+                var removed = new List<int>();
+                var remaining = new List<int>();
+                var result = source.SynchroniseWith(target, null, true, e => added.Add(e), e => removed.Add(e), (s, t) => remaining.Add(t));
+                Assert.AreEqual(3, added.Count);
+                Assert.AreEqual(0, removed.Count);
+                Assert.AreEqual(0, remaining.Count);
+            }
+            {
+                var source = new int[] { 5, 6, 7 };
+                var target = source.ToList();
+                var added = new List<int>();
+                var removed = new List<int>();
+                var remaining = new List<int>();
+                var result = source.SynchroniseWith(target, null, true, e => added.Add(e), e => removed.Add(e), (s, t) => remaining.Add(t));
+                Assert.AreEqual(0, added.Count);
+                Assert.AreEqual(0, removed.Count);
+                Assert.AreEqual(3, remaining.Count);
+            }
+            {
+                var source = new int[0];
+                var target = new List<int>([5, 6, 7]);
+                var added = new List<int>();
+                var removed = new List<int>();
+                var remaining = new List<int>();
+                var result = source.SynchroniseWith(target, null, true, e => added.Add(e), e => removed.Add(e), (s, t) => remaining.Add(t));
+                Assert.AreEqual(0, added.Count);
+                Assert.AreEqual(3, removed.Count);
+                Assert.AreEqual(0, remaining.Count);
+            }
+            {
+                var source = new int[] { 5, 6, 7 };
+                var target = new List<int>([6, 7, 8, 9, 10]);
+                var added = new List<int>();
+                var removed = new List<int>();
+                var remaining = new List<int>();
+                var result = source.SynchroniseWith(target, (s, t) => s == t, true, e => added.Add(e), e => removed.Add(e), (s, t) => remaining.Add(t));
+                Assert.AreEqual(1, added.Count);
+                Assert.AreEqual(5, added[0]);
+                Assert.AreEqual(3, removed.Count);
+                Assert.AreEqual(8, removed[0]);
+                Assert.AreEqual(9, removed[1]);
+                Assert.AreEqual(10, removed[2]);
+                Assert.AreEqual(2, remaining.Count);
+                Assert.AreEqual(6, remaining[0]);
+                Assert.AreEqual(7, remaining[1]);
+                Assert.AreEqual(source.Length, target.Count);
+            }
+            {
+                var source = new int[] { 5, 6, 7 };
+                var target = new List<int>([6, 7, 8, 9, 10]);
+                var result = source.SynchroniseWith(target, (s, t) => s == t, false);
+                Assert.AreEqual(3, source.Length);
+                Assert.AreEqual(5, target.Count);
+            }
+        }
     }
 }

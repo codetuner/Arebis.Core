@@ -136,5 +136,16 @@ namespace Arebis.Core.Extensions
                 yield return item;
             }
         }
+
+        /// <summary>
+        /// Returns a selection on the given collection for the given criteria.
+        /// </summary>
+        /// <param name="collection">The underlying collection to return a selection for.</param>
+        /// <param name="criteria">The criteria of the selection.</param>
+        /// <returns>Returns a selection that mutates the underlying collection.</returns>
+        public static Selection<T> Select<T>(this ICollection<T> collection, Func<T, bool> criteria)
+        {
+            return new Selection<T>(collection, criteria);
+        }
     }
 }

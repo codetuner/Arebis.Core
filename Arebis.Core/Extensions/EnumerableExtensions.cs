@@ -146,5 +146,55 @@ namespace Arebis.Core.Extensions
                 index++;
             }
         }
+
+        /// <summary>
+        /// Synchronises a source with a target collection.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source">The source collection.</param>
+        /// <param name="target">The target to synchronise to.</param>
+        /// <param name="comparer">Comparer to use. Object.Equals if null or missing.</param>
+        /// <param name="apply">Whether to update the target collection to have it holding the same elements as the source.</param>
+        /// <param name="onAdded">Action to take on elements available in the source but not in the target collection.</param>
+        /// <param name="onRemoved">Action to take on elements available in the target but not in the source collection.</param>
+        /// <param name="onRemaining">Action to take on elements available in both source and target, takes the source item and corresponding target item.</param>
+        /// <returns>The source collection for fluent syntax.</returns>
+        public static IEnumerable<T> SynchroniseWith<T>(this IEnumerable<T> source, ICollection<T> target, Func<T, T, bool>? comparer = null, bool apply = true, Action<T>? onAdded = null, Action<T>? onRemoved = null, Action<T, T>? onRemaining = null)
+        {
+            // Set comparer:
+            comparer ??= (s, t) => Object.Equals(s, t);
+
+            // Detect differences:
+            var added = new List<T>();
+            var removed = target.ToList();
+            foreach(var item in source)
+            { 
+                var index = removed.IndexWhere(e => comparer(e, item));
+                if (index == -1)
+                {
+                    onAdded?.Invoke(item);
+                    added.Add(item);
+                }
+                else
+                {
+                    onRemaining?.Invoke(item, removed[index]);
+                    removed.RemoveAt(index);
+                }
+            }
+            foreach (var item in removed)
+            { 
+                onRemoved?.Invoke(item);
+            }
+            
+            // Apply differences:
+            if (apply)
+            {
+                foreach (var item in added) target.Add(item);
+                foreach (var item in removed) target.Remove(item);
+            }
+
+            // Return source for fluent syntax:
+            return source;
+        }
     }
 }
