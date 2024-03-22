@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 
 namespace Arebis.Core.EntityFramework
 {
@@ -67,13 +68,46 @@ namespace Arebis.Core.EntityFramework
                 }
             }
 
+            // Handle data annotations on model types which can result in additional entity types to be discovered:
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes().ToList())
+            {
+                // On model types:
+                foreach (Attribute attribute in entityType.ClrType.GetCustomAttributes(false).Cast<Attribute>())
+                {
+                    // The [TypeDiscriminatorValue] attributes can cause new entity types to be discovered
+                    // which is why this attribute must be handled in a loop before handling other attributes:
+                    if (attribute is TypeDiscriminatorAttribute discrattr)
+                    {
+                        var discbuilder = modelBuilder.Entity(entityType.ClrType)
+                            .HasDiscriminator(discrattr.PropertyName, discrattr.PropertyType);
+
+                        if (!entityType.ClrType.IsAbstract)
+                        {
+                            var discval = entityType.ClrType.GetCustomAttribute<TypeDiscriminatorValueAttribute>();
+                            if (discval != null)
+                            {
+                                discbuilder.HasValue(entityType.ClrType, discval.Value);
+                            }
+                        }
+                        foreach (var subType in entityType.ClrType.Assembly.GetTypes().Where(t => !t.IsAbstract && t.IsSubclassOf(entityType.ClrType)))
+                        {
+                            var discval = subType.GetCustomAttribute<TypeDiscriminatorValueAttribute>();
+                            if (discval != null)
+                            {
+                                discbuilder.HasValue(subType, discval.Value);
+                            }
+                        }
+                    }
+                }
+            }
+            
             // Handle data annotations on model types and properties:
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 // On model types:
                 foreach (Attribute attribute in entityType.ClrType.GetCustomAttributes(false).Cast<Attribute>())
                 {
-                    //...
+                    // ...
                 }
 
                 // On model fields:

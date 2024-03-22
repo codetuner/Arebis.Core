@@ -21,9 +21,13 @@ namespace Arebis.Core.EntityFramework
         /// but also whether the value is valid towards other annotations as [Range] or [StringLength].
         /// True by default.
         /// </param>
-        public static DbContextOptionsBuilder UseValidation(this DbContextOptionsBuilder optionsBuilder, bool validatePropertyValues = true)
+        /// <param name="alsoValidateUnchanged">
+        /// Whether to also validate unchanged entities. This can be required to validate rules based
+        /// on the count of related entities. By default false: only modified and added entities are validated.
+        /// </param>
+        public static DbContextOptionsBuilder UseValidation(this DbContextOptionsBuilder optionsBuilder, bool validatePropertyValues = true, bool alsoValidateUnchanged = false)
         {
-            optionsBuilder.AddInterceptors(new ValidationInterceptor(validatePropertyValues));
+            optionsBuilder.AddInterceptors(new ValidationInterceptor(validatePropertyValues, alsoValidateUnchanged));
             return optionsBuilder;
         }
 

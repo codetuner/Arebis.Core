@@ -23,9 +23,14 @@ namespace Arebis.Core.EntityFramework
         /// but also whether the value is valid towards other annotations as [Range] or [StringLength].
         /// True by default.
         /// </param>
-        public ValidationInterceptor(bool validatePropertyValues = true)
+        /// <param name="alsoValidateUnchanged">
+        /// Whether to also validate unchanged entities. This can be required to validate rules based
+        /// on the count of related entities. By default false: only modified and added entities are validated.
+        /// </param>
+        public ValidationInterceptor(bool validatePropertyValues = true, bool alsoValidateUnchanged = false)
         {
             ValidatePropertyValues = validatePropertyValues;
+            AlsoValidateUnchanged = alsoValidateUnchanged;
         }
 
         /// <summary>
@@ -33,6 +38,12 @@ namespace Arebis.Core.EntityFramework
         /// but also whether the value is valid towards other annotations as [Range] or [StringLength].
         /// </summary>
         public bool ValidatePropertyValues { get; }
+
+        /// <summary>
+        /// Validate not only modified and added entities, but also unchanged entities.
+        /// Can be required to validate rules based on the count of related entities.
+        /// </summary>
+        public bool AlsoValidateUnchanged { get; }
 
         /// <inheritdoc/>
         public InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
@@ -57,7 +68,7 @@ namespace Arebis.Core.EntityFramework
 
         private void ValidateEntitiesBeforeSaving(DbContext context)
         {
-            foreach (EntityEntry entry in context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added))
+            foreach (EntityEntry entry in context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added || (this.AlsoValidateUnchanged && e.State == EntityState.Unchanged)))
             {
                 var entity = entry.Entity;
                 var validationContext = new ValidationContext(entity);
