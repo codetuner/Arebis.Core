@@ -68,7 +68,7 @@ namespace Arebis.Core.EntityFramework
 
         private void ValidateEntitiesBeforeSaving(DbContext context)
         {
-            foreach (EntityEntry entry in context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added || (this.AlsoValidateUnchanged && e.State == EntityState.Unchanged)))
+            foreach (EntityEntry entry in context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added || (this.AlsoValidateUnchanged && e.State == EntityState.Unchanged)).ToList())
             {
                 var entity = entry.Entity;
                 var validationContext = new ValidationContext(entity);
