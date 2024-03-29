@@ -78,6 +78,24 @@ namespace Arebis.Core.Extensions
         }
 
         /// <summary>
+        /// Whether the datetime is chronological after the given datetime.
+        /// When comparing, both datetimes are converted to UTC.
+        /// </summary>
+        public static bool IsAfter(this DateTime dt, DateTime other)
+        {
+            return dt.ToUniversalTime() > other.ToUniversalTime();
+        }
+
+        /// <summary>
+        /// Whether the datetime is chronological before the given datetime.
+        /// When comparing, both datetimes are converted to UTC.
+        /// </summary>
+        public static bool IsBefore(this DateTime dt, DateTime other)
+        {
+            return dt.ToUniversalTime() < other.ToUniversalTime();
+        }
+
+        /// <summary>
         /// Whether the datetime is in the past.
         /// </summary>
         /// <param name="dt">The DateTime to evaluate.</param>

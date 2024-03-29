@@ -23,7 +23,7 @@ namespace Arebis.Core.Extensions
         /// <summary>
         /// If the enumerable is an array, return it, otherwise convert it into an array.
         /// </summary>
-        [return:NotNullIfNotNull("enumerable")]
+        [return: NotNullIfNotNull("enumerable")]
         public static T[]? AsArray<T>(this IEnumerable<T>? enumerable)
         {
             if (enumerable == null)
@@ -167,8 +167,8 @@ namespace Arebis.Core.Extensions
             // Detect differences:
             var added = new List<T>();
             var removed = target.ToList();
-            foreach(var item in source)
-            { 
+            foreach (var item in source)
+            {
                 var index = removed.IndexWhere(e => comparer(e, item));
                 if (index == -1)
                 {
@@ -182,10 +182,10 @@ namespace Arebis.Core.Extensions
                 }
             }
             foreach (var item in removed)
-            { 
+            {
                 onRemoved?.Invoke(item);
             }
-            
+
             // Apply differences:
             if (apply)
             {
@@ -195,6 +195,60 @@ namespace Arebis.Core.Extensions
 
             // Return source for fluent syntax:
             return source;
+        }
+
+        /// <summary>
+        /// Returns an enumerable with a limited number of items.
+        /// If the enumerable contained more items, a substitute for the missing items can be given.
+        /// The following example would return the first three names followed by a "…" string if the
+        /// list contains more than 3 names: names.LimitTo(3, "…");
+        /// </summary>
+        /// <param name="enumerable">The original enumerable.</param>
+        /// <param name="limit">Max items to return</param>
+        /// <param name="substitute">The substitute for the removed values. If default value, it will not be appended.</param>
+        /// <returns>An enumerable limited to the number of items.</returns>
+        public static IEnumerable<T> LimitTo<T>(this IEnumerable<T> enumerable, int limit, T substitute)
+        {
+            if (enumerable.Count() > limit)
+            {
+                if (Object.Equals(substitute, default(T)))
+                {
+                    return enumerable.Take(limit);
+                }
+                else
+                {
+                    var list = enumerable.Take(limit).ToList();
+                    list.Add(substitute);
+                    return list;
+                }
+            }
+            else
+            {
+                return enumerable;
+            }
+        }
+
+        /// <summary>
+        /// Joins the elements of the given enumerable into a single string.
+        /// </summary>
+        /// <param name="strings">The enumerable of strings to join.</param>
+        /// <param name="separator">String to separate strings by.</param>
+        /// <param name="prefix">Prefix of the string if the strings enumerable is not null.</param>
+        /// <param name="postFix">Postfix of the string if the strings enumerable is not null.</param>
+        /// <returns>Null if strings is null, otherwise the joined string with post- and prefix.</returns>
+        [return: NotNullIfNotNull("strings")]
+        public static string? JoinToString(this IEnumerable<string>? strings, string separator = "; ", string prefix = "", string postFix = "")
+        {
+            if (strings == null) return null;
+            var sb = new StringBuilder();
+            sb.Append(prefix);
+            var sep = "";
+            foreach(var item in strings) {
+                sb.Append(sep); sep = separator;
+                sb.Append(item);
+            }
+            sb.Append(postFix);
+            return sb.ToString();
         }
     }
 }
