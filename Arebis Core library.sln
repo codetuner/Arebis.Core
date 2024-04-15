@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.Data.Sql", "Arebis.Core.Data.Sql\Arebis.Core.Data.Sql.csproj", "{B33F3B43-1190-4B8C-BB27-2F4B722F4132}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.Data.SqlClient", "Arebis.Core.Data.Sql\Arebis.Core.Data.SqlClient.csproj", "{B33F3B43-1190-4B8C-BB27-2F4B722F4132}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.Financial", "Arebis.Core.Financial\Arebis.Core.Financial.csproj", "{897772BE-C134-4330-A9B1-54314A674509}"
 EndProject
@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.AspNet.Mvc.Sirc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Projects", "Sample Projects", "{9935BD16-4820-481E-832D-66EF15970370}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.AspNetMvc", "Sample.AspNetMvc\Sample.AspNetMvc.csproj", "{DB1395A4-ABFF-46B1-BF7A-752D52636FB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.AspNetMvc", "Sample.AspNetMvc\Sample.AspNetMvc.csproj", "{DB1395A4-ABFF-46B1-BF7A-752D52636FB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.EntityFramework.SqlServer", "Arebis.Core.EntityFramework.SqlServer\Arebis.Core.EntityFramework.SqlServer.csproj", "{C3D2A4ED-382C-4144-9E10-67C5190E58F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +99,10 @@ Global
 		{DB1395A4-ABFF-46B1-BF7A-752D52636FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB1395A4-ABFF-46B1-BF7A-752D52636FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB1395A4-ABFF-46B1-BF7A-752D52636FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D2A4ED-382C-4144-9E10-67C5190E58F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D2A4ED-382C-4144-9E10-67C5190E58F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D2A4ED-382C-4144-9E10-67C5190E58F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D2A4ED-382C-4144-9E10-67C5190E58F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

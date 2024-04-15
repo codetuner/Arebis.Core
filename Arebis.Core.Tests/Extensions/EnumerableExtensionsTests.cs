@@ -98,5 +98,38 @@ namespace Arebis.Core.Tests.Extensions
                 Assert.AreEqual(5, target.Count);
             }
         }
+
+        [TestMethod]
+        public void TakeWithSubstTests()
+        {
+            {
+                var source = new String[] { "White", "Green", "Yellow", "Blue", "Red", "Black" };
+                var result = source.TakeWithSubst(4, null);
+                Assert.AreEqual(4, result.Count());
+                Assert.AreEqual(source[0], result.ToList()[0]);
+                Assert.AreEqual(source[3], result.ToList()[3]);
+            }
+            {
+                var source = new String[] { "White", "Green", "Yellow", "Blue", "Red", "Black" };
+                var result = source.TakeWithSubst(4, "...");
+                Assert.AreEqual(5, result.Count());
+                Assert.AreEqual(source[0], result.ToList()[0]);
+                Assert.AreEqual("...", result.ToList()[4]);
+            }
+            {
+                var source = new String[] { "White", "Green", "Yellow", "Blue", "Red", "Black" };
+                var result = source.TakeWithSubst(4, " of {0}");
+                Assert.AreEqual(5, result.Count());
+                Assert.AreEqual(source[0], result.ToList()[0]);
+                Assert.AreEqual(" of 6", result.ToList()[4]);
+            }
+            {
+                var source = new String[] { "White", "Green", "Yellow", "Blue", "Red", "Black" };
+                var result = source.TakeWithSubst(4, "+{1}");
+                Assert.AreEqual(5, result.Count());
+                Assert.AreEqual(source[0], result.ToList()[0]);
+                Assert.AreEqual("+2", result.ToList()[4]);
+            }
+        }
     }
 }
