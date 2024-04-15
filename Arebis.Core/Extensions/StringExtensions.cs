@@ -352,7 +352,8 @@ namespace Arebis.Core.Extensions
         /// <summary>
         /// If null or empty, return alternative value.
         /// </summary>
-        public static string IfNullOrEmpty(this string? value, string altValue)
+        [return: NotNullIfNotNull(nameof(altValue))]
+        public static string? IfNullOrEmpty(this string? value, string? altValue)
         {
             return (String.IsNullOrEmpty(value)) ? altValue : value;
         }
@@ -360,7 +361,8 @@ namespace Arebis.Core.Extensions
         /// <summary>
         /// If null or white space, return alternative value.
         /// </summary>
-        public static string IfNullOrWhiteSpace(this string? value, string altValue)
+        [return:NotNullIfNotNull(nameof(altValue))]
+        public static string? IfNullOrWhiteSpace(this string? value, string? altValue)
         {
             return (String.IsNullOrWhiteSpace(value)) ? altValue : value;
         }

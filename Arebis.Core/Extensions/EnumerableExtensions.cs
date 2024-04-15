@@ -198,33 +198,36 @@ namespace Arebis.Core.Extensions
         }
 
         /// <summary>
-        /// Returns an enumerable with a limited number of items.
-        /// If the enumerable contained more items, a substitute for the missing items can be given.
+        /// Takes the given number of items. If there are more items, adds the substitute to replace the removed items.
         /// The following example would return the first three names followed by a "…" string if the
-        /// list contains more than 3 names: names.LimitTo(3, "…");
+        /// list contains more than 3 names: names.TakeWithSubst(3, "…");
         /// </summary>
         /// <param name="enumerable">The original enumerable.</param>
         /// <param name="limit">Max items to return</param>
-        /// <param name="substitute">The substitute for the removed values. If default value, it will not be appended.</param>
-        /// <returns>An enumerable limited to the number of items.</returns>
-        public static IEnumerable<T> LimitTo<T>(this IEnumerable<T> enumerable, int limit, T substitute)
+        /// <param name="substitute">The substitute for the removed values. If null, it will not be appended.
+        /// The substitute string can contain format items {0} for the total number of items in the list and {1} for the removed number of items in the list, i.e: "+{1}".</param>
+        /// <returns>Null if enumerable is null, otherwise an enumerable limited to the number of items.</returns>
+        [return: NotNullIfNotNull("enumerable")]
+        public static IEnumerable<string>? TakeWithSubst(this IEnumerable<string>? enumerable, int limit, string? substitute)
         {
-            if (enumerable.Count() > limit)
+            if (enumerable == null) return null;
+            if (substitute is null)
             {
-                if (Object.Equals(substitute, default(T)))
-                {
-                    return enumerable.Take(limit);
-                }
-                else
-                {
-                    var list = enumerable.Take(limit).ToList();
-                    list.Add(substitute);
-                    return list;
-                }
+                return enumerable.Take(limit);
             }
             else
             {
-                return enumerable;
+                var totalcount = enumerable.Count();
+                if (totalcount > limit)
+                {
+                    var list = enumerable.Take(limit).ToList();
+                    list.Add(String.Format(substitute, totalcount, totalcount - limit));
+                    return list;
+                }
+                else
+                {
+                    return enumerable;
+                }
             }
         }
 
