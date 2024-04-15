@@ -1,5 +1,5 @@
-Arebis.Core.Data.Sql
-====================
+Arebis.Core.Data.SqlClient
+==========================
 
 .NET Core extensions for working with SQL Server databases.
 
