@@ -10,10 +10,10 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// <summary>
     /// A value converter that stores TimeSpans as ticks.
     /// </summary>
-    public class TimeSpanTicksConverter : ValueConverter<TimeSpan, long>
+    public class TimeSpanTicksValueConverter : ValueConverter<TimeSpan, long>
     {
         /// <inheritdoc/>
-        public TimeSpanTicksConverter()
+        public TimeSpanTicksValueConverter()
             : base(
                   value => value.Ticks,
                   value => TimeSpan.FromTicks(value),

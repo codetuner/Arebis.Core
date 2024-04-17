@@ -10,10 +10,10 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// <summary>
     /// A value converter that stores TimeSpans as hours.
     /// </summary>
-    public class TimeSpanHoursConverter : ValueConverter<TimeSpan, Double>
+    public class TimeSpanHoursValueConverter : ValueConverter<TimeSpan, Double>
     {
         /// <inheritdoc/>
-        public TimeSpanHoursConverter()
+        public TimeSpanHoursValueConverter()
             : base(
                   value => value.TotalHours,
                   value => TimeSpan.FromHours(value),

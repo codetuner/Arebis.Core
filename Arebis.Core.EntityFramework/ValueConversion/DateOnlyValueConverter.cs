@@ -10,13 +10,13 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// <summary>
     /// A value converter that stores DateOnly as DateTime.
     /// </summary>
-    public class TimeOnlyConverter : ValueConverter<TimeOnly, TimeSpan>
+    public class DateOnlyValueConverter : ValueConverter<DateOnly, DateTime>
     {
         /// <inheritdoc/>
-        public TimeOnlyConverter()
+        public DateOnlyValueConverter()
             : base(
-                value => value.ToTimeSpan(),
-                value => TimeOnly.FromTimeSpan(value),
+                value => value.ToDateTime(TimeOnly.MinValue),
+                value => DateOnly.FromDateTime(value),
                 null)
         { }
     }

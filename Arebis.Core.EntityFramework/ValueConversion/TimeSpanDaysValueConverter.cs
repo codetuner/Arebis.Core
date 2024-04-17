@@ -10,10 +10,10 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// <summary>
     /// A value converter that stores TimeSpans as days.
     /// </summary>
-    public class TimeSpanDaysConverter : ValueConverter<TimeSpan, Double>
+    public class TimeSpanDaysValueConverter : ValueConverter<TimeSpan, Double>
     {
         /// <inheritdoc/>
-        public TimeSpanDaysConverter()
+        public TimeSpanDaysValueConverter()
             : base(
                   value => value.TotalDays,
                   value => TimeSpan.FromDays(value),

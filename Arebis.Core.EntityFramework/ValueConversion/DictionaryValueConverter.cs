@@ -8,23 +8,23 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// <summary>
     /// Converts a Dictionary to a string representation.
     /// </summary>
-    public class DictionaryConverter<TDictionary, TKey, TValue> : ValueConverter<TDictionary, string?>
+    public class DictionaryValueConverter<TDictionary, TKey, TValue> : ValueConverter<TDictionary, string?>
         where TDictionary : ICollection<KeyValuePair<TKey, TValue>>, new()
     {
         private static readonly IFormatProvider formatProvider = System.Globalization.CultureInfo.InvariantCulture;
 
         /// <inheritdoc/>
-        public DictionaryConverter()
+        public DictionaryValueConverter()
             : this(";", "=")
         { }
 
         /// <inheritdoc/>
-        public DictionaryConverter(string pairseparator, string valueseparator)
+        public DictionaryValueConverter(string pairseparator, string valueseparator)
             : this(pairseparator, valueseparator, String.Empty, String.Empty)
         { }
 
         /// <inheritdoc/>
-        public DictionaryConverter(string pairseparator, string valueseparator, string prefix, string postfix)
+        public DictionaryValueConverter(string pairseparator, string valueseparator, string prefix, string postfix)
             : base(
                 value => Serialize(value, pairseparator, valueseparator, prefix, postfix),
                 value => Deserialize(value, pairseparator, valueseparator, prefix, postfix),

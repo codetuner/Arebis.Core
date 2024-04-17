@@ -11,7 +11,7 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// <summary>
     /// Non-generic JsonConverter class holding serializer options.
     /// </summary>
-    public abstract class JsonConverter
+    public abstract class JsonValueConverter
     {
         /// <summary>
         /// Options to use when (de)serializing values.
@@ -28,13 +28,13 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// <summary>
     /// A value converter that stores objects as Json.
     /// </summary>
-    public class JsonConverter<T> : ValueConverter<T, string?>
+    public class JsonValueConverter<T> : ValueConverter<T, string?>
     {
         /// <inheritdoc/>
-        public JsonConverter()
+        public JsonValueConverter()
             : base(
-                  value => JsonSerializer.Serialize(value, JsonConverter.SerializerOptions),
-                  value => JsonSerializer.Deserialize<T>(value ?? "null", JsonConverter.SerializerOptions)!,
+                  value => JsonSerializer.Serialize(value, JsonValueConverter.SerializerOptions),
+                  value => JsonSerializer.Deserialize<T>(value ?? "null", JsonValueConverter.SerializerOptions)!,
                   null)
         { }
     }

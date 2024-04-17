@@ -10,23 +10,23 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// </summary>
     /// <typeparam name="TList"></typeparam>
     /// <typeparam name="TItem"></typeparam>
-    public class ListConverter<TList, TItem> : ValueConverter<TList, string?>
+    public class ListValueConverter<TList, TItem> : ValueConverter<TList, string?>
         where TList : ICollection<TItem>, new()
     {
         private static readonly IFormatProvider formatProvider = System.Globalization.CultureInfo.InvariantCulture;
 
         /// <inheritdoc/>
-        public ListConverter()
+        public ListValueConverter()
             : this(";")
         { }
 
         /// <inheritdoc/>
-        public ListConverter(string separator)
+        public ListValueConverter(string separator)
             : this(separator, String.Empty, String.Empty)
         { }
 
         /// <inheritdoc/>
-        public ListConverter(string separator, string prefix, string postfix)
+        public ListValueConverter(string separator, string prefix, string postfix)
             : base(
                 value => Serialize(value, separator, prefix, postfix),
                 value => Deserialize(value!, separator, prefix, postfix),

@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace Arebis.Core.EntityFramework.ValueConversion
 {
     /// <summary>
-    /// A value comparer to compare TimeSpan values.
+    /// A value comparer to compare TimeOnly values.
     /// </summary>
-    public class TimeSpanComparer : ValueComparer<TimeSpan>
+    public class TimeOnlyValueComparer : ValueComparer<TimeOnly>
     {
         /// <inheritdoc/>
-        public TimeSpanComparer() : base(
-            (ts1, ts2) => ts1.Ticks == ts2.Ticks,
-            ts => ts.GetHashCode())
+        public TimeOnlyValueComparer() : base(
+            (t1, t2) => t1.Ticks == t2.Ticks,
+            t => t.GetHashCode())
         { }
     }
 }

@@ -10,10 +10,10 @@ namespace Arebis.Core.EntityFramework.ValueConversion
     /// <summary>
     /// A value converter that stores DateTimes in UTC.
     /// </summary>
-    public class UtcDateTimeConverter : ValueConverter<DateTime, DateTime>
+    public class UtcDateTimeValueConverter : ValueConverter<DateTime, DateTime>
     {
         /// <inheritdoc/>
-        public UtcDateTimeConverter()
+        public UtcDateTimeValueConverter()
             : base(
                   value => (value.Kind == DateTimeKind.Local) ? value.ToUniversalTime() : value,
                   value => (value.Kind == DateTimeKind.Unspecified) ? new DateTime(value.Ticks, DateTimeKind.Utc) : value,
