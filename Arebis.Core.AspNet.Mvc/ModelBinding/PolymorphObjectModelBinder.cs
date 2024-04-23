@@ -11,7 +11,7 @@ namespace Arebis.Core.AspNet.Mvc.ModelBinding
     /// Identifies the subtypes by means of a "~.$type" value that matches the descriminator on a [JsonDerivedType] attribute on the base type.
     /// </summary>
     public class PolymorphObjectModelBinder : IModelBinder
-    {-
+    {
         private Dictionary<string, (ModelMetadata, IModelBinder)> binders;
 
         /// <summary>
