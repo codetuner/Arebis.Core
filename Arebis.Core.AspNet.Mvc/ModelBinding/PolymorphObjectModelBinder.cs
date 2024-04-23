@@ -11,7 +11,7 @@ namespace Arebis.Core.AspNet.Mvc.ModelBinding
     /// Identifies the subtypes by means of a "~.$type" value that matches the descriminator on a [JsonDerivedType] attribute on the base type.
     /// </summary>
     public class PolymorphObjectModelBinder : IModelBinder
-    {
+    {-
         private Dictionary<string, (ModelMetadata, IModelBinder)> binders;
 
         /// <summary>
@@ -25,6 +25,7 @@ namespace Arebis.Core.AspNet.Mvc.ModelBinding
         /// <inheritdoc/>
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
+            // Retrieve $type discriminator:
             var typeNameProperty = ModelNames.CreatePropertyModelName(bindingContext.ModelName, "$type");
             var typeNamePropertyValue = bindingContext.ValueProvider.GetValue(typeNameProperty).FirstValue ?? String.Empty;
 
@@ -32,10 +33,12 @@ namespace Arebis.Core.AspNet.Mvc.ModelBinding
             ModelMetadata modelMetadata;
             if (binders.ContainsKey(typeNamePropertyValue))
             {
+                // If $type discriminator given, use it's binder:
                 (modelMetadata, modelBinder) = binders[typeNamePropertyValue];
             }
             else
             {
+                // If no $type discriminator given, try binding the ModelType:
                 var binder = binders.FirstOrDefault(b => b.Value.Item1.ModelType == bindingContext.ModelType);
                 if (binder.Key != null)
                 {
@@ -44,10 +47,13 @@ namespace Arebis.Core.AspNet.Mvc.ModelBinding
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Could not determine concrete subtype of '{bindingContext.ModelType}'. Add a '~.$type' property matching a [JsonDerivedType] attribute discriminator to identify concrete model bound type.");
+                    // If none found, Fail to support collection binding to probe for next elements:
+                    bindingContext.Result = ModelBindingResult.Failed();
+                    return;
                 }
             }
 
+            // Create a binding context:
             var newBindingContext = DefaultModelBindingContext.CreateBindingContext(
                 bindingContext.ActionContext,
                 bindingContext.ValueProvider,
@@ -55,12 +61,13 @@ namespace Arebis.Core.AspNet.Mvc.ModelBinding
                 bindingInfo: null,
                 bindingContext.ModelName);
 
+            // Perform binding:
             await modelBinder.BindModelAsync(newBindingContext);
             bindingContext.Result = newBindingContext.Result;
 
             if (newBindingContext.Result.IsModelSet)
             {
-                // Setting the ValidationState ensures properties on derived types are correctly 
+                // Setting the ValidationState ensures properties on derived types are correctly...
                 bindingContext.ValidationState[newBindingContext.Result.Model!] = new ValidationStateEntry
                 {
                     Metadata = modelMetadata,
