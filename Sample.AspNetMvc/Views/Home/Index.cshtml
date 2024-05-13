@@ -2,3 +2,17 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<h2><code>asp-if</code> demo</h2>
+@{
+    int a = 5; 
+}
+<div id="alt5" asp-if="a < 5">
+    a &lt; 5
+</div>
+<div id="alt10" asp-elsefor="alt5" asp-if="a < 10">
+    a &lt; 10
+</div>
+<div id="agt9" asp-elsefor="alt5">
+    a &gt;= 10
+</div>

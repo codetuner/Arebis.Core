@@ -43,20 +43,22 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         {
             var processed = false;
 
-            var id = ElseFor ?? Id;
+            if (this.Id != null) output.Attributes.Add("id", this.Id);
+
+            var conditionId = ElseFor ?? Id;
 
             if (ElseFor is not null)
             {
-                processed = ((bool?)ViewContext.ViewData[$"{nameof(ConditionalTagHelper)}:{id}:Processed"] ?? false);
+                processed = ((bool?)ViewContext.ViewData[$"{nameof(ConditionalTagHelper)}:{conditionId}:Processed"] ?? false);
             }
 
             if (processed || (Condition.HasValue && Condition.Value == false))
             {
                 output.SuppressOutput();
             }
-            else if (id is not null)
+            else if (conditionId is not null)
             {
-                ViewContext.ViewData[$"{nameof(ConditionalTagHelper)}:{id}:Processed"] = true;
+                ViewContext.ViewData[$"{nameof(ConditionalTagHelper)}:{conditionId}:Processed"] = true;
             }
         }
     }
