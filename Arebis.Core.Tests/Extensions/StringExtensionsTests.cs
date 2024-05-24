@@ -30,5 +30,18 @@ namespace Arebis.Core.Tests.Extensions
             Assert.AreEqual("[FooBar]", "FooBar".Shorten(10, "[", "]"));
             Assert.AreEqual("[Abcdfghj]", "Abcdefghijklmnopqrstuvwxyz".Shorten(10, "[", "]"));
         }
+
+        [TestMethod]
+        public void ToUniqueNameWithinTests()
+        {
+            // Expected behaviour:
+            var names = new string[] { "Filip", "Filip (2)", "Filip (3)", "Mathilde" };
+            Assert.AreEqual("Albert", "Albert".ToUniqueNameWithin(names));
+            Assert.AreEqual("Filip (4)", "Filip".ToUniqueNameWithin(names));
+            Assert.AreEqual("Mathilde (2)", "Mathilde".ToUniqueNameWithin(names));
+
+            // Could be enhanced in future, but this is current behaviour:
+            Assert.AreEqual("Filip (2) (2)", "Filip (2)".ToUniqueNameWithin(names));
+        }
     }
 }

@@ -473,5 +473,31 @@ namespace Arebis.Core.Extensions
             else if (str.Equals(match)) return substitution;
             else return str;
         }
+
+        /// <summary>
+        /// Converts the given base name to a name that does not exist in the existingNames collection.
+        /// It does this by either returning the base name itself, or appending " (2)" or a higher number
+        /// until a unique value is found.
+        /// </summary>
+        /// <param name="baseName">The base name.</param>
+        /// <param name="existingNames">Existing names to check uniqueness.</param>
+        /// <returns>A string based on baseName that does not appear in existingNames.</returns>
+        public static string ToUniqueNameWithin(this string baseName, IEnumerable<string> existingNames)
+        {
+            if (existingNames.Contains(baseName))
+            {
+                var i = 2;
+                var hs = existingNames.ToHashSet();
+                while(true)
+                {
+                    var name = baseName + " (" + i++ + ")";
+                    if (!hs.Contains(name)) return name;
+                }
+            }
+            else
+            {
+                return baseName;
+            }
+        }
     }
 }
