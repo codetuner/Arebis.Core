@@ -20,5 +20,14 @@ namespace Arebis.Core.AspNet.Mvc.Sircl
         {
             return (request.Headers["X-Sircl-Request-Type"] == "Partial");
         }
+
+        /// <summary>
+        /// Builds and sets the Sircl AppId by concatenating the given parts.
+        /// I.e: Context.Response.SetSirclAppId("MyApp", languageCode, userToken)
+        /// </summary>
+        public static void SetSirclAppId(this HttpResponse response, params string[] appIdParts)
+        {
+            response.Headers["X-Sircl-AppId"] = String.Join('-', appIdParts);
+        }
     }
 }
