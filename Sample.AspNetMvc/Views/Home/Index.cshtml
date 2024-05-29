@@ -1,11 +1,14 @@
-﻿<div class="text-center">
+﻿@using Sample.AspNetMvc.Models.Home
+@using Arebis.Core.Extensions
+@model IndexModel
+<div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
 <h2><code>asp-if</code> demo</h2>
 @{
-    int a = 5; 
+    int a = 5;
 }
 <div id="alt5" asp-if="a < 5">
     a &lt; 5
