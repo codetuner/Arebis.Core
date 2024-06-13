@@ -13,6 +13,14 @@ namespace Arebis.Core.Extensions
     public static class EnumerableExtensions
     {
         /// <summary>
+        /// Returns true if the enumerable is empty.
+        /// </summary>
+        public static bool None<T>(this IEnumerable<T> enumerable)
+        {
+            return !enumerable.Any();
+        }
+
+        /// <summary>
         /// Returns true if none of the elements satisfy the predicate. Inverse of Any().
         /// </summary>
         public static bool None<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
