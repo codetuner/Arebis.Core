@@ -103,5 +103,22 @@ namespace Arebis.Core.Extensions
             }
             return result;
         }
+
+        /// <summary>
+        /// Swaps the elements with geven index.
+        /// If indexes are out of bounds, the swap operation is ignored.
+        /// </summary>
+        /// <returns>Returns the same list (not a copy) for fluent syntax.</returns>
+        public static List<T> Swap<T>(this List<T> list, int index1, int index2)
+        {
+            if (0 <= index1 && index1 < list.Count && 0 <= index2 & index2 < list.Count && index1 != index2)
+            {
+                var item = list[index1];
+                list[index1] = list[index2];
+                list[index2] = item;
+            }
+
+            return list;
+        }
     }
 }

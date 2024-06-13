@@ -11,6 +11,23 @@ namespace Arebis.Core.Tests.Extensions
     public class ListExtensionsTests
     {
         [TestMethod]
+        public void SwapTests()
+        {
+            var list = new List<int>() { 3, 2, 4, 0, 1 };
+            list
+                .Swap(0, 3)
+                .Swap(1, 4)
+                .Swap(2, 4)
+                .Swap(3, 3);
+
+            Assert.AreEqual(0, list[0]);
+            Assert.AreEqual(1, list[1]);
+            Assert.AreEqual(2, list[2]);
+            Assert.AreEqual(3, list[3]);
+            Assert.AreEqual(4, list[4]);
+        }
+
+        [TestMethod]
         public void ToColumnsHorizontalTests()
         {
             {
