@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,14 @@ namespace Arebis.Core.Extensions
     public static class EnumerableExtensions
     {
         /// <summary>
+        /// Whether the enumerable is null or empty.
+        /// </summary>
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T>? enumerable)
+        {
+            return enumerable == null || !enumerable.Any();
+        }
+
+        /// <summary>
         /// Returns true if the enumerable is empty.
         /// </summary>
         public static bool None<T>(this IEnumerable<T> enumerable)
@@ -21,11 +30,27 @@ namespace Arebis.Core.Extensions
         }
 
         /// <summary>
+        /// Returns true if the enumerable is empty.
+        /// </summary>
+        public static bool None<T>(this IQueryable<T> query)
+        {
+            return !query.Any();
+        }
+
+        /// <summary>
         /// Returns true if none of the elements satisfy the predicate. Inverse of Any().
         /// </summary>
         public static bool None<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
         {
             return !enumerable.Any(predicate);
+        }
+
+        /// <summary>
+        /// Returns true if none of the elements satisfy the predicate. Inverse of Any().
+        /// </summary>
+        public static bool None<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate)
+        {
+            return !query.Any(predicate);
         }
 
         /// <summary>
