@@ -31,7 +31,8 @@ namespace Arebis.Core.Data.Sql
             {
                 if (!connections.TryGetValue(name, out SqlConnection? conn))
                 {
-                    var cs = this.configuration.GetConnectionString(name);
+                    var cs = Environment.ExpandEnvironmentVariables(this.configuration.GetConnectionString(name) ?? "");
+                    if (String.IsNullOrEmpty(cs)) throw new InvalidOperationException($"No connection string found named \"{name}\".");
                     return connections[name] = new SqlConnection(cs);
                 }
                 else
