@@ -33,6 +33,12 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         }
 
         /// <summary>
+        /// Whether authorization is required. If set, user must be logged in.
+        /// </summary>
+        [HtmlAttributeName("asp-authorize")]
+        public bool Enabled { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the policy name that determines access to the HTML block.
         /// </summary>
         [HtmlAttributeName("asp-policy")]
@@ -55,6 +61,8 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         /// </summary>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            if (!Enabled) return;
+
             var policy = await AuthorizationPolicy.CombineAsync(_policyProvider, new[] { this });
 
             var authenticateResult = await _policyEvaluator.AuthenticateAsync(policy!, _httpContextAccessor.HttpContext!);
