@@ -37,6 +37,19 @@ namespace Arebis.Core.Tests.Extensions
         }
 
         [TestMethod]
+        public void NullIfEmptyTests()
+        {
+            IEnumerable<string>? n = null;
+            Assert.IsNull(n.NullIfEmpty());
+            n = new string[] { };
+            Assert.IsNull(n.NullIfEmpty());
+            n = new List<string>();
+            Assert.IsNull(n.NullIfEmpty());
+            n = new List<string>() { "FooBar" };
+            Assert.AreEqual(n, n.NullIfEmpty());
+        }
+
+        [TestMethod]
         public void SynchroniseWithTests()
         {
             {
