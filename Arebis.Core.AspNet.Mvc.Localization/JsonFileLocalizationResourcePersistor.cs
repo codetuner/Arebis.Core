@@ -78,11 +78,13 @@ namespace Arebis.Core.AspNet.Mvc.Localization
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
+            logger.LogInformation("Detected creation of localization cache file.");
             this.OnChange?.Invoke(this, e);
         }
 
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            logger.LogInformation("Detected change in localization cache file.");
             this.OnChange?.Invoke(this, e);
         }
 

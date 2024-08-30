@@ -80,8 +80,10 @@ namespace Arebis.Core.Localization
         }
 
         [MemberNotNull(nameof(resourceSet))]
-        private void LazyLoadResources()
+        private LocalizationResourceSet? LazyLoadResources()
         {
+            var result = this.resourceSet;
+
             // If no resources are loaded in memory yet, load from cache and/or from source:
             if (this.resourceSet == null)
             {
@@ -91,19 +93,26 @@ namespace Arebis.Core.Localization
                     if (this.resourceSet == null && this.localizationResourcePersistor != null)
                     {
                         this.localizationResourcePersistor.OnChange += (sender, e) => {
-                            // Force reload of the (persisted) resources:
-                            this.resourceSet = null; 
+                            lock (SyncObject)
+                            {
+                                // Force reload of the (persisted) resources:
+                                this.logger.LogInformation("Forcing reload of localization resource set.");
+                                this.resourceSet = null;
+                            }
                         };
 
-                        this.resourceSet = this.localizationResourcePersistor.TryLoad();
+                        result = this.resourceSet = this.localizationResourcePersistor.TryLoad();
                     }
                     // If still not loaded, (re)load from source:
                     if (this.resourceSet == null)
                     {
                         Refresh();
+                        result = this.resourceSet;
                     }
                 }
             }
+
+            return result;
         }
 
         /// <summary>
