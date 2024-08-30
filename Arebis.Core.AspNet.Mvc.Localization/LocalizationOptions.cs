@@ -13,7 +13,12 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         /// If set, path to which compiled localization data is stored and fetched.
         /// </summary>
         public string? CacheFileName { get; set; }
-        
+
+        /// <summary>
+        /// Whether the cache file should be monitored for change (i.e. in a webfarm configuration).
+        /// </summary>
+        public bool CacheFileWatched { get; set; }
+
         /// <summary>
         /// Whether to allow setting the "__LocalizeFormat" query string parameter to overwrite default localization rendering.
         /// Meant for development only.

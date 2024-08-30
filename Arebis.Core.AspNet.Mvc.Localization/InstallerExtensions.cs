@@ -40,7 +40,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         internal static IServiceCollection AddLocalizationFromSource(this IServiceCollection services)
         {
             // Setting up services:
-            services.TryAddTransient<ILocalizationResourcePersistor, JsonFileLocalizationResourcePersistor>();
+            services.TryAddSingleton<ILocalizationResourcePersistor, JsonFileLocalizationResourcePersistor>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddSingleton<ILocalizationResourceProvider, LocalizationResourceProvider>();
             services.TryAddSingleton<ModelStateLocalizationMapping>();

@@ -16,6 +16,11 @@ namespace Arebis.Core.Localization
     public interface ILocalizationResourcePersistor
     {
         /// <summary>
+        /// Event triggered when a change is detected on the persisted data.
+        /// </summary>
+        public event EventHandler? OnChange;
+
+        /// <summary>
         /// Tries to load persisted resources set. Returns null if not found or failed.
         /// </summary>
         LocalizationResourceSet? TryLoad();

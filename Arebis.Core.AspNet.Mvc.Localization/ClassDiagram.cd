@@ -10,7 +10,7 @@
   <Class Name="Arebis.Core.AspNet.Mvc.Localization.LocalizationOptions">
     <Position X="0.5" Y="0.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAACAAAAAAAAACAAAAAAAQAEAAAAQIAAAAA=</HashCode>
+      <HashCode>AAgAAAAAAAACAAAAAAAAACAAAAAAAQAEAAAAQIAAAAA=</HashCode>
       <FileName>LocalizationOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -116,14 +116,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Arebis.Core.AspNet.Mvc.Localization.BinaryFileLocalizationResourcePersistor">
-    <Position X="0.5" Y="5" Width="3" />
+    <Position X="0.5" Y="6.5" Width="3" />
     <Members>
       <Method Name="BinaryFileLocalizationResourcePersistor" Hidden="true" />
       <Field Name="localizationOptions" Hidden="true" />
       <Field Name="logger" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAACgAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAQAAACACAAAAAAAAAAAAAAAAAAACgAAAAAA=</HashCode>
       <FileName>BinaryFileLocalizationResourcePersistor.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -136,7 +136,7 @@
       <Field Name="logger" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAACgAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAASAAACACAAQAAAAAAAAAAEAAAAACgEAAAAA=</HashCode>
       <FileName>JsonFileLocalizationResourcePersistor.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

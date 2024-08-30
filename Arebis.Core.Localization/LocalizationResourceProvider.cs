@@ -90,6 +90,11 @@ namespace Arebis.Core.Localization
                     // If cache file name defined, try loading from cache file:
                     if (this.resourceSet == null && this.localizationResourcePersistor != null)
                     {
+                        this.localizationResourcePersistor.OnChange += (sender, e) => {
+                            // Force reload of the (persisted) resources:
+                            this.resourceSet = null; 
+                        };
+
                         this.resourceSet = this.localizationResourcePersistor.TryLoad();
                     }
                     // If still not loaded, (re)load from source:
