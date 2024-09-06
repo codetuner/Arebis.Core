@@ -29,9 +29,9 @@ namespace Arebis.Globalization
         }
 
         /// <summary>
-        /// Overrides only the CurrentCulture within this scope.
+        /// Overrides both the CurrentCulture and CurrentIUCulture within this scope.
         /// </summary>
-        /// <param name="cultureId">LCID of a CultureInfo or a Windows-only culture identifier to set as CurrentCulture.</param>
+        /// <param name="cultureId">LCID of a CultureInfo or a Windows-only culture identifier to set as Current(UI)Culture.</param>
         public CultureScope(int cultureId)
             : this(new CultureInfo(cultureId))
         { }
@@ -46,9 +46,9 @@ namespace Arebis.Globalization
         { }
 
         /// <summary>
-        /// Overrides only the CurrentCulture within this scope.
+        /// Overrides the CurrentCulture and CurrentIUCulture within this scope.
         /// </summary>
-        /// <param name="cultureName">CultureInfo name to set as CurrentCulture.</param>
+        /// <param name="cultureName">CultureInfo name to set as Current(UI)Culture.</param>
         public CultureScope(string? cultureName)
             : this((cultureName != null) ? new CultureInfo(cultureName) : null)
         { }
@@ -63,11 +63,11 @@ namespace Arebis.Globalization
         { }
 
         /// <summary>
-        /// Overrides only the CurrentCulture within this scope.
+        /// Overrides the CurrentCulture and CurrentIUCulture within this scope.
         /// </summary>
-        /// <param name="culture">CultureInfo to set as CurrentCulture.</param>
+        /// <param name="culture">CultureInfo to set as Current(UI)Culture.</param>
         public CultureScope(CultureInfo? culture)
-            : this(culture, null)
+            : this(culture, culture)
         { }
 
         /// <summary>
