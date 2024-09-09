@@ -39,7 +39,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Projects", "Sample P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.AspNetMvc", "Sample.AspNetMvc\Sample.AspNetMvc.csproj", "{DB1395A4-ABFF-46B1-BF7A-752D52636FB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.EntityFramework.SqlServer", "Arebis.Core.EntityFramework.SqlServer\Arebis.Core.EntityFramework.SqlServer.csproj", "{C3D2A4ED-382C-4144-9E10-67C5190E58F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arebis.Core.EntityFramework.SqlServer", "Arebis.Core.EntityFramework.SqlServer\Arebis.Core.EntityFramework.SqlServer.csproj", "{C3D2A4ED-382C-4144-9E10-67C5190E58F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.Services.Interfaces", "Arebis.Core.Services.Interfaces\Arebis.Core.Services.Interfaces.csproj", "{F45821D5-8D39-4AEF-ADB3-201653E9B2FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.Services.Translation", "Arebis.Core.Services.Translation\Arebis.Core.Services.Translation.csproj", "{FC500960-C849-42E5-89B8-D262E2EE3565}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +107,14 @@ Global
 		{C3D2A4ED-382C-4144-9E10-67C5190E58F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3D2A4ED-382C-4144-9E10-67C5190E58F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3D2A4ED-382C-4144-9E10-67C5190E58F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F45821D5-8D39-4AEF-ADB3-201653E9B2FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F45821D5-8D39-4AEF-ADB3-201653E9B2FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F45821D5-8D39-4AEF-ADB3-201653E9B2FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F45821D5-8D39-4AEF-ADB3-201653E9B2FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC500960-C849-42E5-89B8-D262E2EE3565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC500960-C849-42E5-89B8-D262E2EE3565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC500960-C849-42E5-89B8-D262E2EE3565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC500960-C849-42E5-89B8-D262E2EE3565}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
