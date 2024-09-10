@@ -36,6 +36,12 @@ An API key must be made available, preferably via User Secrets, as in here (non-
 
 Note that the API key should start with "DeepL-Auth-Key " and typically ends with ":fx".
 
+You will also have configure the TranslationServiceUrl as this is different depending on the service type. This configuration is typically added in appsettings.json:
+
+    "DeepLApi": {
+      "TranslationServiceUrl": "https://api-free.deepl.com/v2/translate",
+    }
+
 For more information, see: https://www.deepl.com/en/docs-api.
 
 ### GoogleTranslationService
