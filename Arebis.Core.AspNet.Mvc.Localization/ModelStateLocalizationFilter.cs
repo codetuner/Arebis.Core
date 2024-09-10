@@ -15,9 +15,10 @@ namespace Arebis.Core.AspNet.Mvc.Localization
 {
     /// <summary>
     /// Localizes error messages from ModelState.
-    /// Acts as ActionFilter for MVC and as AsyncPageFilter for Razor Pages.
+    /// Acts as IAsyncActionFilter for MVC and as IAsyncPageFilter for Razor Pages.
     /// </summary>
-    public class ModelStateLocalizationFilter : ActionFilterAttribute, IPageFilter
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+    public class ModelStateLocalizationFilter : Attribute, IAsyncActionFilter, IAsyncPageFilter
     {
         #region Constructor using depency injection
 
@@ -37,36 +38,31 @@ namespace Arebis.Core.AspNet.Mvc.Localization
 
         #endregion
 
-        #region ActionFilterAttribute implementation to support MVC
+        #region IAsyncActionFilter implementation to support MVC
 
-        /// <summary>
-        /// Tries to localize ModelState errors using a <see cref="ModelStateLocalizationMapping"/>.
-        /// </summary>
-        public override void OnActionExecuted(ActionExecutedContext context)
+        async Task IAsyncActionFilter.OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            Intern(context.ModelState);
+            await next.Invoke();
+
+            this.Localize(context.ModelState);
         }
 
         #endregion
 
-        #region IPageFilter implementation to support Razor Pages
-
-        /// <inheritdoc/>
-        public void OnPageHandlerSelected(PageHandlerSelectedContext context)
-        { }
-
-        /// <inheritdoc/>
-        public void OnPageHandlerExecuting(PageHandlerExecutingContext context)
-        { }
-
-        /// <summary>
-        /// Tries to localize ModelState errors using a <see cref="ModelStateLocalizationMapping"/>.
-        /// </summary>
-        public void OnPageHandlerExecuted(PageHandlerExecutedContext context)
+        #region IAsyncPageFilter implementation to support Razor Pages
+        
+        Task IAsyncPageFilter.OnPageHandlerSelectionAsync(PageHandlerSelectedContext context)
         {
-            Intern(context.ModelState);
+            return Task.CompletedTask;
         }
 
+        async Task IAsyncPageFilter.OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
+        {
+            await next.Invoke();
+
+            this.Localize(context.ModelState);
+        }
+        
         #endregion
 
         #region Internal implementation
@@ -74,7 +70,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         /// <summary>
         /// Internal implementation trying to localize ModelState errors using a ModelStateLocalizationMapping.
         /// </summary>
-        private void Intern(ModelStateDictionary modelState)
+        private void Localize(ModelStateDictionary modelState)
         {
             if (mapping == null || mapping.Mapping == null || mapping.Mapping.Count == 0) return;
 
