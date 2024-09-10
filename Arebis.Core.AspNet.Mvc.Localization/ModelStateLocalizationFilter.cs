@@ -15,15 +15,18 @@ namespace Arebis.Core.AspNet.Mvc.Localization
 {
     /// <summary>
     /// Localizes error messages from ModelState.
+    /// Acts as ActionFilter for MVC and as AsyncPageFilter for Razor Pages.
     /// </summary>
-    public class ModelStateLocalizationFilter : ActionFilterAttribute
+    public class ModelStateLocalizationFilter : ActionFilterAttribute, IPageFilter
     {
+        #region Constructor using depency injection
+
         private readonly IStringLocalizer localizer;
         private readonly ILogger<ModelStateLocalizationFilter> logger;
         private readonly ModelStateLocalizationMapping mapping;
 
         /// <summary>
-        /// Constructs a ModelStateLocalizationFilter.
+        /// Constructs a <see cref="ModelStateLocalizationFilter"/>.
         /// </summary>
         public ModelStateLocalizationFilter(ILogger<ModelStateLocalizationFilter> logger, ModelStateLocalizationMapping mapping, IStringLocalizer localizer)
         {
@@ -32,15 +35,51 @@ namespace Arebis.Core.AspNet.Mvc.Localization
             this.localizer = localizer;            
         }
 
+        #endregion
+
+        #region ActionFilterAttribute implementation to support MVC
+
         /// <summary>
-        /// Tries to localize ModelState errors using a ModelStateLocalizationMapping.
+        /// Tries to localize ModelState errors using a <see cref="ModelStateLocalizationMapping"/>.
         /// </summary>
         public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            Intern(context.ModelState);
+        }
+
+        #endregion
+
+        #region IPageFilter implementation to support Razor Pages
+
+        /// <inheritdoc/>
+        public void OnPageHandlerSelected(PageHandlerSelectedContext context)
+        { }
+
+        /// <inheritdoc/>
+        public void OnPageHandlerExecuting(PageHandlerExecutingContext context)
+        { }
+
+        /// <summary>
+        /// Tries to localize ModelState errors using a <see cref="ModelStateLocalizationMapping"/>.
+        /// </summary>
+        public void OnPageHandlerExecuted(PageHandlerExecutedContext context)
+        {
+            Intern(context.ModelState);
+        }
+
+        #endregion
+
+        #region Internal implementation
+
+        /// <summary>
+        /// Internal implementation trying to localize ModelState errors using a ModelStateLocalizationMapping.
+        /// </summary>
+        private void Intern(ModelStateDictionary modelState)
         {
             if (mapping == null || mapping.Mapping == null || mapping.Mapping.Count == 0) return;
 
             // Run over all ModelState items:
-            foreach (var item in context.ModelState)
+            foreach (var item in modelState)
             {
                 // Rebuild a new Errors list with (localized and non-localized) errors:
                 var itemValueErrors = item.Value.Errors.ToList();
@@ -90,5 +129,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                 }
             }
         }
+
+        #endregion
     }
 }
