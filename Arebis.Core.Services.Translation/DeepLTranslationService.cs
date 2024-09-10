@@ -19,16 +19,16 @@ namespace Arebis.Core.Services.Translation
         private HttpClient? httpClient = null;
         private readonly IConfigurationSection configSection;
         private readonly ILogger logger;
+        private readonly IHttpClientFactory? httpClientFactory;
 
         /// <summary>
         /// Constructs a <see cref="DeepLTranslationService"/>.
         /// </summary>
-        /// <param name="configuration"></param>
-        /// <param name="logger"></param>
-        public DeepLTranslationService(IConfiguration configuration, ILogger<DeepLTranslationService> logger)
+        public DeepLTranslationService(IConfiguration configuration, ILogger<DeepLTranslationService> logger, IHttpClientFactory? httpClientFactory)
         {
             this.configSection = configuration.GetSection("DeepLApi");
             this.logger = logger;
+            this.httpClientFactory = httpClientFactory;
         }
 
         /// <inheritdoc/>
@@ -126,7 +126,7 @@ namespace Arebis.Core.Services.Translation
         /// </summary>
         protected virtual HttpClient BuildHttpClient()
         {
-            var httpClient = new HttpClient();
+            var httpClient = this.httpClientFactory?.CreateClient() ?? new HttpClient();
             httpClient.DefaultRequestHeaders.Add("Authorization", configSection["ApiKey"]);
             return httpClient;
         }

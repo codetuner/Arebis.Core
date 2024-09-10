@@ -19,16 +19,16 @@ namespace Arebis.Core.Services.Translation
         private HttpClient? httpClient = null;
         private IConfigurationSection configSection;
         private readonly ILogger logger;
+        private readonly IHttpClientFactory? httpClientFactory;
 
         /// <summary>
         /// Constructs a <see cref="GoogleTranslationService"/>.
         /// </summary>
-        /// <param name="configuration"></param>
-        /// <param name="logger"></param>
-        public GoogleTranslationService(IConfiguration configuration, ILogger<GoogleTranslationService> logger)
+        public GoogleTranslationService(IConfiguration configuration, ILogger<GoogleTranslationService> logger, IHttpClientFactory? httpClientFactory = null)
         {
             this.configSection = configuration.GetSection("GoogleApi");
             this.logger = logger;
+            this.httpClientFactory = httpClientFactory;
         }
 
         /// <inheritdoc/>
@@ -129,7 +129,7 @@ namespace Arebis.Core.Services.Translation
         /// </summary>
         protected virtual HttpClient BuildHttpClient()
         {
-            var httpClient = new HttpClient();
+            var httpClient = this.httpClientFactory?.CreateClient() ?? new HttpClient();
             //httpClient.DefaultRequestHeaders.Add("Authorization", configSection["ApiKey"]);
             return httpClient;
         }

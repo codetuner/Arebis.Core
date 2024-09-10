@@ -1,6 +1,7 @@
 ﻿using Arebis.Core.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text.Json;
@@ -20,16 +21,16 @@ namespace Arebis.Core.Services.Translation
         private HttpClient? httpClient = null;
         private IConfigurationSection configSection;
         private readonly ILogger logger;
+        private readonly IHttpClientFactory? httpClientFactory;
 
         /// <summary>
         /// Constructs a <see cref="BingTranslationService"/>.
         /// </summary>
-        /// <param name="configuration"></param>
-        /// <param name="logger"></param>
-        public BingTranslationService(IConfiguration configuration, ILogger<BingTranslationService> logger)
+        public BingTranslationService(IConfiguration configuration, ILogger<BingTranslationService> logger, IHttpClientFactory? httpClientFactory = null)
         {
             this.configSection = configuration.GetSection("BingApi");
             this.logger = logger;
+            this.httpClientFactory = httpClientFactory;
         }
 
         /// <inheritdoc/>
@@ -131,7 +132,7 @@ namespace Arebis.Core.Services.Translation
         /// </summary>
         protected virtual HttpClient BuildHttpClient()
         {
-            var httpClient = new HttpClient();
+            var httpClient = this.httpClientFactory?.CreateClient() ?? new HttpClient();
             httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", configSection["SubscriptionKey"]);
             httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Region", configSection["Region"]);
             return httpClient;
