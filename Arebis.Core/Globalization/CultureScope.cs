@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Arebis.Globalization
+namespace Arebis.Core.Globalization
 {
     /// <summary>
     /// Withing a CultureScope, CurrentCulture and CurrentUICulture can be overriden. When disposing
