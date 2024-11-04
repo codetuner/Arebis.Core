@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<Version>6.3.7</Version>
+		<TargetFramework>net8.0</TargetFramework>
+		<Version>8.0.0</Version>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -11,7 +11,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>Codetuner</Authors>
 		<Company>AREBIS BV (www.arebis.be)</Company>
-		<Copyright>Copyright 2022 Rudi Breedenraedt</Copyright>
+		<Copyright>Copyright 2022-2024 Rudi Breedenraedt</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>arebis;core</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>

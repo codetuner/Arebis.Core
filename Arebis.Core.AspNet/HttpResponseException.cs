@@ -42,20 +42,9 @@ namespace Arebis.Core.AspNet
             this.Data["StatusCode"] = statusCode;
         }
 
-        /// <inheritdoc/>
-        public HttpResponseException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        { }
-
         /// <summary>
         /// HTTP status code returned by this exception.
         /// </summary>
         public HttpStatusCode StatusCode => (HttpStatusCode)(Data["StatusCode"] ?? HttpStatusCode.InternalServerError);
-
-        /// <inheritdoc/>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-        }
     }
 }

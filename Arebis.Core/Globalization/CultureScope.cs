@@ -58,7 +58,7 @@ namespace Arebis.Core.Globalization
         /// </summary>
         /// <param name="cultureName">CultureInfo name to set as CurrentCulture, or null to leave the CurrentCulture untouched.</param>
         /// <param name="uiCultureName">CultureInfo name to set as CurrentUICulture, or null to leave the CurrentUICulture untouched.</param>
-        public CultureScope(string cultureName, string uiCultureName)
+        public CultureScope(string? cultureName, string? uiCultureName)
             : this((cultureName != null) ? new CultureInfo(cultureName) : null, (uiCultureName != null) ? new CultureInfo(uiCultureName) : null)
         { }
 
