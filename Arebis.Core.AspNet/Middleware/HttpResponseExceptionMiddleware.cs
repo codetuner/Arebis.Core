@@ -40,7 +40,10 @@ namespace Arebis.Core.AspNet.Middleware
             {
                 context.Response.StatusCode = (int)httpResonseException.StatusCode;
                 var responseFeature = context.Features.Get<IHttpResponseFeature>();
-                responseFeature.ReasonPhrase = httpResonseException.Message;
+                if (responseFeature != null)
+                {
+                    responseFeature.ReasonPhrase = httpResonseException.Message;
+                }
             }
         }
     }
