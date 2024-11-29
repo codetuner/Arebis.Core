@@ -45,6 +45,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.Services.Interf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.Services.Translation", "Arebis.Core.Services.Translation\Arebis.Core.Services.Translation.csproj", "{FC500960-C849-42E5-89B8-D262E2EE3565}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.AspNet.ServerSentEvents", "Arebis.Core.AspNet.ServerSentEvents\Arebis.Core.AspNet.ServerSentEvents.csproj", "{72B82224-BD84-4BAA-9BAA-13298DCC58EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.AspNet.ServerSentEvents.EntityFramework", "Arebis.Core.AspNet.ServerSentEvents.EntityFramework\Arebis.Core.AspNet.ServerSentEvents.EntityFramework.csproj", "{AB8E378F-512E-4B67-A0E9-186A2E836ECF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +119,14 @@ Global
 		{FC500960-C849-42E5-89B8-D262E2EE3565}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC500960-C849-42E5-89B8-D262E2EE3565}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC500960-C849-42E5-89B8-D262E2EE3565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B82224-BD84-4BAA-9BAA-13298DCC58EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B82224-BD84-4BAA-9BAA-13298DCC58EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B82224-BD84-4BAA-9BAA-13298DCC58EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B82224-BD84-4BAA-9BAA-13298DCC58EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB8E378F-512E-4B67-A0E9-186A2E836ECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB8E378F-512E-4B67-A0E9-186A2E836ECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB8E378F-512E-4B67-A0E9-186A2E836ECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB8E378F-512E-4B67-A0E9-186A2E836ECF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
