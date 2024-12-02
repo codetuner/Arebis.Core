@@ -108,6 +108,39 @@ namespace Arebis.Core.AspNet.ServerSentEvents
         }
 
         /// <inheritdoc/>
+        public Task QueueNewEvent(Func<ServerSentEvent> @eventFx, Expression<Func<TCdo, bool>> predicate, CancellationToken ct = default)
+        {
+            var cpredicate = predicate.Compile();
+            var events = new List<ServerSentEvent>();
+            var @event = (ServerSentEvent?)null;
+            foreach (var t in this.store.Values.Where(v => cpredicate(v.DataObject)))
+            {
+                var clone = (@event == null) ? (@event = eventFx()) : @event.Clone();
+                clone.ClientIdentifier = t.DataObject.Identifier;
+                QueueNewEventInternal(t, clone);
+                events.Add(clone);
+            }
+            OnEventsQueued(new EventsQueuedEventArgs(events));
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc/>
+        public Task QueueNewEvent(Func<TCdo, ServerSentEvent> @eventFx, Expression<Func<TCdo, bool>> predicate, CancellationToken ct = default)
+        {
+            var cpredicate = predicate.Compile();
+            var events = new List<ServerSentEvent>();
+            foreach (var t in this.store.Values.Where(v => cpredicate(v.DataObject)))
+            {
+                var clone = eventFx(t.DataObject);
+                clone.ClientIdentifier = t.DataObject.Identifier;
+                QueueNewEventInternal(t, clone);
+                events.Add(clone);
+            }
+            OnEventsQueued(new EventsQueuedEventArgs(events));
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc/>
         public Task ClearClientData(Guid forIdentifier, CancellationToken ct = default)
         {
             logger.LogInformation("Clear data for {identifier}.", forIdentifier);

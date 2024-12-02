@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -101,6 +102,61 @@ namespace Arebis.Core.AspNet.ServerSentEvents.EntityFramework
                 foreach(var dataObject in await dbContext.ClientData.Where(predicate).ToListAsync(ct))
                 {
                     var entity = @event.Clone();
+                    var entry = dbContext.ClientDataEvents.Add(entity);
+                    entity.Id = ++dataObject.LastUsedId;
+                    entity.ClientIdentifier = dataObject.Identifier;
+                    dbContext.Entry(dataObject).Property("LastEventQueuedTime").CurrentValue = DateTime.UtcNow;
+
+                    OnEventQueueing(new EventQueueingEventArgs(entity));
+
+                    events.Add(entity);
+                }
+
+                await dbContext.SaveChangesAsync(ct);
+
+                OnEventsQueued(new EventsQueuedEventArgs(events));
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task QueueNewEvent(Func<ServerSentEvent> eventFx, Expression<Func<TCdo, bool>> predicate, CancellationToken ct = default)
+        {
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<EfServerSentEventsDbContext<TCdo>>();
+
+                var events = new List<ServerSentEvent>();
+                var @event = (ServerSentEvent?)null;
+                foreach (var dataObject in await dbContext.ClientData.Where(predicate).ToListAsync(ct))
+                {
+                    var entity = (@event == null) ? (@event = eventFx()) : @event.Clone();
+                    var entry = dbContext.ClientDataEvents.Add(entity);
+                    entity.Id = ++dataObject.LastUsedId;
+                    entity.ClientIdentifier = dataObject.Identifier;
+                    dbContext.Entry(dataObject).Property("LastEventQueuedTime").CurrentValue = DateTime.UtcNow;
+
+                    OnEventQueueing(new EventQueueingEventArgs(entity));
+
+                    events.Add(entity);
+                }
+
+                await dbContext.SaveChangesAsync(ct);
+
+                OnEventsQueued(new EventsQueuedEventArgs(events));
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task QueueNewEvent(Func<TCdo, ServerSentEvent> eventFx, Expression<Func<TCdo, bool>> predicate, CancellationToken ct = default)
+        {
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<EfServerSentEventsDbContext<TCdo>>();
+
+                var events = new List<ServerSentEvent>();
+                foreach (var dataObject in await dbContext.ClientData.Where(predicate).ToListAsync(ct))
+                {
+                    var entity = eventFx(dataObject);
                     var entry = dbContext.ClientDataEvents.Add(entity);
                     entity.Id = ++dataObject.LastUsedId;
                     entity.ClientIdentifier = dataObject.Identifier;

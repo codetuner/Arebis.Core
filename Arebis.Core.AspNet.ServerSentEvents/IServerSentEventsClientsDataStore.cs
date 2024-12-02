@@ -41,12 +41,24 @@ namespace Arebis.Core.AspNet.ServerSentEvents
         /// <summary>
         /// Queues a new event for the given client data object.
         /// </summary>
-        public Task<bool> QueueNewEvent(ServerSentEvent @event, Guid identifier, CancellationToken ct = default);
+        Task<bool> QueueNewEvent(ServerSentEvent @event, Guid identifier, CancellationToken ct = default);
 
         /// <summary>
         /// Queues a new event for client data objects matching the predicate.
         /// </summary>
-        public Task QueueNewEvent(ServerSentEvent @event, Expression<Func<TCdo, bool>> predicate, CancellationToken ct = default);
+        Task QueueNewEvent(ServerSentEvent @event, Expression<Func<TCdo, bool>> predicate, CancellationToken ct = default);
+
+        /// <summary>
+        /// Queues a new event for the given client data object.
+        /// The event is build by the given event function which will only be executed if at least one matching client is found.
+        /// </summary>
+        Task QueueNewEvent(Func<ServerSentEvent> @eventFx, Expression<Func<TCdo, bool>> predicate, CancellationToken ct = default);
+
+        /// <summary>
+        /// Queues a new event for the given client data object.
+        /// The event is build by the given event function and can be tailored by client.
+        /// </summary>
+        Task QueueNewEvent(Func<TCdo, ServerSentEvent> @eventFx, Expression<Func<TCdo, bool>> predicate, CancellationToken ct = default);
 
         /// <summary>
         /// Clears client data for the given identifier.
