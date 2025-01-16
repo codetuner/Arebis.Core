@@ -24,7 +24,7 @@ namespace Arebis.Core.Services.Translation
         /// <summary>
         /// Constructs a <see cref="DeepLTranslationService"/>.
         /// </summary>
-        public DeepLTranslationService(IConfiguration configuration, ILogger<DeepLTranslationService> logger, IHttpClientFactory? httpClientFactory)
+        public DeepLTranslationService(IConfiguration configuration, ILogger<DeepLTranslationService> logger, IHttpClientFactory? httpClientFactory = null)
         {
             this.configSection = configuration.GetSection("DeepLApi");
             this.logger = logger;
