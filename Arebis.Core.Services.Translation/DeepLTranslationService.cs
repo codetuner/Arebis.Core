@@ -43,8 +43,11 @@ namespace Arebis.Core.Services.Translation
                     var texts = await this.TranslateAsync(fromLanguage, toLanguage, mimeType, sources, ct);
                     result.Add(texts.FirstOrDefault());
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    // Log the error as warning:
+                    logger.LogWarning(ex, "Failed to translate using DeepLTranslationService.");
+
                     // Since DeepL is very strict on language codes, on failure (i.e. non-supported language) add null:
                     result.Add(null);
                 }

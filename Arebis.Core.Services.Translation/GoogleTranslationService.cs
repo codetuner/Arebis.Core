@@ -43,8 +43,11 @@ namespace Arebis.Core.Services.Translation
                     var texts = await this.TranslateAsync(fromLanguage, toLanguage, mimeType, sources, ct);
                     result.Add(texts.FirstOrDefault());
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    // Log the error as warning:
+                    logger.LogWarning(ex, "Failed to translate using GoogleTranslationService.");
+
                     // Since Google is strict on translation language pairs, on failure add null:
                     result.Add(null);
                 }
