@@ -29,7 +29,52 @@ namespace Arebis.Core.Services.Translation
             this.configSection = configuration.GetSection("DeepLApi");
             this.logger = logger;
             this.httpClientFactory = httpClientFactory;
+            this.Context = configSection["Context"];
+            this.PreserveFormatting = bool.Parse(configSection["PreserveFormatting"] ?? "false");
+            this.Formality = configSection["Formality"];
+            this.ModelType = configSection["ModelType"];
+            this.IgnoreTags = configSection["IgnoreTags"];
         }
+
+        /// <summary>
+        /// The context to use for the translation. This is a free text that can be used to provide additional information about the translation.
+        /// Set the context before calling the Translate method.
+        /// </summary>
+        public string? Context { get; set; }
+
+        /// <summary>
+        /// Sets whether the translation engine should respect the original formatting, even if it would usually correct some aspects.
+        /// See <see href="https://developers.deepl.com/docs/api-reference/translate/openapi-spec-for-text-translation"/> for more information.
+        /// </summary>
+        public bool PreserveFormatting { get; set; }
+
+        /// <summary>
+        /// Sets whether the translated text should lean towards formal or informal language.
+        /// Possible values: default, more, less, prefer_more, prefer_less.
+        /// See <see href="https://developers.deepl.com/docs/api-reference/translate/openapi-spec-for-text-translation"/> for more information.
+        /// </summary>
+        public string? Formality { get; set; }
+
+        /// <summary>
+        /// Specifies which DeepL model should be used for translation.
+        /// Possible values: quality_optimizedprefer_quality_optimizedlatency_optimized.
+        /// See <see href="https://developers.deepl.com/docs/api-reference/translate/openapi-spec-for-text-translation"/> for more information.
+        /// </summary>
+        public string? ModelType { get; set; }
+
+        /// <summary>
+        /// Config key prefix for glossary keys.
+        /// Defaults to "Glossary".
+        /// When translating, the system looks for a "{GlossaryKeyPrefix}-{fromLanguage}-{toLanguage}" key in the configuration. If found, it's value
+        /// is used as Glossary Id.
+        /// </summary>
+        public string GlossaryKeyPrefix { get; set; } = "Glossary";
+
+        /// <summary>
+        /// Comma-separated list of XML tags that indicate text not to be translated.
+        /// See <see href="https://developers.deepl.com/docs/api-reference/translate/openapi-spec-for-text-translation"/> for more information.
+        /// </summary>
+        public string? IgnoreTags { get; set; }
 
         /// <inheritdoc/>
         public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, IEnumerable<string> toLanguages, string mimeType, string source, CancellationToken ct = default)
@@ -60,6 +105,7 @@ namespace Arebis.Core.Services.Translation
         {
             var result = new List<string?>();
             var sourcesEnumerator = sources.GetEnumerator();
+            var glossary = configSection[$"Glossary-{fromLanguage}-{toLanguage}"];
             while (true)
             {
                 var sourcesBatch = new List<string>();
@@ -80,6 +126,12 @@ namespace Arebis.Core.Services.Translation
                     var data = BuildData(mimeType);
                     data.Add(new KeyValuePair<string, string>("source_lang", fromLanguage));
                     data.Add(new KeyValuePair<string, string>("target_lang", toLanguage));
+                    if (!String.IsNullOrEmpty(Context)) data.Add(new KeyValuePair<string, string>("context", Context));
+                    if (PreserveFormatting) data.Add(new KeyValuePair<string, string>("preserve_formatting", "true"));
+                    if (!String.IsNullOrEmpty(Formality)) data.Add(new KeyValuePair<string, string>("formality", Formality));
+                    if (!String.IsNullOrEmpty(ModelType)) data.Add(new KeyValuePair<string, string>("model_type", ModelType));
+                    if (!String.IsNullOrEmpty(glossary)) data.Add(new KeyValuePair<string, string>("glossary_id", glossary));
+                    if (!String.IsNullOrEmpty(IgnoreTags)) data.Add(new KeyValuePair<string, string>("ignore_tags", IgnoreTags));
                     foreach (var text in sourcesBatch)
                     {
                         data.Add(new KeyValuePair<string, string>("text", text));
