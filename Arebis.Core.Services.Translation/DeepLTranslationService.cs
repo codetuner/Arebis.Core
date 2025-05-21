@@ -68,7 +68,7 @@ namespace Arebis.Core.Services.Translation
         /// When translating, the system looks for a "{GlossaryKeyPrefix}-{fromLanguage}-{toLanguage}" key in the configuration. If found, it's value
         /// is used as Glossary Id.
         /// </summary>
-        public string GlossaryKeyPrefix { get; set; } = "Glossary";
+        public string? GlossaryKeyPrefix { get; set; } = null;
 
         /// <summary>
         /// Comma-separated list of XML tags that indicate text not to be translated.
@@ -105,7 +105,7 @@ namespace Arebis.Core.Services.Translation
         {
             var result = new List<string?>();
             var sourcesEnumerator = sources.GetEnumerator();
-            var glossary = configSection[$"Glossary-{fromLanguage}-{toLanguage}"];
+            var glossary = configSection[$"{this.GlossaryKeyPrefix ?? "Glossary"}-{fromLanguage}-{toLanguage}"];
             while (true)
             {
                 var sourcesBatch = new List<string>();
