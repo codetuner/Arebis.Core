@@ -19,3 +19,12 @@
 <div id="agt9" asp-elsefor="alt5">
     a &gt;= 10
 </div>
+
+<h2 class="mt-4">Pagination Nav &amp; PageSize Select</h2>
+
+<form class="onchange-submit">
+    <span class="float-end">
+        <pagesize-select asp-for="PageSize" class="form-control"></pagesize-select>
+    </span>
+    <pagination-nav asp-for="PageIndex" max="24" style-template="default" keyboard="true" />
+</form>

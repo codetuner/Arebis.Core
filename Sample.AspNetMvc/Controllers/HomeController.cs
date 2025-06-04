@@ -8,9 +8,8 @@ namespace Sample.AspNetMvc.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(IndexModel model)
         {
-            var model = new IndexModel();
             return View(model);
         }
 

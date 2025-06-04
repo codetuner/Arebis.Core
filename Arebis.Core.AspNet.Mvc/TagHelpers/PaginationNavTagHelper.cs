@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
@@ -41,6 +42,18 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         public bool? HasNextPage { get; set; }
 
         /// <summary>
+        /// Styling to apply ("default", "small",...)
+        /// </summary>
+        [HtmlAttributeName("style-template")]
+        public string? StyleTemplate { get; set; }
+
+        /// <summary>
+        /// Whether to support keyboard shortcuts.
+        /// </summary>
+        [HtmlAttributeName("keyboard")]
+        public bool Keyboard { get; set; } = false;
+
+        /// <summary>
         /// Process the TagHelper.
         /// </summary>
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -51,16 +64,36 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
             output.TagName = "nav";
             output.TagMode = TagMode.StartTagAndEndTag;
 
+            string? paginationStyle = null;
+            string? pageItemStyle = null;
+            string? pageItemArrowStyle = null;
+            string? pageItemLinkStyle = null;
+            string? pageItemRadioStyle = null;
+            if ("default".Equals(StyleTemplate))
+            {
+                pageItemStyle = "min-width: 48px; text-align: right;";
+                pageItemArrowStyle = "min-width: 32px; text-align: center;";
+                pageItemLinkStyle = "padding-left: 4px; padding-right: 4px;";
+                pageItemRadioStyle = "display: none;";
+            }
+            else if ("small".Equals(StyleTemplate))
+            {
+                pageItemStyle = "min-width: 24px; text-align: right;";
+                pageItemArrowStyle = "min-width: 24px; text-align: center;";
+                pageItemLinkStyle = "padding-left: 4px; padding-right: 4px;";
+                pageItemRadioStyle = "display: none;";
+            }
+
             var builder = new StringBuilder();
-            builder.Append("<ul class=\"pagination\">");
-            WritePage(builder, name, value, (value == Min ? Min - 1 : value - 1), "&laquo;", "ArrowLeft");
+            builder.Append($"<ul class=\"pagination\"{(paginationStyle == null ? "" : " style=\"" + paginationStyle + "\"")}>");
+            WritePage(builder, name, value, (value == Min ? Min - 1 : value - 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, "&laquo;", !Keyboard ? null : "ArrowLeft");
             if (Max.HasValue)
             {
                 if ((Max.Value - Min) < 7)
                 {
                     for (int p = Min; p <= Max.Value; p++)
                     {
-                        WritePage(builder, name, value, p);
+                        WritePage(builder, name, value, p, pageItemStyle, pageItemLinkStyle, pageItemRadioStyle, null, !Keyboard ? null : p == Min ? null /*Home*/ : p == Max.Value ? "End" : null);
                     }
                 }
                 else
@@ -88,31 +121,32 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
                     }
                     for (int i = 0; i < pages.Length; i++)
                     {
-                        WritePage(builder, name, value, pages[i]);
+                        WritePage(builder, name, value, pages[i], pageItemStyle, pageItemLinkStyle, pageItemRadioStyle, null, !Keyboard ? null : i == 0 ? null /*Home*/ : i == pages.Length - 1 ? "End" : null);
                     }
                 }
-                WritePage(builder, name, value, (value < Max ? value + 1 : Min - 1), "&raquo;", "ArrowRight");
+                WritePage(builder, name, value, (value < Max ? value + 1 : Min - 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, "&raquo;", !Keyboard ? null : "ArrowRight");
             }
             else if (HasNextPage.HasValue)
             {
-                WritePage(builder, name, value, value);
-                WritePage(builder, name, value, (HasNextPage.Value ? value + 1 : Min - 1), "&raquo;", "ArrowRight");
+                WritePage(builder, name, value, value, pageItemStyle, pageItemLinkStyle, pageItemRadioStyle);
+                WritePage(builder, name, value, (HasNextPage.Value ? value + 1 : Min - 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, "&raquo;", !Keyboard ? null : "ArrowRight");
             }
             else
             {
-                WritePage(builder, name, value, (value + 1), "&raquo;", "ArrowRight");
+                WritePage(builder, name, value, (value + 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, "&raquo;", !Keyboard ? null : "ArrowRight");
             }
             builder.Append("</ul>");
+            if (Keyboard == true) builder.Append($"<input type=\"radio\" name=\"{name}\" value=\"{Min}\" onkeydown-click=\"Home\" style=\"display: none;\" />");
 
             output.Content.SetHtmlContent(builder.ToString());
         }
 
-        private void WritePage(StringBuilder builder, string name, int value, int page, string? text = null, string? shortCut = null)
+        private void WritePage(StringBuilder builder, string name, int value, int page, string? pageItemStyle, string? pageItemLinkStyle, string? pageItemRadioStyle, string? text = null, string? shortCut = null)
         {
             var active = (page == value);
-            builder.Append($"<li class=\"page-item{(active ? " active" : "")}{((page < Min) ? " disabled" : "")}\">");
-            builder.Append($"<label class=\"page-link\">");
-            if (page >= Min) builder.Append($"<input type=\"radio\" name=\"{name}\" value=\"{page}\"{((shortCut == null) ? "" : $" onkeydown-click=\"{shortCut}\"")} />");
+            builder.Append($"<li class=\"page-item{(active ? " active" : "")}{((page < Min) ? " disabled" : "")}\"{(pageItemStyle == null ? "" : " style=\"" + pageItemStyle + "\"")}>");
+            builder.Append($"<label class=\"page-link\"{(pageItemLinkStyle == null ? "" : " style=\"" + pageItemLinkStyle + "\"")}>");
+            if (page >= Min) builder.Append($"<input type=\"radio\" name=\"{name}\" value=\"{page}\"{((shortCut == null) ? "" : $" onkeydown-click=\"{shortCut}\"")}{(pageItemRadioStyle == null ? "" : " style=\"" + pageItemRadioStyle + "\"")} />");
             if (text != null) builder.Append(text);
             else if (page < Min) builder.Append("...");
             else builder.Append(page);
