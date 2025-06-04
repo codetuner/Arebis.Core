@@ -73,7 +73,7 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
             {
                 pageItemStyle = "min-width: 48px; text-align: right;";
                 pageItemArrowStyle = "min-width: 32px; text-align: center;";
-                pageItemLinkStyle = "padding-left: 4px; padding-right: 4px;";
+                pageItemLinkStyle = "padding-left: 8px; padding-right: 12px;";
                 pageItemRadioStyle = "display: none;";
             }
             else if ("small".Equals(StyleTemplate))
