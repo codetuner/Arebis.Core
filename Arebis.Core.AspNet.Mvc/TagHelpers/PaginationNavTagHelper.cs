@@ -54,6 +54,18 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         public bool Keyboard { get; set; } = false;
 
         /// <summary>
+        /// Text on the previous page link.
+        /// </summary>
+        [HtmlAttributeName("previous-text")]
+        public string? PreviousText { get; set; }
+
+        /// <summary>
+        /// Text on the next page link.
+        /// </summary>
+        [HtmlAttributeName("next-text")]
+        public string? NextText { get; set; }
+
+        /// <summary>
         /// Process the TagHelper.
         /// </summary>
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -86,7 +98,7 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
 
             var builder = new StringBuilder();
             builder.Append($"<ul class=\"pagination\"{(paginationStyle == null ? "" : " style=\"" + paginationStyle + "\"")}>");
-            WritePage(builder, name, value, (value == Min ? Min - 1 : value - 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, "&laquo;", !Keyboard ? null : "ArrowLeft");
+            WritePage(builder, name, value, (value == Min ? Min - 1 : value - 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, PreviousText ?? "&laquo;", !Keyboard ? null : "ArrowLeft");
             if (Max.HasValue)
             {
                 if ((Max.Value - Min) < 7)
@@ -124,16 +136,16 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
                         WritePage(builder, name, value, pages[i], pageItemStyle, pageItemLinkStyle, pageItemRadioStyle, null, !Keyboard ? null : i == 0 ? null /*Home*/ : i == pages.Length - 1 ? "End" : null);
                     }
                 }
-                WritePage(builder, name, value, (value < Max ? value + 1 : Min - 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, "&raquo;", !Keyboard ? null : "ArrowRight");
+                WritePage(builder, name, value, (value < Max ? value + 1 : Min - 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, NextText ?? "&raquo;", !Keyboard ? null : "ArrowRight");
             }
             else if (HasNextPage.HasValue)
             {
                 WritePage(builder, name, value, value, pageItemStyle, pageItemLinkStyle, pageItemRadioStyle);
-                WritePage(builder, name, value, (HasNextPage.Value ? value + 1 : Min - 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, "&raquo;", !Keyboard ? null : "ArrowRight");
+                WritePage(builder, name, value, (HasNextPage.Value ? value + 1 : Min - 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, NextText ?? "&raquo;", !Keyboard ? null : "ArrowRight");
             }
             else
             {
-                WritePage(builder, name, value, (value + 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, "&raquo;", !Keyboard ? null : "ArrowRight");
+                WritePage(builder, name, value, (value + 1), pageItemStyle, pageItemArrowStyle, pageItemRadioStyle, NextText ?? "&raquo;", !Keyboard ? null : "ArrowRight");
             }
             builder.Append("</ul>");
             if (Keyboard == true) builder.Append($"<input type=\"radio\" name=\"{name}\" value=\"{Min}\" onkeydown-click=\"Home\" style=\"display: none;\" />");

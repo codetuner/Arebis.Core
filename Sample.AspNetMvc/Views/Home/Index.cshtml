@@ -24,7 +24,7 @@
 
 <form class="onchange-submit">
     <span class="float-end">
-        <pagesize-select asp-for="PageSize" class="form-control"></pagesize-select>
+        <pagesize-select asp-for="PageSize" class="form-select"></pagesize-select>
     </span>
-    <pagination-nav asp-for="PageIndex" max="104" style-template="small" keyboard="true" />
+    <pagination-nav asp-for="PageIndex" max="104" style-template="small" keyboard="true" previous-text="Précédent" next-text="Suivant" />
 </form>
