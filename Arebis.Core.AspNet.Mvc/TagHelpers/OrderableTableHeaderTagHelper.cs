@@ -69,6 +69,5 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
 
             output.Content.SetHtmlContent(builder.ToString());
         }
-
     }
 }
