@@ -33,10 +33,10 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         }
 
         /// <summary>
-        /// Whether authorization is required. If set to true, user must be logged in. If set to false, user must not be logged in.
+        /// Whether authorization is required. If set, user must be logged in.
         /// </summary>
         [HtmlAttributeName("asp-authorize")]
-        public bool? Enabled { get; set; } = true;
+        public bool Enabled { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the policy name that determines access to the HTML block.
@@ -61,30 +61,17 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         /// </summary>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (Enabled == null)
-            {
-                return;
-            }
-            else if (Enabled == false)
-            {
-                var identity = _httpContextAccessor.HttpContext?.User.Identity;
-                if (identity != null && identity.IsAuthenticated == true)
-                {
-                    output.SuppressOutput();
-                }
-            }
-            else
-            {
-                var policy = await AuthorizationPolicy.CombineAsync(_policyProvider, new[] { this });
+            if (!Enabled) return;
 
-                var authenticateResult = await _policyEvaluator.AuthenticateAsync(policy!, _httpContextAccessor.HttpContext!);
+            var policy = await AuthorizationPolicy.CombineAsync(_policyProvider, new[] { this });
 
-                var authorizeResult = await _policyEvaluator.AuthorizeAsync(policy!, authenticateResult, _httpContextAccessor.HttpContext!, null);
+            var authenticateResult = await _policyEvaluator.AuthenticateAsync(policy!, _httpContextAccessor.HttpContext!);
 
-                if (!authorizeResult.Succeeded)
-                {
-                    output.SuppressOutput();
-                }
+            var authorizeResult = await _policyEvaluator.AuthorizeAsync(policy!, authenticateResult, _httpContextAccessor.HttpContext!, null);
+
+            if (!authorizeResult.Succeeded)
+            {
+                output.SuppressOutput();
             }
         }
     }
