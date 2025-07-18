@@ -17,6 +17,27 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
     [HtmlTargetElement("pagination-nav", Attributes = "asp-for, hasnext")]
     public class PaginationNavTagHelper : TagHelper
     {
+        // See: http://blog.techdominator.com/article/using-html-helper-inside-tag-helpers.html
+        //
+        //private IHtmlHelper htmlHelper;
+        //
+        //public PaginationNavTagHelper(IHtmlHelper htmlHelper)
+        //{
+        //    this.htmlHelper = htmlHelper;
+        //}
+        //
+        //[ViewContext]
+        //[HtmlAttributeNotBound]
+        //public ViewContext ViewContext { get; set; }        
+        //
+        //public override void Process(TagHelperContext context, TagHelperOutput output)
+        //{
+        //    (htmlHelper as IViewContextAware).Contextualize(ViewContext);
+        //    var id = htmlHelper.GenerateIdFromName(AspFor.Name);
+        //    ...
+        //}
+
+
         /// <summary>
         /// The model expression holding the current page number.
         /// </summary>
