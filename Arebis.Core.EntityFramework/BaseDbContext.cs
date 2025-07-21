@@ -1,16 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Arebis.Core.EntityFramework.ValueConversion;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Arebis.Core.EntityFramework.ValueConversion;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System.Reflection;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Reflection;
 
 namespace Arebis.Core.EntityFramework
 {
@@ -223,6 +217,17 @@ namespace Arebis.Core.EntityFramework
 
         #region Saving
 
+        private List<Action> afterSaveActions = new List<Action>();
+
+        /// <summary>
+        /// Registers an action to be executed after the next successful SaveChanges() call.
+        /// </summary>
+        public void AddAfterSaveAction(Action action)
+        {
+            if (action == null) throw new ArgumentNullException(nameof(action));
+            this.afterSaveActions.Add(action);
+        }
+
         /// <inheritdoc/>
         public override int SaveChanges()
         {
@@ -240,7 +245,16 @@ namespace Arebis.Core.EntityFramework
             try
             {
                 ChangeTracker.AutoDetectChangesEnabled = false;
-                return base.SaveChanges(acceptAllChangesOnSuccess);
+
+                // Execute the base SaveChanges:
+                var result = base.SaveChanges(acceptAllChangesOnSuccess);
+
+                // Execute after-save actions:
+                this.afterSaveActions.ForEach(action => action());
+                this.afterSaveActions.Clear();
+
+                // Return the result:
+                return result;
             }
             finally
             {
@@ -265,7 +279,16 @@ namespace Arebis.Core.EntityFramework
             try
             {
                 ChangeTracker.AutoDetectChangesEnabled = false;
-                return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+
+                // Execute the base SaveChanges:
+                var result = base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+
+                // Execute after-save actions:
+                this.afterSaveActions.ForEach(action => action());
+                this.afterSaveActions.Clear();
+
+                // Return the result:
+                return result;
             }
             finally
             {

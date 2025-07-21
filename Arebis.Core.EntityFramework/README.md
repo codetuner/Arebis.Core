@@ -13,6 +13,7 @@ A base class for DbContext offering extra services:
 - Support for Context aware entitites
 - Support for intercepting entities
 - Support for validation
+- Support for after save actions
 
 Includes default Converters (and Comparers) for:
 
