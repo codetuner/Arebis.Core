@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Arebis.Core.EntityFramework
 {
@@ -33,6 +34,7 @@ namespace Arebis.Core.EntityFramework
         where TContext : DbContext
     {
         /// <inheritdoc />
+        [NotMapped]
         public TContext? Context { get; set; }
     }
 }
