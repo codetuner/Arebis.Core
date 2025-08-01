@@ -72,6 +72,12 @@ Extensions for enumerables.
 
 Extensions for exceptions.
 
+#### `FileSystemExtensions`
+
+Extensions for file system classes:
+
+- **`FileInfo.ToUniqueName()`** returns a FileInfo with a unique name based on the original file name, ensuring that the file can be saved without overwriting existing files.
+
 #### `ListExtensions`
 
 Extensions for lists.
