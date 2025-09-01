@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.AspNet.ServerSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.ConsoleApp", "Sample.ConsoleApp\Sample.ConsoleApp.csproj", "{6B382D6D-6387-44E2-8E69-9F23BCAFA57C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.Services.AspNet", "Arebis.Core.Services.AspNet\Arebis.Core.Services.AspNet.csproj", "{97261570-A626-4C43-9976-A25C234FDE38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{6B382D6D-6387-44E2-8E69-9F23BCAFA57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B382D6D-6387-44E2-8E69-9F23BCAFA57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B382D6D-6387-44E2-8E69-9F23BCAFA57C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97261570-A626-4C43-9976-A25C234FDE38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97261570-A626-4C43-9976-A25C234FDE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97261570-A626-4C43-9976-A25C234FDE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97261570-A626-4C43-9976-A25C234FDE38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

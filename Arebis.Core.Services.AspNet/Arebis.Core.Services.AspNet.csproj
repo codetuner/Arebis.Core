@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<Version>6.0.1</Version>
+		<TargetFramework>net8.0</TargetFramework>
+		<Version>8.0.0</Version>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -11,9 +11,10 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>Codetuner</Authors>
 		<Company>AREBIS BV (www.arebis.be)</Company>
-		<Copyright>Copyright 2024-2025 Rudi Breedenraedt</Copyright>
+		<Copyright>Copyright 2025 Rudi Breedenraedt</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageTags>arebis;core</PackageTags>
+		<PackageTags>arebis;core;aspnet;aspnetcore</PackageTags>
+		<PackAsTool>False</PackAsTool>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
@@ -24,6 +25,14 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Arebis.Core.Services.Interfaces\Arebis.Core.Services.Interfaces.csproj" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Update="README.md">
