@@ -24,11 +24,11 @@ namespace Arebis.Core.Extensions
         /// <summary>
         /// Returns the enumerable if it is not empty, null if it is empty.
         /// </summary>
-        public static IEnumerable<T>? NullIfEmpty<T>(this  IEnumerable<T>? enumerable)
+        public static IEnumerable<T>? NullIfEmpty<T>(this IEnumerable<T>? enumerable)
         {
             return
-                enumerable == null ? null 
-                :enumerable.Any() ? enumerable
+                enumerable == null ? null
+                : enumerable.Any() ? enumerable
                 : null;
         }
 

@@ -499,5 +499,29 @@ namespace Arebis.Core.Extensions
                 return baseName;
             }
         }
+
+        /// <summary>
+        /// Replaces only the first occurrence of search in text by replace.
+        /// </summary>
+        [return:NotNullIfNotNull(nameof(text))]
+        public static string? ReplaceFirst(this string? text, string search, string replace)
+        {
+            if (text == null) return null;
+            int pos = text.IndexOf(search);
+            if (pos < 0) return text;
+            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+        }
+
+        /// <summary>
+        /// Replaces only the last occurrence of search in text by replace.
+        /// </summary>
+        [return:NotNullIfNotNull(nameof(text))]
+        public static string? ReplaceLast(this string? text, string search, string replace)
+        {
+            if (text == null) return null;
+            int pos = text.LastIndexOf(search);
+            if (pos < 0) return text;
+            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+        }
     }
 }
