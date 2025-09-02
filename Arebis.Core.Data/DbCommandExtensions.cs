@@ -48,5 +48,22 @@ namespace Arebis.Core.Data
                 }
             }
         }
+
+        /// <summary>
+        /// Executes the command and returns a dictionary where the first two columns in the resultset are key and value respectively.
+        /// </summary>
+        public static Dictionary<TKey, TValue> ExecuteDictionary<TKey, TValue>(this DbCommand cmd)
+            where TKey : notnull
+        {
+            var dic = new Dictionary<TKey, TValue>();
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var key = reader.GetFieldValue<TKey>(0);
+                var value = reader.GetFieldValue<TValue>(1);
+                dic[key] = value;
+            }
+            return dic;
+        }
     }
 }
