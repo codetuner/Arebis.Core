@@ -43,5 +43,27 @@ namespace Arebis.Core.Tests.Extensions
             // Could be enhanced in future, but this is current behaviour:
             Assert.AreEqual("Filip (2) (2)", "Filip (2)".ToUniqueNameWithin(names));
         }
+
+        [TestMethod]
+        public void ReplaceFirstTests()
+        {
+            Assert.AreEqual(null, ((string?)null).ReplaceFirst("xyz", "123"));
+            Assert.AreEqual("AxyzBxyzC", "AxyzBxyzC".ReplaceFirst("xyz", "xyz"));
+            Assert.AreEqual("A123BxyzC", "AxyzBxyzC".ReplaceFirst("xyz", "123"));
+            Assert.AreEqual("AxyzBxyzC", "AxyzBxyzC".ReplaceFirst("abc", "123"));
+            Assert.AreEqual("A123B456C", "AxyzBxyzC".ReplaceFirst("xyz", "123").ReplaceFirst("xyz", "456"));
+            Assert.AreEqual("ABxyzC", "AxyzBxyzC".ReplaceFirst("xyz", ""));
+        }
+
+        [TestMethod]
+        public void ReplaceLastTests()
+        {
+            Assert.AreEqual(null, ((string?)null).ReplaceLast("xyz", "123"));
+            Assert.AreEqual("AxyzBxyzC", "AxyzBxyzC".ReplaceLast("xyz", "xyz"));
+            Assert.AreEqual("AxyzB123C", "AxyzBxyzC".ReplaceLast("xyz", "123"));
+            Assert.AreEqual("AxyzBxyzC", "AxyzBxyzC".ReplaceLast("abc", "123"));
+            Assert.AreEqual("A456B123C", "AxyzBxyzC".ReplaceLast("xyz", "123").ReplaceLast("xyz", "456"));
+            Assert.AreEqual("AxyzBC", "AxyzBxyzC".ReplaceLast("xyz", ""));
+        }
     }
 }
