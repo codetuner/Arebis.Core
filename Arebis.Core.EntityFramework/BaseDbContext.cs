@@ -263,13 +263,13 @@ namespace Arebis.Core.EntityFramework
         }
 
         /// <inheritdoc/>
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return this.SaveChangesAsync(true, cancellationToken);
+            return await this.SaveChangesAsync(true, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             // Perform pre-saving operations:
             ContextSaving();
@@ -281,7 +281,7 @@ namespace Arebis.Core.EntityFramework
                 ChangeTracker.AutoDetectChangesEnabled = false;
 
                 // Execute the base SaveChanges:
-                var result = base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+                var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 
                 // Execute after-save actions:
                 this.afterSaveActions.ForEach(action => action());
