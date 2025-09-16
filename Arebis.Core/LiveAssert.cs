@@ -24,7 +24,7 @@ namespace Arebis.Core
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if value is null.
+        /// Throws an ArgumentNullException if value is null or empty.
         /// </summary>
         public static void ArgumentNotNullOrEmpty([NotNull] string? value, [CallerArgumentExpression("value")] string? argName = null)
         {
@@ -67,6 +67,22 @@ namespace Arebis.Core
         {
             if (condition == false)
                 throw new ArgumentException(messageOnFailure ?? "Argument does not meet preconditions.", argName);
+        }
+
+        /// <summary>
+        /// Throws an InvalidOperationException if value is null.
+        /// </summary>
+        public static void NotNull([NotNull] object? value, [CallerArgumentExpression("value")] string? argName = null)
+        {
+            if (value is null) throw new InvalidOperationException($"'{argName}' must not be null.");
+        }
+
+        /// <summary>
+        /// Throws an InvalidOperationException if value is null or empty.
+        /// </summary>
+        public static void NotNullOrEmpty([NotNull] string? value, [CallerArgumentExpression("value")] string? argName = null)
+        {
+            if (String.IsNullOrEmpty(value)) throw new InvalidOperationException($"'{argName}' must not be null or empty.");
         }
 
         /// <summary>
