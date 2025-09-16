@@ -141,9 +141,9 @@ A scope for culture settings that allows you to set a specific culture for the d
 
 Example:
 ```csharp
-using (CultureScope.Create("en-US"))
+using (new CultureScope("en-US"))
 {
-    // Code here will use the "en-US" culture settings
+    // Both CurrentCulture and CurrentUICulture are "en-US" here.
 }
 ```
 
