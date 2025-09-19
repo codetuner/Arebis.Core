@@ -65,5 +65,13 @@ namespace Arebis.Core.Tests.Extensions
             Assert.AreEqual("A456B123C", "AxyzBxyzC".ReplaceLast("xyz", "123").ReplaceLast("xyz", "456"));
             Assert.AreEqual("AxyzBC", "AxyzBxyzC".ReplaceLast("xyz", ""));
         }
+
+        [TestMethod]
+        public void FormatTests()
+        {
+            Assert.AreEqual(null, ((string?)null).Format("/{0}"));
+            Assert.AreEqual("/Foobar", "Foobar".Format("/{0}"));
+            Assert.AreEqual("{Foobar}", "Foobar".Format("{{{0}}}"));
+        }
     }
 }

@@ -15,6 +15,25 @@ namespace Arebis.Core.Extensions
     public static class StringExtensions
     {
         /// <summary>
+        /// Formats a string by substiuting "{0}" in the format string by the given value.
+        /// Returns null if the value is null.
+        /// </summary>
+        /// <example>
+        /// Build path when directory could be null:
+        /// <code>var path = directoryName.Format("/{0}") + "/" + fileName;</code>
+        /// <para/>
+        /// Build a string with a prefix and suffix (litteral curly braces must be doubled):
+        /// <code>var expr = "Foobar".Format("{{{0}}}");</code>
+        /// </example>
+        [return: NotNullIfNotNull("value")]
+        public static string? Format(this string? value, string format)
+        {
+            if (value == null) return null;
+
+            return String.Format(format, value);
+        }
+
+        /// <summary>
         /// Returns the beginning of the value up to the given marker.
         /// If the marker is not present, returns the entire value.
         /// </summary>
