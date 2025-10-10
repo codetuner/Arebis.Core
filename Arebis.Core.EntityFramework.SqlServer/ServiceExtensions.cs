@@ -1,5 +1,6 @@
 ﻿using Arebis.Core.Data.Sql;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Arebis.Core.EntityFramework.SqlServer
         /// Adds a scoped DbContext using SqlServer and sharing connections through a registered SqlConnectionSource service.
         /// Use <code>builder.Services.AddScoped&lt;SqlConnectionSource&gt;();</code> to register a SqlConnectionSource.
         /// </summary>
-        public static void AddScopedSqlDbContext<TDbContext> (this IServiceCollection services, string connectionName = "DefaultConnection", Action<DbContextOptionsBuilder<TDbContext>>? optionsAction = null)
+        public static void AddScopedSqlDbContext<TDbContext> (this IServiceCollection services, string connectionName = "DefaultConnection", Action<DbContextOptionsBuilder<TDbContext>>? optionsAction = null, Action<SqlServerDbContextOptionsBuilder>? sqlServerOptionsAction = null)
             where TDbContext : DbContext
         {
             services.AddScoped<DbContextOptions<TDbContext>>(serviceProvider =>
@@ -26,7 +27,7 @@ namespace Arebis.Core.EntityFramework.SqlServer
                 var builder = new DbContextOptionsBuilder<TDbContext>();
                 var source = serviceProvider.GetRequiredService<SqlConnectionSource>();
                 var connection = source[connectionName];
-                builder.UseSqlServer(connection);
+                builder.UseSqlServer(connection, sqlServerOptionsAction);
                 optionsAction?.Invoke(builder);
 
                 return builder
