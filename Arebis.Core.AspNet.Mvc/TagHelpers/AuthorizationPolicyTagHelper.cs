@@ -11,6 +11,11 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
     /// Add the "asp-authorize" attribute alone or in combination with "asp-roles" or "asp-policy" attributes.
     /// Set authentication schemes with "asp-authentication-schemes".
     /// </summary>
+    /// <example>
+    /// <code lang="html">
+    /// &lt;button asp-authorize asp-roles="Admin,Manager"&gt;Admin or Manager Button&lt;/button&gt;
+    /// </code>
+    /// </example>
     [CodeSource("https://www.davepaquette.com/archive/2017/11/05/authorize-tag-helper.aspx", "Dave Paquette")]
     [HtmlTargetElement(Attributes = "asp-authorize")]
     [HtmlTargetElement(Attributes = "asp-authorize,asp-policy")]

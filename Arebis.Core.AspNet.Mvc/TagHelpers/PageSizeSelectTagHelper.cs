@@ -8,6 +8,12 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
     /// <summary>
     /// A Page-size Select tag-helper.
     /// </summary>
+    /// <example>
+    /// Assuming a "PageSize" property on the model, use as follows:
+    /// <code lang="html">
+    /// &lt;pagesize-select asp-for="PageSize" class="form-select"&gt;&lt;/pagesize-select&gt;
+    /// </code>
+    /// </example>
     [HtmlTargetElement("pagesize-select", Attributes = "asp-for")]
     public class PageSizeSelectTagHelper : SelectTagHelper
     {
@@ -19,6 +25,7 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
 
         /// <summary>
         /// Space-separated list of available sizes.
+        /// By default: "5 10 25 50 100 250".
         /// </summary>
         [HtmlAttributeName("sizes")]
         public string Sizes { get; set; } = "5 10 25 50 100 250";

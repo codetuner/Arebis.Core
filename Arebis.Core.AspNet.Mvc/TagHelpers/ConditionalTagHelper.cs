@@ -7,6 +7,21 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
     /// <summary>
     /// Condition taghelper. Determines whether to render depending on the condition outcome.
     /// </summary>
+    /// <example>
+    /// An if can be expressed as follows:
+    /// <code lang="html">
+    /// &lt;div id="c1" asp-if="Model.Number &lt; 10"&gt;...less than 10...&lt;/div&gt;
+    /// </code>
+    /// The id attribute is optional but required when using elsefor, as in:
+    /// <code lang="html">
+    /// &lt;div asp-elsefor="c1" asp-if="Model.Number &lt; 100"&gt;...from 10 to 1000...&lt;/div&gt;
+    /// </code>
+    /// Note how an else-if branch uses asp-elsefor to refer to the original if condition, in combination with an asp-if. The final else branch would be:
+    /// <code lang="html">
+    /// &lt;div asp-elsefor="c1"&gt;...100 or more...&lt;/div&gt;
+    /// </code>
+    /// The tags hving asp-if and asp-elsefor attributes do not need to be subsequent, they can be anywhere in the page.
+    /// </example>
     [HtmlTargetElement(Attributes = "asp-if")]
     [HtmlTargetElement(Attributes = "asp-elsefor")]
     public class ConditionalTagHelper : TagHelper

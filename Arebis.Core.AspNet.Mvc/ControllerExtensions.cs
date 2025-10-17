@@ -8,7 +8,7 @@ namespace Arebis.Core.AspNet.Mvc
     /// <summary>
     /// Controller extension methods.
     /// </summary>
-    public static class ControllerModelBindingExtensions
+    public static class ControllerExtensions
     {
         /// <summary>
         /// Binds the request to a model of the given type T.
@@ -17,6 +17,19 @@ namespace Arebis.Core.AspNet.Mvc
         /// <param name="controller">The controller handling the request.</param>
         /// <param name="prefix">Optional prefix of the model.</param>
         /// <returns>The bound model.</returns>
+        /// <example>
+        /// <code lang="csharp">
+        /// public async Task&lt;IActionResult&gt; Submit()
+        /// {
+        ///     var model = await this.BindModelAsync&lt;MyModel&gt;();
+        ///     ...
+        ///     // Optionally validate the model:
+        ///     TryValidateModel(model);
+        ///     if (ModelState.IsValid)
+        ///     ...
+        /// }
+        /// </code>
+        /// </example>
         public static async Task<T> BindModelAsync<T>(this Controller controller, string? prefix = null)
             where T : class
         {
@@ -63,6 +76,20 @@ namespace Arebis.Core.AspNet.Mvc
         /// <param name="model">The model to bind.</param>
         /// <param name="prefix">Optional prefix of the model.</param>
         /// <exception cref="ArgumentNullException">Raised if no model is given.</exception>
+        /// <example>
+        /// <code lang="csharp">
+        /// public async Task&lt;IActionResult&gt; Submit()
+        /// {
+        ///     var model = new MyModel();
+        ///     await this.BindModelAsync(model);
+        ///     ...
+        ///     // Optionally validate the model:
+        ///     TryValidateModel(model);
+        ///     if (ModelState.IsValid)
+        ///     ...
+        /// }
+        /// </code>
+        /// </example>
         public static async Task BindModelAsync<T>(this Controller controller, T model, string? prefix = null)
         {
             if (model is null) throw new ArgumentNullException(nameof(model));

@@ -13,6 +13,12 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
     /// <summary>
     /// A Pagination tag-helper.
     /// </summary>
+    /// <example>
+    /// Assuming Model PageIndex and PageCount properties, use as follows:
+    /// <code lang="html">
+    /// &lt;pagination-nav asp-for="PageIndex" max="Model.PageCount" style-template="default" keyboard="true" /&gt;
+    /// </code>
+    /// </example>
     [HtmlTargetElement("pagination-nav", Attributes = "asp-for, max")]
     [HtmlTargetElement("pagination-nav", Attributes = "asp-for, hasnext")]
     public class PaginationNavTagHelper : TagHelper
@@ -69,7 +75,7 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
         public string? StyleTemplate { get; set; }
 
         /// <summary>
-        /// Whether to support keyboard shortcuts.
+        /// Whether to support keyboard shortcuts (Left- and Right-arrow for previous and next page, Home and End for first and last page).
         /// </summary>
         [HtmlAttributeName("keyboard")]
         public bool Keyboard { get; set; } = false;

@@ -13,6 +13,16 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
     /// Set the "asp-order" attribute with as value the current ordering expression to make the header sortable.
     /// Add a "field-name" attribute if the table header innertext is different from the field name.
     /// </summary>
+    /// <example>
+    /// Typically, use a property on the model to hold the current order expression, and use the taghelper as follows:
+    /// <code lang="html">
+    /// &lt;tr&gt;
+    ///   &lt;th asp-order="@Model.OrderBy"&gt;Name&lt;/th&gt;
+    ///   &lt;th asp-order="@Model.OrderBy"&gt;Town&lt;/th&gt;
+    ///   &lt;th asp-order="@Model.OrderBy" field-name="DateOfBirth"&gt;Date of birth&lt;/th&gt;
+    /// &lt;/tr&gt;
+    /// </code>
+    /// </example>
     [HtmlTargetElement("th", Attributes = "asp-order")]
     public class OrderableTableHeaderTagHelper : TagHelper
     {
