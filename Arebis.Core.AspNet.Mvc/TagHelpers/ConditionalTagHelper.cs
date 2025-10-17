@@ -14,7 +14,7 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
     /// </code>
     /// The id attribute is optional but required when using elsefor, as in:
     /// <code lang="html">
-    /// &lt;div asp-elsefor="c1" asp-if="Model.Number &lt; 100"&gt;...from 10 to 1000...&lt;/div&gt;
+    /// &lt;div asp-elsefor="c1" asp-if="Model.Number &lt; 100"&gt;...from 10 to 100...&lt;/div&gt;
     /// </code>
     /// Note how an else-if branch uses asp-elsefor to refer to the original if condition, in combination with an asp-if. The final else branch would be:
     /// <code lang="html">
