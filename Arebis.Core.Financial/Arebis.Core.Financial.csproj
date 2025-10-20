@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<Version>1.0.0</Version>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
@@ -27,6 +27,18 @@
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 		<NoWarn>1701;1702;1591</NoWarn>
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<!--<DocumentationMarkdown>$(MSBuildProjectDirectory)\$(MSBuildProjectName).md</DocumentationMarkdown>-->
+		<DocumentationMarkdown>$(MSBuildProjectDirectory)\README.md</DocumentationMarkdown>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Vsxmd" Version="1.4.6">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Arebis.Types\Arebis.Types.csproj" />
