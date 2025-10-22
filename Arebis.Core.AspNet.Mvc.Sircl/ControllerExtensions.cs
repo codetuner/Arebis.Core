@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Arebis.Core.AspNet.Mvc.Sircl
 {
@@ -189,7 +190,7 @@ namespace Arebis.Core.AspNet.Mvc.Sircl
         /// </summary>
         public static void SirclSetDocumentTitle(this Controller controller, string title)
         {
-            controller.Response.Headers["X-Sircl-Document-Title"] = title;
+            controller.Response.Headers["X-Sircl-Document-Title"] = Uri.EscapeDataString(title);
         }
 
         /// <summary>
@@ -197,7 +198,7 @@ namespace Arebis.Core.AspNet.Mvc.Sircl
         /// </summary>
         public static void SirclAlert(this Controller controller, string message)
         {
-            controller.Response.Headers["X-Sircl-Alert-Message"] = message;
+            controller.Response.Headers["X-Sircl-Alert-Message"] = Uri.EscapeDataString(message);
         }
 
         /// <summary>
@@ -238,7 +239,7 @@ namespace Arebis.Core.AspNet.Mvc.Sircl
         /// </summary>
         public static void SirclToastr(this Controller controller, string type, string message, string? title = null)
         {
-            controller.Response.Headers["X-Sircl-Toastr"] = type + "|" + message + (!String.IsNullOrEmpty(title) ? "|" + title : "");
+            controller.Response.Headers.Append("X-Sircl-Toastr", type + "|" + Uri.EscapeDataString(message) + (!String.IsNullOrEmpty(title) ? "|" + Uri.EscapeDataString(title) : ""));
         }
     }
 }
