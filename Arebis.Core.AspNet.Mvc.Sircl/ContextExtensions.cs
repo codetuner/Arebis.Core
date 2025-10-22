@@ -16,6 +16,7 @@ namespace Arebis.Core.AspNet.Mvc.Sircl
         /// <summary>
         /// Whether the request is a Sircl partial request.
         /// </summary>
+        /// <param name="request">The HTTP request.</param>
         public static bool IsSirclPartial(this HttpRequest request)
         {
             return (request.Headers["X-Sircl-Request-Type"] == "Partial");
@@ -25,6 +26,8 @@ namespace Arebis.Core.AspNet.Mvc.Sircl
         /// Builds and sets the Sircl AppId by concatenating the given parts.
         /// I.e: Context.Response.SetSirclAppId("MyApp", languageCode, userToken)
         /// </summary>
+        /// <param name="response">The HTTP response.</param>
+        /// <param name="appIdParts">The AppId parts that will be concatenated with '-' as separator.</param>
         public static void SetSirclAppId(this HttpResponse response, params string[] appIdParts)
         {
             response.Headers["X-Sircl-AppId"] = String.Join('-', appIdParts);
