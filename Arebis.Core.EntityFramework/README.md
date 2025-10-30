@@ -3,6 +3,27 @@ Arebis.Core.EntityFramework
 
 .NET Core extensions for working with Entity Framework.
 
+Extensions
+----------
+
+dbContext.**AreProxiesEnabled()** - Check if proxies are enabled for the given DbContext.
+
+dbSet.**GetDbContext()** - Get the DbContext for a given DbSet.
+
+dbSet.**AddNew()** - Create a new entity (or proxy), add it to the DbSet and return it.
+
+entity.**MarkModified()** - Mark an entity as modified in the DbContext.
+entity must be an IContextualEntity&lt;TDbContext&gt;.
+
+queryable.**OrderBy()** - Order a queryable by a property name or path.
+
+orderedQueryable.**ThenBy()** - ThenBy a queryable by a property name or path. I.e:
+
+```
+invoices.OrderBy("Customer.Name ASC");
+        .ThenBy("Date DESC");
+```
+
 
 BaseDbContext<T>
 ----------------
@@ -25,6 +46,7 @@ Includes default Converters (and Comparers) for:
 - TimeSpan in Hours
 - TimeSpan as Ticks
 - UtcDateTime
+- Regex
 
 As well as a generic JsonConverter.
 

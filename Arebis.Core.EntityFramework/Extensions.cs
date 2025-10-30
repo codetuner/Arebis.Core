@@ -28,6 +28,53 @@ namespace Arebis.Core.EntityFramework
         }
 
         /// <summary>
+        /// Tests whether proxies are enabled on the context.
+        /// </summary>
+        public static bool AreProxiesEnabled(this DbContext context)
+        {
+            var lazyLoadingEnabled = context.ChangeTracker.LazyLoadingEnabled;
+            if (lazyLoadingEnabled == false)
+                return false;
+            else
+            {
+                var serviceProvider = ((IInfrastructure<IServiceProvider>)context).Instance;
+#pragma warning disable EF1001 // Internal EF Core API usage.
+                var proxyFactory = serviceProvider.GetService(typeof(Microsoft.EntityFrameworkCore.Proxies.Internal.IProxyFactory));
+#pragma warning restore EF1001 // Internal EF Core API usage.
+                return proxyFactory != null && lazyLoadingEnabled;
+            }
+        }
+
+        /// <summary>
+        /// Creates new entity or entity proxy and adds it to the context.
+        /// </summary>
+        public static TEntity AddNew<TEntity>(this DbSet<TEntity> set, params object[] constructorArgs)
+            where TEntity : class
+        {
+            TEntity? entity;
+            var context = set.GetDbContext();
+            if (context == null)
+            {
+                throw new InvalidOperationException("Could not get context from DbSet.");
+            }
+            else if (context.AreProxiesEnabled())
+            {
+                entity = set.CreateProxy(constructorArgs);
+            }
+            else
+            {
+                object? obj = Activator.CreateInstance(typeof(TEntity), constructorArgs);
+                if (obj is not TEntity casted)
+                {
+                    throw new InvalidOperationException();
+                }
+                entity = casted;
+            }
+            context.Add(entity);
+            return entity;
+        }
+
+        /// <summary>
         /// Marks a contextual entity as modified.
         /// </summary>
         public static void MarkModified<TDbContext>(this IContextualEntity<TDbContext> entity)
