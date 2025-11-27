@@ -27,10 +27,6 @@
   - [#ctor()](#M-Arebis-Core-AspNet-Mvc-ModelBinding-CultureInvariantModelBinderProvider-#ctor 'Arebis.Core.AspNet.Mvc.ModelBinding.CultureInvariantModelBinderProvider.#ctor')
   - [#ctor()](#M-Arebis-Core-AspNet-Mvc-ModelBinding-CultureInvariantModelBinderProvider-#ctor-System-Globalization-CultureInfo- 'Arebis.Core.AspNet.Mvc.ModelBinding.CultureInvariantModelBinderProvider.#ctor(System.Globalization.CultureInfo)')
   - [GetBinder()](#M-Arebis-Core-AspNet-Mvc-ModelBinding-CultureInvariantModelBinderProvider-GetBinder-Microsoft-AspNetCore-Mvc-ModelBinding-ModelBinderProviderContext- 'Arebis.Core.AspNet.Mvc.ModelBinding.CultureInvariantModelBinderProvider.GetBinder(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderProviderContext)')
-- [HttpResponseExceptionFilter](#T-Arebis-Core-AspNet-Mvc-Filters-HttpResponseExceptionFilter 'Arebis.Core.AspNet.Mvc.Filters.HttpResponseExceptionFilter')
-  - [Order](#P-Arebis-Core-AspNet-Mvc-Filters-HttpResponseExceptionFilter-Order 'Arebis.Core.AspNet.Mvc.Filters.HttpResponseExceptionFilter.Order')
-  - [OnActionExecuted()](#M-Arebis-Core-AspNet-Mvc-Filters-HttpResponseExceptionFilter-OnActionExecuted-Microsoft-AspNetCore-Mvc-Filters-ActionExecutedContext- 'Arebis.Core.AspNet.Mvc.Filters.HttpResponseExceptionFilter.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)')
-  - [OnActionExecuting()](#M-Arebis-Core-AspNet-Mvc-Filters-HttpResponseExceptionFilter-OnActionExecuting-Microsoft-AspNetCore-Mvc-Filters-ActionExecutingContext- 'Arebis.Core.AspNet.Mvc.Filters.HttpResponseExceptionFilter.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)')
 - [IdentifierEnumModelBinder](#T-Arebis-Core-AspNet-Mvc-ModelBinding-IdentifierEnumModelBinder 'Arebis.Core.AspNet.Mvc.ModelBinding.IdentifierEnumModelBinder')
   - [BindModelAsync()](#M-Arebis-Core-AspNet-Mvc-ModelBinding-IdentifierEnumModelBinder-BindModelAsync-Microsoft-AspNetCore-Mvc-ModelBinding-ModelBindingContext- 'Arebis.Core.AspNet.Mvc.ModelBinding.IdentifierEnumModelBinder.BindModelAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext)')
 - [IdentifierEnumModelBinderProvider](#T-Arebis-Core-AspNet-Mvc-ModelBinding-IdentifierEnumModelBinderProvider 'Arebis.Core.AspNet.Mvc.ModelBinding.IdentifierEnumModelBinderProvider')
@@ -163,7 +159,7 @@ An if can be expressed as follows:
 The id attribute is optional but required when using elsefor, as in:
 
 ```html
-<div asp-elsefor="c1" asp-if="Model.Number < 100">...from 10 to 1000...</div>
+<div asp-elsefor="c1" asp-if="Model.Number < 100">...from 10 to 100...</div>
 ```
 
 Note how an else-if branch uses asp-elsefor to refer to the original if condition, in combination with an asp-if. The final else branch would be:
@@ -372,57 +368,6 @@ This constructor has no parameters.
 
 <a name='M-Arebis-Core-AspNet-Mvc-ModelBinding-CultureInvariantModelBinderProvider-GetBinder-Microsoft-AspNetCore-Mvc-ModelBinding-ModelBinderProviderContext-'></a>
 ### GetBinder() `method`
-
-##### Summary
-
-*Inherit from parent.*
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='T-Arebis-Core-AspNet-Mvc-Filters-HttpResponseExceptionFilter'></a>
-## HttpResponseExceptionFilter `type`
-
-##### Namespace
-
-Arebis.Core.AspNet.Mvc.Filters
-
-##### Summary
-
-Filter to handle exceptions of type [HttpResponseException](#T-Arebis-Core-AspNet-HttpResponseException 'Arebis.Core.AspNet.HttpResponseException') and [ResultException\`1](#T-Arebis-Core-ResultException`1 'Arebis.Core.ResultException`1').
-
-##### Example
-
-Install as a global filter in Program.cs:
-
-```csharp
-builder.Services.AddControllersWithViews(options =>
-{
-    options.Filters.Add<ApplicationActionFilter>();
-})
-```
-
-<a name='P-Arebis-Core-AspNet-Mvc-Filters-HttpResponseExceptionFilter-Order'></a>
-### Order `property`
-
-##### Summary
-
-*Inherit from parent.*
-
-<a name='M-Arebis-Core-AspNet-Mvc-Filters-HttpResponseExceptionFilter-OnActionExecuted-Microsoft-AspNetCore-Mvc-Filters-ActionExecutedContext-'></a>
-### OnActionExecuted() `method`
-
-##### Summary
-
-*Inherit from parent.*
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Arebis-Core-AspNet-Mvc-Filters-HttpResponseExceptionFilter-OnActionExecuting-Microsoft-AspNetCore-Mvc-Filters-ActionExecutingContext-'></a>
-### OnActionExecuting() `method`
 
 ##### Summary
 
