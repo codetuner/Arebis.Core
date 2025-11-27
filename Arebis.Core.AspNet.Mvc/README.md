@@ -18,7 +18,7 @@
   - [ViewContext](#P-Arebis-Core-AspNet-Mvc-TagHelpers-ConditionalTagHelper-ViewContext 'Arebis.Core.AspNet.Mvc.TagHelpers.ConditionalTagHelper.ViewContext')
   - [Process()](#M-Arebis-Core-AspNet-Mvc-TagHelpers-ConditionalTagHelper-Process-Microsoft-AspNetCore-Razor-TagHelpers-TagHelperContext,Microsoft-AspNetCore-Razor-TagHelpers-TagHelperOutput- 'Arebis.Core.AspNet.Mvc.TagHelpers.ConditionalTagHelper.Process(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)')
 - [ControllerExtensions](#T-Arebis-Core-AspNet-Mvc-ControllerExtensions 'Arebis.Core.AspNet.Mvc.ControllerExtensions')
-  - [BindModelAsync\`\`1(controller,prefix)](#M-Arebis-Core-AspNet-Mvc-ControllerExtensions-BindModelAsync``1-Microsoft-AspNetCore-Mvc-Controller,System-String- 'Arebis.Core.AspNet.Mvc.ControllerExtensions.BindModelAsync``1(Microsoft.AspNetCore.Mvc.Controller,System.String)')
+  - [BindModelAsync\`\`1(controller,prefix,initialize)](#M-Arebis-Core-AspNet-Mvc-ControllerExtensions-BindModelAsync``1-Microsoft-AspNetCore-Mvc-Controller,System-String,System-Action{``0}- 'Arebis.Core.AspNet.Mvc.ControllerExtensions.BindModelAsync``1(Microsoft.AspNetCore.Mvc.Controller,System.String,System.Action{``0})')
   - [BindModelAsync\`\`1(controller,model,prefix)](#M-Arebis-Core-AspNet-Mvc-ControllerExtensions-BindModelAsync``1-Microsoft-AspNetCore-Mvc-Controller,``0,System-String- 'Arebis.Core.AspNet.Mvc.ControllerExtensions.BindModelAsync``1(Microsoft.AspNetCore.Mvc.Controller,``0,System.String)')
 - [CultureInvariantModelBinder](#T-Arebis-Core-AspNet-Mvc-ModelBinding-CultureInvariantModelBinder 'Arebis.Core.AspNet.Mvc.ModelBinding.CultureInvariantModelBinder')
   - [#ctor()](#M-Arebis-Core-AspNet-Mvc-ModelBinding-CultureInvariantModelBinder-#ctor-System-Globalization-CultureInfo- 'Arebis.Core.AspNet.Mvc.ModelBinding.CultureInvariantModelBinder.#ctor(System.Globalization.CultureInfo)')
@@ -220,8 +220,8 @@ Arebis.Core.AspNet.Mvc
 
 Controller extension methods.
 
-<a name='M-Arebis-Core-AspNet-Mvc-ControllerExtensions-BindModelAsync``1-Microsoft-AspNetCore-Mvc-Controller,System-String-'></a>
-### BindModelAsync\`\`1(controller,prefix) `method`
+<a name='M-Arebis-Core-AspNet-Mvc-ControllerExtensions-BindModelAsync``1-Microsoft-AspNetCore-Mvc-Controller,System-String,System-Action{``0}-'></a>
+### BindModelAsync\`\`1(controller,prefix,initialize) `method`
 
 ##### Summary
 
@@ -237,6 +237,7 @@ The bound model.
 | ---- | ---- | ----------- |
 | controller | [Microsoft.AspNetCore.Mvc.Controller](#T-Microsoft-AspNetCore-Mvc-Controller 'Microsoft.AspNetCore.Mvc.Controller') | The controller handling the request. |
 | prefix | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Optional prefix of the model. |
+| initialize | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | Optional model initilizer. |
 
 ##### Generic Types
 

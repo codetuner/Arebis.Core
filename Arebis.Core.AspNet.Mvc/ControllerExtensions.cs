@@ -16,6 +16,7 @@ namespace Arebis.Core.AspNet.Mvc
         /// <typeparam name="T">The model type.</typeparam>
         /// <param name="controller">The controller handling the request.</param>
         /// <param name="prefix">Optional prefix of the model.</param>
+        /// <param name="initialize">Optional model initilizer.</param>
         /// <returns>The bound model.</returns>
         /// <example>
         /// <code lang="csharp">
@@ -30,7 +31,7 @@ namespace Arebis.Core.AspNet.Mvc
         /// }
         /// </code>
         /// </example>
-        public static async Task<T> BindModelAsync<T>(this Controller controller, string? prefix = null)
+        public static async Task<T> BindModelAsync<T>(this Controller controller, string? prefix = null, Action<T>? initialize = null)
             where T : class
         {
             var httpContext = controller.HttpContext;
@@ -62,10 +63,16 @@ namespace Arebis.Core.AspNet.Mvc
 
             if (bindingContext.Result.IsModelSet)
             {
-                return (T)(bindingContext.Result.Model ?? Activator.CreateInstance<T>());
+                var result = (T)(bindingContext.Result.Model ?? Activator.CreateInstance<T>());
+                initialize?.Invoke(result);
+                return result;
             }
-
-            return Activator.CreateInstance<T>();
+            else
+            { 
+                var result = Activator.CreateInstance<T>();
+                initialize?.Invoke(result);
+                return result;
+            }
         }
 
         /// <summary>
