@@ -12,6 +12,10 @@ dbSet.**GetDbContext()** - Get the DbContext for a given DbSet.
 
 dbSet.**AddNew()** - Create a new entity (or proxy), add it to the DbSet and return it.
 
+dbSet.**FindOrFail()** - Find an entity by primary key(s) or throw an exception if not found.
+
+dbSet.**FindOrFailAsync()** - Find an entity by primary key(s) or throw an exception if not found.
+
 entity.**MarkModified()** - Mark an entity as modified in the DbContext.
 entity must be an IContextualEntity&lt;TDbContext&gt;.
 
