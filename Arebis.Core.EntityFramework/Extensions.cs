@@ -46,6 +46,34 @@ namespace Arebis.Core.EntityFramework
         }
 
         /// <summary>
+        /// Finds an entity by primary key or throws NullReferenceException if not found.
+        /// </summary>
+        public static TEntity FindOrFail<TEntity>(this DbSet<TEntity> set, params object[] keyValues)
+            where TEntity : class
+        {
+            var entity = set.Find(keyValues);
+            if (entity == null)
+            {
+                throw new NullReferenceException($"Entity of type {typeof(TEntity).Name} with key ({string.Join(", ", keyValues)}) not found.");
+            }
+            return entity;
+        }
+
+        /// <summary>
+        /// Finds an entity by primary key or throws NullReferenceException if not found.
+        /// </summary>
+        public static async Task<TEntity> FindOrFailAsync<TEntity>(this DbSet<TEntity> set, params object[] keyValues)
+            where TEntity : class
+        {
+            var entity = await set.FindAsync(keyValues);
+            if (entity == null)
+            {
+                throw new NullReferenceException($"Entity of type {typeof(TEntity).Name} with key ({string.Join(", ", keyValues)}) not found.");
+            }
+            return entity;
+        }
+
+        /// <summary>
         /// Creates new entity or entity proxy and adds it to the context.
         /// </summary>
         public static TEntity AddNew<TEntity>(this DbSet<TEntity> set, params object[] constructorArgs)
@@ -66,7 +94,7 @@ namespace Arebis.Core.EntityFramework
                 object? obj = Activator.CreateInstance(typeof(TEntity), constructorArgs);
                 if (obj is not TEntity casted)
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException($"Could not create instance of {typeof(TEntity).Name}.");
                 }
                 entity = casted;
             }
