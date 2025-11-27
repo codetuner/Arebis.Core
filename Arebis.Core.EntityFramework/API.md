@@ -47,6 +47,7 @@
   - [AddNew\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-AddNew``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[]- 'Arebis.Core.EntityFramework.Extensions.AddNew``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Object[])')
   - [AreProxiesEnabled()](#M-Arebis-Core-EntityFramework-Extensions-AreProxiesEnabled-Microsoft-EntityFrameworkCore-DbContext- 'Arebis.Core.EntityFramework.Extensions.AreProxiesEnabled(Microsoft.EntityFrameworkCore.DbContext)')
   - [FindOrFailAsync\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-FindOrFailAsync``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[]- 'Arebis.Core.EntityFramework.Extensions.FindOrFailAsync``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Object[])')
+  - [FindOrFailAsync\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-FindOrFailAsync``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[],System-Threading-CancellationToken- 'Arebis.Core.EntityFramework.Extensions.FindOrFailAsync``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Object[],System.Threading.CancellationToken)')
   - [FindOrFail\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-FindOrFail``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[]- 'Arebis.Core.EntityFramework.Extensions.FindOrFail``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Object[])')
   - [GetDbContext\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-GetDbContext``1-Microsoft-EntityFrameworkCore-DbSet{``0}- 'Arebis.Core.EntityFramework.Extensions.GetDbContext``1(Microsoft.EntityFrameworkCore.DbSet{``0})')
   - [MarkModified\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-MarkModified``1-Arebis-Core-EntityFramework-IContextualEntity{``0}- 'Arebis.Core.EntityFramework.Extensions.MarkModified``1(Arebis.Core.EntityFramework.IContextualEntity{``0})')
@@ -593,6 +594,17 @@ Tests whether proxies are enabled on the context.
 This method has no parameters.
 
 <a name='M-Arebis-Core-EntityFramework-Extensions-FindOrFailAsync``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[]-'></a>
+### FindOrFailAsync\`\`1() `method`
+
+##### Summary
+
+Finds an entity by primary key or throws NullReferenceException if not found.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Arebis-Core-EntityFramework-Extensions-FindOrFailAsync``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[],System-Threading-CancellationToken-'></a>
 ### FindOrFailAsync\`\`1() `method`
 
 ##### Summary

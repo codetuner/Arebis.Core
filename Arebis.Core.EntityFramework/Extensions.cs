@@ -74,6 +74,20 @@ namespace Arebis.Core.EntityFramework
         }
 
         /// <summary>
+        /// Finds an entity by primary key or throws NullReferenceException if not found.
+        /// </summary>
+        public static async Task<TEntity> FindOrFailAsync<TEntity>(this DbSet<TEntity> set, object?[] keyValues, CancellationToken ct)
+            where TEntity : class
+        {
+            var entity = await set.FindAsync(keyValues, ct);
+            if (entity == null)
+            {
+                throw new NullReferenceException($"Entity of type {typeof(TEntity).Name} with key ({string.Join(", ", keyValues)}) not found.");
+            }
+            return entity;
+        }
+
+        /// <summary>
         /// Creates new entity or entity proxy and adds it to the context.
         /// </summary>
         public static TEntity AddNew<TEntity>(this DbSet<TEntity> set, params object[] constructorArgs)
