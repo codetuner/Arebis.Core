@@ -1,5 +1,4 @@
-﻿using Arebis.Core.AspNet.Middleware;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +15,10 @@ namespace Arebis.Core.AspNet
         /// <summary>
         /// Installs support for HttpResponseException exceptions using middleware.
         /// </summary>
+        [Obsolete("UseHttpResponseException middleware is obsolete. Use HttpResponseExceptionFilter instead.")]
         public static IApplicationBuilder UseHttpResponseException(this IApplicationBuilder application)
         {
-            return application.UseMiddleware<HttpResponseExceptionMiddleware>();
+            throw new NotImplementedException("UseHttpResponseException middleware is obsolete. Use HttpResponseExceptionFilter instead.");
         }
     }
 }
