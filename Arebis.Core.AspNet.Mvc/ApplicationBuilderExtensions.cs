@@ -1,5 +1,4 @@
-﻿using Arebis.Core.AspNet.Middleware;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
