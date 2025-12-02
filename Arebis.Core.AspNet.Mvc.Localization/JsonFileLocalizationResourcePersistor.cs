@@ -9,11 +9,10 @@ namespace Arebis.Core.AspNet.Mvc.Localization
     /// Persists localization data to Json file for faster loading after application(pool) restart.
     /// Can be registered as Transient, Scoped or Singleton service for type <see cref="ILocalizationResourcePersistor"/>.
     /// </summary>
-    public class JsonFileLocalizationResourcePersistor : ILocalizationResourcePersistor, IDisposable
+    public class JsonFileLocalizationResourcePersistor : ILocalizationResourcePersistor
     {
         private readonly IOptions<LocalizationOptions> localizationOptions;
         private readonly ILogger<JsonFileLocalizationResourcePersistor> logger;
-        private FileSystemWatcher? fileSystemWatcher = null;
 
         /// <summary>
         /// Constructs a JsonFileLocalizationResourcePersistor.
@@ -27,7 +26,10 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         }
 
         /// <inheritdoc/>
-        public event EventHandler? OnChange;
+        public event EventHandler? OnChanged;
+
+        /// <inheritdoc/>
+        public event EventHandler? OnSaved;
 
         /// <inheritdoc/>
         public LocalizationResourceSet? TryLoad()
@@ -38,17 +40,6 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                 var filename = Environment.ExpandEnvironmentVariables(this.localizationOptions.Value.CacheFileName);
                 try
                 {
-                    // On first attempt, install a FileSystemWatcher to watch changes:
-                    if (this.localizationOptions.Value.CacheFileWatched && this.fileSystemWatcher == null)
-                    {
-                        var file = new FileInfo(filename);
-                        this.fileSystemWatcher = new FileSystemWatcher(file.Directory!.FullName, file.Name);
-                        this.fileSystemWatcher.IncludeSubdirectories = false;
-                        this.fileSystemWatcher.EnableRaisingEvents = true;
-                        this.fileSystemWatcher.Changed += FileSystemWatcher_Changed;
-                        this.fileSystemWatcher.Created += FileSystemWatcher_Created;
-                    }
-
                     // Load resources from file:
                     using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
                     {
@@ -76,16 +67,16 @@ namespace Arebis.Core.AspNet.Mvc.Localization
             return null;
         }
 
-        private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        /// <inheritdoc/>
+        public void Changed(EventArgs e)
         {
-            logger.LogInformation("Detected creation of localization cache file.");
-            this.OnChange?.Invoke(this, e);
+            this.OnChanged?.Invoke(this, e);
         }
 
-        private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
+        /// <inheritdoc/>
+        public void Saved(EventArgs e)
         {
-            logger.LogInformation("Detected change in localization cache file.");
-            this.OnChange?.Invoke(this, e);
+            this.OnSaved?.Invoke(this, e);
         }
 
         /// <inheritdoc/>
@@ -114,6 +105,10 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                     {
                         logger.LogWarning(ex, "Unexpected exception while writing localization cache file \"{filename}\".", filename);
                     }
+                    finally
+                    {
+                        this.Saved(EventArgs.Empty);
+                    }
                 }
                 else
                 {
@@ -125,17 +120,11 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                     {
                         logger.LogWarning(ex, "Unexpected exception while deleting localization cache file \"{filename}\".", filename);
                     }
+                    finally
+                    {
+                        this.Saved(EventArgs.Empty);
+                    }
                 }
-            }
-        }
-
-        /// <inheritdoc/>
-        public virtual void Dispose()
-        {
-            if (this.fileSystemWatcher != null)
-            {
-                this.fileSystemWatcher.Dispose();
-                this.fileSystemWatcher = null;
             }
         }
     }

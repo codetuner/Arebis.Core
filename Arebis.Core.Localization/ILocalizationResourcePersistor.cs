@@ -16,9 +16,19 @@ namespace Arebis.Core.Localization
     public interface ILocalizationResourcePersistor
     {
         /// <summary>
-        /// Event triggered when a change is detected on the persisted data.
+        /// Event triggered when an external change is detected on the persisted data.
         /// </summary>
-        public event EventHandler? OnChange;
+        public event EventHandler? OnChanged;
+
+        /// <summary>
+        /// Event triggered when data is saved.
+        /// </summary>
+        public event EventHandler? OnSaved;
+
+        /// <summary>
+        /// Notifies an external change; dispatched when file system watcher detects a change.
+        /// </summary>
+        void Changed(EventArgs e);
 
         /// <summary>
         /// Tries to load persisted resources set. Returns null if not found or failed.
