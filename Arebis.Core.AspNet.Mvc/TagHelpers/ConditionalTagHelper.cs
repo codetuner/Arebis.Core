@@ -69,6 +69,7 @@ namespace Arebis.Core.AspNet.Mvc.TagHelpers
 
             if (processed || (Condition.HasValue && Condition.Value == false))
             {
+                context.Items["OutputSuppressed"] = true;
                 output.SuppressOutput();
             }
             else if (conditionId is not null)
