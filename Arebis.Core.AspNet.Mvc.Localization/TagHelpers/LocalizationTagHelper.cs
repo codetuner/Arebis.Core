@@ -33,6 +33,11 @@ namespace Arebis.Core.AspNet.Mvc.Localization.TagHelpers
         }
 
         /// <summary>
+        /// Order set to -10,000,000 to ensure this runs very early allowing later running taghelpers to work on the localized content (and suppress output if needed).
+        /// </summary>
+        public override int Order => -10_000_000;
+
+        /// <summary>
         /// Gets or sets the view context (automatically set when using razor views).
         /// </summary>
         [HtmlAttributeNotBound]
@@ -56,6 +61,11 @@ namespace Arebis.Core.AspNet.Mvc.Localization.TagHelpers
         /// </summary>
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            if (context.Items.ContainsKey("OutputSuppressed") && context.Items["OutputSuppressed"] is true)
+            {
+                return;
+            }
+
             // Check required parameters:
             if (this.LocalizationKey == null)
             {

@@ -47,6 +47,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
             services.TryAddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
             services.TryAddSingleton<IStringLocalizer, Localizer>();
             services.TryAddSingleton(typeof(IStringLocalizer<>), typeof(Localizer<>));
+            services.TryAddSingleton<IHtmlLocalizerFactory, HtmlLocalizerFactory>();
             services.TryAddSingleton<IHtmlLocalizer, Localizer>();
             services.TryAddSingleton(typeof(IHtmlLocalizer<>), typeof(Localizer<>));
             //services.TryAddSingleton<IViewLocalizer, Localizer>();
