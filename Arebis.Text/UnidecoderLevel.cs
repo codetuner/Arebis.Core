@@ -19,13 +19,8 @@ namespace Arebis.Text
         Ansi = 1,
 
         /// <summary>
-        /// Do not translate chars of the default ANSI set as well as common accents.
-        /// </summary>
-        AnsiPlus = 2,
-
-        /// <summary>
         /// Translate all chars.
         /// </summary>
-        Ascii = 3,
+        Ascii = 2,
     }
 }

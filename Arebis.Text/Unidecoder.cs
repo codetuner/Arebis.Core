@@ -34,25 +34,16 @@ namespace Arebis.Text
 
                 if (mode == 0)
                 {
-                    if (c < 0x80)/*128*/
+                    if (c < 0x20)/*32*/
+                    {
+                        sb.Append(unkn);
+                    }
+                    else if (c == 0x7f) sb.Append(unkn);
+                    else if (c < 0x80)/*128*/
                     {
                         sb.Append(c);
                     }
-                    else if (c < 161 && level == UnidecoderLevel.Ascii) sb.Append("");
-                    else if (c < 160) sb.Append(unkn);
-                    else if (c == 160) sb.Append(" ");
-                    else if (c < 256) sb.Append(c);
-                    else if (c == 306 && level == UnidecoderLevel.AnsiPlus) sb.Append("IJ");
-                    else if (c == 307 && level == UnidecoderLevel.AnsiPlus) sb.Append("ij");
-                    else if (c == 312 && level == UnidecoderLevel.AnsiPlus) sb.Append("k");
-                    else if (c == 319 && level == UnidecoderLevel.AnsiPlus) sb.Append("L");
-                    else if (c == 320 && level == UnidecoderLevel.AnsiPlus) sb.Append("l");
-                    else if (c == 329 && level == UnidecoderLevel.AnsiPlus) sb.Append("'n");
-                    else if (c == 330 && level == UnidecoderLevel.AnsiPlus) sb.Append("ng");
-                    else if (c == 331 && level == UnidecoderLevel.AnsiPlus) sb.Append("NG");
-                    else if (c == 383 && level == UnidecoderLevel.AnsiPlus) sb.Append("s");
-                    else if (c < 384 && level == UnidecoderLevel.AnsiPlus) sb.Append(c);
-                    else if (c == 393 && level == UnidecoderLevel.AnsiPlus) sb.Append(c);
+                    else if (level == UnidecoderLevel.Ansi && c >= 160 && c < 256) sb.Append(c); // These characters are part of Windows-1252 and ISO-8859-1.
                     else if (c == 55349) mode = 1; // high surrogate
                     else
                     {
