@@ -18,6 +18,10 @@ namespace Arebis.Text.Tests
         [TestMethod]
         public void ToAnsiTest()
         {
+            Assert.AreEqual("All regular chars", "All regular chars".Unidecode(UnidecoderLevel.Ansi));
+
+            Assert.AreEqual("\r\n\t ©", "\r\n\t ©".Unidecode(UnidecoderLevel.Ansi));
+
             Assert.AreEqual("U", "𝒰".Unidecode(UnidecoderLevel.Ansi));
 
             // https://apps.timwhitlock.info/unicode/inspect?s=%F0%9D%90%80%F0%9D%90%83%F0%9D%90%84%F0%9D%90%85%F0%9D%90%86%F0%9D%90%88%F0%9D%90%8B%F0%9D%90%8D%F0%9D%90%8E%F0%9D%90%91%F0%9D%90%93%F0%9D%90%95%F0%9D%90%96
@@ -37,6 +41,10 @@ namespace Arebis.Text.Tests
         [TestMethod]
         public void ToAsciiTest()
         {
+            Assert.AreEqual("All regular chars", "All regular chars".Unidecode(UnidecoderLevel.Ascii));
+
+            Assert.AreEqual("\r\n\t (c)", "\r\n\t ©".Unidecode(UnidecoderLevel.Ascii));
+
             Assert.AreEqual("U", "𝒰".Unidecode(UnidecoderLevel.Ascii));
 
             // https://apps.timwhitlock.info/unicode/inspect?s=%F0%9D%90%80%F0%9D%90%83%F0%9D%90%84%F0%9D%90%85%F0%9D%90%86%F0%9D%90%88%F0%9D%90%8B%F0%9D%90%8D%F0%9D%90%8E%F0%9D%90%91%F0%9D%90%93%F0%9D%90%95%F0%9D%90%96

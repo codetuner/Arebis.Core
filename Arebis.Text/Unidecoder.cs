@@ -34,12 +34,7 @@ namespace Arebis.Text
 
                 if (mode == 0)
                 {
-                    if (c < 0x20)/*32*/
-                    {
-                        sb.Append(unkn);
-                    }
-                    else if (c == 0x7f) sb.Append(unkn);
-                    else if (c < 0x80)/*128*/
+                    if (c < 0x80)/*128*/
                     {
                         sb.Append(c);
                     }
