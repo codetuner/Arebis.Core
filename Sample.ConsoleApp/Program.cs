@@ -1,8 +1,10 @@
 ﻿using Arebis.Core.Services.Interfaces;
 using Arebis.Core.Services.Translation;
+using Arebis.Core.Services.Translation.OpenAI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OpenAI.Chat;
 
 // Setup HostApplicationBuilder to support dependency injection:
 // See: https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-usage
@@ -15,6 +17,14 @@ var config = new ConfigurationBuilder()
     .Build();
 
 // Add services to the container:
+//builder.Services.AddSingleton<ChatClient>(serviceProvider =>
+//{
+//    var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+//    var model = "gpt-5.2";
+//
+//    return new ChatClient(model, apiKey);
+//});
+//builder.Services.AddTransient<ITranslationService, OpenAITranslationService>();
 builder.Services.AddSingleton<ITranslationService, DeepLTranslationService>();
 
 // Build the host:
