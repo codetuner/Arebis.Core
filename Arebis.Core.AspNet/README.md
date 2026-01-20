@@ -3,6 +3,18 @@ Arebis.Core.AspNet
 
 This project contains ASP.NET specific components of the Arebis Core Library.
 
+## Root
+
+### HttpResponseException
+
+An exception that returns a specific HTTP status code.
+
+### IDomainSettingsProvider
+
+An interface for managing domain-specific settings in ASP.NET applications.
+
+Implementations can be found in the Arebis.Core.AspNet.SqlServer package.
+
 ## Filters
 
 ### AuthenticatedOnlyAttribute

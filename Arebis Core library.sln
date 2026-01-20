@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Text.Tests", "Arebis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.Configuration.SqlServer", "Arebis.Core.Configuration.SqlServer\Arebis.Core.Configuration.SqlServer.csproj", "{C4616468-27FB-403B-8882-3965988E2AAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arebis.Core.AspNet.SqlServer", "Arebis.Core.AspNet.SqlServer\Arebis.Core.AspNet.SqlServer.csproj", "{52730F85-8ABD-4237-8484-879C2C48CAD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,10 @@ Global
 		{C4616468-27FB-403B-8882-3965988E2AAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4616468-27FB-403B-8882-3965988E2AAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4616468-27FB-403B-8882-3965988E2AAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52730F85-8ABD-4237-8484-879C2C48CAD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52730F85-8ABD-4237-8484-879C2C48CAD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52730F85-8ABD-4237-8484-879C2C48CAD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52730F85-8ABD-4237-8484-879C2C48CAD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -64,6 +64,10 @@ Extensions for `DateTimeOffset`.
 
 Extensions for dictionaries.
 
+#### `DistributedCacheExtensions`
+
+Extensions for IDistributedCache.
+
 #### `EnumerableExtensions`
 
 Extensions for enumerables.
