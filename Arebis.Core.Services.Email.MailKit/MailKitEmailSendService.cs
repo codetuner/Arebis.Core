@@ -32,6 +32,11 @@ namespace Arebis.Core.Services.Email.MailKit
         /// <inheritdoc/>
         public async Task SendEmail(EmailMessage message)
         {
+            if (this.smtpOptions.Value.Server == null) throw new InvalidOperationException("SMTP server is not configured. Define the \"Smtp:Server\" setting in configuration or configure in code.");
+            if (this.smtpOptions.Value.Port == 0) throw new InvalidOperationException("SMTP port is not configured. Define the \"Smtp:Port\" setting in configuration or configure in code.");
+            if (this.smtpOptions.Value.SenderEmail == null) throw new InvalidOperationException("SMTP sender email is not configured. Define the \"Smtp:SenderEmail\" setting in configuration or configure in code.");
+            if (this.smtpOptions.Value.SenderName == null) throw new InvalidOperationException("SMTP sender name is not configured. Define the \"Smtp:SenderName\" setting in configuration or configure in code.");
+
             var email = new MimeMessage();
 
             // Set sender:

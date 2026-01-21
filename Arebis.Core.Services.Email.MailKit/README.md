@@ -14,7 +14,7 @@ dotnet add package Arebis.Core.Services.Email.MailKit
 Register the service in your `Program.cs` or `Startup.cs`:
 
 ```CSharp
-builder.Services.AddMailKitEmailSendService(config);
+builder.Services.AddMailKitEmailSendService(builder.Configuration);
 ```
 
 Pass options as parameter or define options in configuration:
