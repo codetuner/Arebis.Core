@@ -3,4 +3,14 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div localization-key="" localization-arg-0="@("Max" + 12)" localization-arg-1="/Home/Index">
+    <p>
+        The privacy terms describe how <b>{0}</b> handles your personal data and protect your privacy when you use our services.
+    </p>
+    <p>
+        Consult our <a asp-action="Index">full privacy policy</a> for detailed information on data collection, usage, and your rights.
+    </p>
+    <p>
+        More info can be found <a href="{1}">content</a>.
+    </p>
+</div>

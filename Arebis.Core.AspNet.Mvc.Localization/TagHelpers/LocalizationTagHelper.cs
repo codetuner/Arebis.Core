@@ -13,7 +13,9 @@ namespace Arebis.Core.AspNet.Mvc.Localization.TagHelpers
     /// If a resource with this key is found, the content of this tag is replaced by the localization value.
     /// </summary>
     /// <example>
-    /// &lt;div localization-key="(Setup instructions for {0})" localization-arg-0="@(name)"&gt;
+    /// &lt;div localization-key="(Setup instructions)" localization-arg-0="@(name)"&gt;
+    ///     Describes how to set up the application {0}.
+    /// &lt;/div&gt;
     /// </example>
     [HtmlTargetElement(Attributes = "localization-key")]
     public class LocalizationTagHelper : TagHelper
@@ -59,7 +61,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization.TagHelpers
         /// <summary>
         /// Processes this tag helper.
         /// </summary>
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             if (context.Items.ContainsKey("OutputSuppressed") && context.Items["OutputSuppressed"] is true)
             {
@@ -69,13 +71,13 @@ namespace Arebis.Core.AspNet.Mvc.Localization.TagHelpers
             // Check required parameters:
             if (this.LocalizationKey == null)
             {
-                base.Process(context, output);
+                await base.ProcessAsync(context, output);
                 return;
             }
             else if (this.ViewContext == null)
             {
                 logger.LogWarning("No ViewContext injected on LocalizationTagHelper; ");
-                base.Process(context, output);
+                await base.ProcessAsync(context, output);
                 return;
             }
 
@@ -95,10 +97,28 @@ namespace Arebis.Core.AspNet.Mvc.Localization.TagHelpers
                 // Render value, or tag content if not found:
                 if (value.IsResourceNotFound)
                 {
-                    base.Process(context, output);
+                    // Process inner content:
+                    await base.ProcessAsync(context, output);
+
+                    if (arguments.Length > 0)
+                    {
+                        // Get rendered child content
+                        var childContent = await output.GetChildContentAsync();
+                        var content = childContent.GetContent();
+
+                        // Substitute arguments:
+                        for (int i=0; i < arguments.Length; i++)
+                        {
+                            content = content.Replace("{" + i + "}", Convert.ToString(arguments[i]));
+                        }
+
+                        // Replace content:
+                        output.Content.SetHtmlContent(content);
+                    }
                 }
                 else
                 {
+                    // Replace content with localized value:
                     output.Content.SetHtmlContent(value);
                 }
             }

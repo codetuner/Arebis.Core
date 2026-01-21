@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Arebis.Core.AspNet.Mvc.Localization\Arebis.Core.AspNet.Mvc.Localization.csproj" />
     <ProjectReference Include="..\Arebis.Core.AspNet.Mvc.Sircl\Arebis.Core.AspNet.Mvc.Sircl.csproj" />
     <ProjectReference Include="..\Arebis.Core.AspNet.Mvc\Arebis.Core.AspNet.Mvc.csproj" />
     <ProjectReference Include="..\Arebis.Core.AspNet\Arebis.Core.AspNet.csproj" />
