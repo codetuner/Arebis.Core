@@ -25,7 +25,7 @@ Pass options as parameter or define options in configuration:
         "Server": "mstp.myserver.net",
         "Port": "25",
         "SenderName": "John Smith",
-        "SenderMail": "j.smith@example.com",
+        "SenderEmail": "j.smith@example.com",
         "Username": "jsmith112233",
         "Password": "Secret123!",
     }
