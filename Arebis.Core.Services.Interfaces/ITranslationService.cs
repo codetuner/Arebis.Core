@@ -1,4 +1,8 @@
-﻿namespace Arebis.Core.Services.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Arebis.Core.Services.Interfaces
 {
     /// <summary>
     /// Describes a service to provide translation services.

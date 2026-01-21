@@ -1,6 +1,7 @@
 ﻿using Arebis.Core.Services.Interfaces;
 using Arebis.Core.Services.Translation;
 using Arebis.Core.Services.Translation.OpenAI;
+using Arebis.Core.Services.Email.MailKit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,21 +28,44 @@ var config = new ConfigurationBuilder()
 //builder.Services.AddTransient<ITranslationService, OpenAITranslationService>();
 builder.Services.AddSingleton<ITranslationService, DeepLTranslationService>();
 
+builder.Services.AddMailKitEmailSendService(config, options =>
+{
+    options.Server = config["Smtp:Server"] ?? "smtp.sendgrid.net";
+    options.Port = int.TryParse(config["Smtp:Port"], out var port) ? port : 587;
+    options.SenderName = config["Smtp:SenderName"] ?? "Arebis Core TestConsole";
+    options.SenderEmail = config["Smtp:SenderEmail"] ?? "admin@onlinedogshows.eu";
+    options.Username = config["Smtp:Username"] ?? "apikey";
+    options.Password = config["Smtp:Password"] ?? Environment.GetEnvironmentVariable("SendGrid__ApiKey");
+});
+
 // Build the host:
 using IHost host = builder.Build();
 
 // Start the host and run the application:
 await host.StartAsync();
 
-// Resolve the translation service:
-var translationService = host.Services.GetRequiredService<ITranslationService>();
+// Try out the translation service:
+if (false)
+{
+    // Resolve the translation service:
+    var translationService = host.Services.GetRequiredService<ITranslationService>();
 
-// Translate a text:
-var sources = new string[] { "Welcome to the show!" };
-var results = await translationService.TranslateAsync("en", "fr", "text/plain", sources);
-Console.WriteLine("=========================================");
-Console.WriteLine($"Translated text: {results.First()}");
-Console.WriteLine("=========================================");
+    // Translate a text:
+    var sources = new string[] { "Welcome to the show!" };
+    var results = await translationService.TranslateAsync("en", "fr", "text/plain", sources);
+    Console.WriteLine("=========================================");
+    Console.WriteLine($"Translated text: {results.First()}");
+    Console.WriteLine("=========================================");
+}
+
+// Try out the email send service:
+if (false)
+{
+    // Resolve the email send service:
+    var emailSendService = host.Services.GetRequiredService<IEmailSendService>();
+    // Send a test email:
+    await emailSendService.SendEmail("it@onlinedogshows.eu", "Testing EmailSendService", "<h1>Hi, a little test mail.</h1>");
+}
 
 // Stop the host:
 await host.StopAsync();

@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Arebis.Core.Services.Email.MailKit\Arebis.Core.Services.Email.MailKit.csproj" />
 	  <ProjectReference Include="..\Arebis.Core.Services.Interfaces\Arebis.Core.Services.Interfaces.csproj" />
 	  <ProjectReference Include="..\Arebis.Core.Services.Translation.OpenAI\Arebis.Core.Services.Translation.OpenAI.csproj" />
 	  <ProjectReference Include="..\Arebis.Core.Services.Translation\Arebis.Core.Services.Translation.csproj" />
