@@ -107,10 +107,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization.TagHelpers
                         var content = childContent.GetContent();
 
                         // Substitute arguments:
-                        for (int i=0; i < arguments.Length; i++)
-                        {
-                            content = content.Replace("{" + i + "}", Convert.ToString(arguments[i]));
-                        }
+                        content = String.Format(content, arguments);
 
                         // Replace content:
                         output.Content.SetHtmlContent(content);
