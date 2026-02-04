@@ -74,9 +74,15 @@
   - [AllowNullOnStorage](#P-Arebis-Core-EntityFramework-StoreEmptyAsNullAttribute-AllowNullOnStorage 'Arebis.Core.EntityFramework.StoreEmptyAsNullAttribute.AllowNullOnStorage')
   - [InstanceType](#P-Arebis-Core-EntityFramework-StoreEmptyAsNullAttribute-InstanceType 'Arebis.Core.EntityFramework.StoreEmptyAsNullAttribute.InstanceType')
 - [StoreEmptyAsNullInterceptor](#T-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor')
+  - [GetNullOnEmptyPropertiesFor()](#M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-GetNullOnEmptyPropertiesFor-System-Type,Microsoft-EntityFrameworkCore-DbContext- 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor.GetNullOnEmptyPropertiesFor(System.Type,Microsoft.EntityFrameworkCore.DbContext)')
   - [InitializedInstance()](#M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-InitializedInstance-Microsoft-EntityFrameworkCore-Diagnostics-MaterializationInterceptionData,System-Object- 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor.InitializedInstance(Microsoft.EntityFrameworkCore.Diagnostics.MaterializationInterceptionData,System.Object)')
+  - [IsEnumerableEmpty()](#M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-IsEnumerableEmpty-System-Collections-IEnumerable- 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor.IsEnumerableEmpty(System.Collections.IEnumerable)')
+  - [SavedChanges()](#M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-SavedChanges-Microsoft-EntityFrameworkCore-Diagnostics-SaveChangesCompletedEventData,System-Int32- 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor.SavedChanges(Microsoft.EntityFrameworkCore.Diagnostics.SaveChangesCompletedEventData,System.Int32)')
+  - [SavedChangesAsync()](#M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-SavedChangesAsync-Microsoft-EntityFrameworkCore-Diagnostics-SaveChangesCompletedEventData,System-Int32,System-Threading-CancellationToken- 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor.SavedChangesAsync(Microsoft.EntityFrameworkCore.Diagnostics.SaveChangesCompletedEventData,System.Int32,System.Threading.CancellationToken)')
   - [SavingChanges()](#M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-SavingChanges-Microsoft-EntityFrameworkCore-Diagnostics-DbContextEventData,Microsoft-EntityFrameworkCore-Diagnostics-InterceptionResult{System-Int32}- 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor.SavingChanges(Microsoft.EntityFrameworkCore.Diagnostics.DbContextEventData,Microsoft.EntityFrameworkCore.Diagnostics.InterceptionResult{System.Int32})')
   - [SavingChangesAsync()](#M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-SavingChangesAsync-Microsoft-EntityFrameworkCore-Diagnostics-DbContextEventData,Microsoft-EntityFrameworkCore-Diagnostics-InterceptionResult{System-Int32},System-Threading-CancellationToken- 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor.SavingChangesAsync(Microsoft.EntityFrameworkCore.Diagnostics.DbContextEventData,Microsoft.EntityFrameworkCore.Diagnostics.InterceptionResult{System.Int32},System.Threading.CancellationToken)')
+  - [UpdateEntitiesAfterSaving()](#M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-UpdateEntitiesAfterSaving-Microsoft-EntityFrameworkCore-DbContext- 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor.UpdateEntitiesAfterSaving(Microsoft.EntityFrameworkCore.DbContext)')
+  - [UpdateEntitiesBeforeSaving()](#M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-UpdateEntitiesBeforeSaving-Microsoft-EntityFrameworkCore-DbContext- 'Arebis.Core.EntityFramework.StoreEmptyAsNullInterceptor.UpdateEntitiesBeforeSaving(Microsoft.EntityFrameworkCore.DbContext)')
 - [StringTrimmingInterceptor](#T-Arebis-Core-EntityFramework-StringTrimmingInterceptor 'Arebis.Core.EntityFramework.StringTrimmingInterceptor')
   - [#ctor()](#M-Arebis-Core-EntityFramework-StringTrimmingInterceptor-#ctor-System-Boolean- 'Arebis.Core.EntityFramework.StringTrimmingInterceptor.#ctor(System.Boolean)')
   - [StoreEmptyAsNull](#P-Arebis-Core-EntityFramework-StringTrimmingInterceptor-StoreEmptyAsNull 'Arebis.Core.EntityFramework.StringTrimmingInterceptor.StoreEmptyAsNull')
@@ -917,12 +923,56 @@ Arebis.Core.EntityFramework
 
 EntityFramework interceptor to support [StoreEmptyAsNull] attributes.
 
+<a name='M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-GetNullOnEmptyPropertiesFor-System-Type,Microsoft-EntityFrameworkCore-DbContext-'></a>
+### GetNullOnEmptyPropertiesFor() `method`
+
+##### Summary
+
+Return attribute and property info of all properties with [StoreEmptyAsNull] attribute of the given type.
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-InitializedInstance-Microsoft-EntityFrameworkCore-Diagnostics-MaterializationInterceptionData,System-Object-'></a>
 ### InitializedInstance() `method`
 
 ##### Summary
 
-*Inherit from parent.*
+On materializing an entity, convert nulls to empty strings or collections.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-IsEnumerableEmpty-System-Collections-IEnumerable-'></a>
+### IsEnumerableEmpty() `method`
+
+##### Summary
+
+Tests whether the given enumerable is empty.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-SavedChanges-Microsoft-EntityFrameworkCore-Diagnostics-SaveChangesCompletedEventData,System-Int32-'></a>
+### SavedChanges() `method`
+
+##### Summary
+
+After saving changes, restore empty strings or collections if applicable.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-SavedChangesAsync-Microsoft-EntityFrameworkCore-Diagnostics-SaveChangesCompletedEventData,System-Int32,System-Threading-CancellationToken-'></a>
+### SavedChangesAsync() `method`
+
+##### Summary
+
+After saving changes, restore empty strings or collections if applicable.
 
 ##### Parameters
 
@@ -933,7 +983,7 @@ This method has no parameters.
 
 ##### Summary
 
-*Inherit from parent.*
+Before saving changes, convert empty strings or collections to nulls.
 
 ##### Parameters
 
@@ -944,7 +994,29 @@ This method has no parameters.
 
 ##### Summary
 
-*Inherit from parent.*
+Before saving changes, convert empty strings or collections to nulls.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-UpdateEntitiesAfterSaving-Microsoft-EntityFrameworkCore-DbContext-'></a>
+### UpdateEntitiesAfterSaving() `method`
+
+##### Summary
+
+Sets entity properties back to their original (non-null empty) values after saving.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Arebis-Core-EntityFramework-StoreEmptyAsNullInterceptor-UpdateEntitiesBeforeSaving-Microsoft-EntityFrameworkCore-DbContext-'></a>
+### UpdateEntitiesBeforeSaving() `method`
+
+##### Summary
+
+Sets entity properties to null where applicable before saving.
 
 ##### Parameters
 

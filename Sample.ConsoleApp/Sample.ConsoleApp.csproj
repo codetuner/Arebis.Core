@@ -9,16 +9,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.23" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
 		<PackageReference Include="OpenAI" Version="2.8.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Arebis.Core.EntityFramework\Arebis.Core.EntityFramework.csproj" />
 	  <ProjectReference Include="..\Arebis.Core.Services.Email.MailKit\Arebis.Core.Services.Email.MailKit.csproj" />
 	  <ProjectReference Include="..\Arebis.Core.Services.Interfaces\Arebis.Core.Services.Interfaces.csproj" />
 	  <ProjectReference Include="..\Arebis.Core.Services.Translation.OpenAI\Arebis.Core.Services.Translation.OpenAI.csproj" />
 	  <ProjectReference Include="..\Arebis.Core.Services.Translation\Arebis.Core.Services.Translation.csproj" />
+	  <ProjectReference Include="..\Arebis.Types\Arebis.Types.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

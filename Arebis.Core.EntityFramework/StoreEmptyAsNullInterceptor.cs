@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections;
 
 namespace Arebis.Core.EntityFramework
 {
@@ -17,19 +18,27 @@ namespace Arebis.Core.EntityFramework
     /// </summary>
     public class StoreEmptyAsNullInterceptor : ISaveChangesInterceptor, IMaterializationInterceptor
     {
+        // Automatically allows GC when DbContext is collected.
+        private static readonly ConditionalWeakTable<DbContext, List<(object Entity, PropertyInfo Property, object? OriginalValue)>> pending = new();
+
         private static ConcurrentDictionary<Type, Tuple<StoreEmptyAsNullAttribute, PropertyInfo>[]> metaCache = new ConcurrentDictionary<Type, Tuple<StoreEmptyAsNullAttribute, PropertyInfo>[]>();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Before saving changes, convert empty strings or collections to nulls.
+        /// </summary>
         public InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
             if (eventData.Context is not null)
             {
                 UpdateEntitiesBeforeSaving(eventData.Context);
             }
+
             return result;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Before saving changes, convert empty strings or collections to nulls.
+        /// </summary>
         public ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
         {
             if (eventData.Context is not null)
@@ -40,8 +49,13 @@ namespace Arebis.Core.EntityFramework
             return ValueTask.FromResult(result);
         }
 
+        /// <summary>
+        /// Sets entity properties to null where applicable before saving.
+        /// </summary>
         private void UpdateEntitiesBeforeSaving(DbContext context)
         {
+            var changesToRestore = new List<(object Entity, PropertyInfo Property, object? OriginalValue)>();
+
             foreach (EntityEntry entry in context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added))
             {
                 var entity = entry.Entity;
@@ -54,6 +68,7 @@ namespace Arebis.Core.EntityFramework
                         var currentValue = (string?)entryProperty.CurrentValue;
                         if (currentValue != null && String.IsNullOrWhiteSpace(currentValue))
                         {
+                            changesToRestore.Add((entity, property.Item2, currentValue));
                             entryProperty.CurrentValue = null;
                         }
                     }
@@ -62,14 +77,62 @@ namespace Arebis.Core.EntityFramework
                         var currentValue = entryProperty.CurrentValue as IEnumerable;
                         if (currentValue != null && IsEnumerableEmpty(currentValue))
                         {
+                            changesToRestore.Add((entity, property.Item2, currentValue));
                             entryProperty.CurrentValue = null;
                         }
                     }
                 }
             }
+
+            // Replace any previous captured set (nested SaveChanges is rare but possible).
+            pending.Remove(context);
+            pending.Add(context, changesToRestore);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// After saving changes, restore empty strings or collections if applicable.
+        /// </summary>
+        public int SavedChanges(SaveChangesCompletedEventData eventData, int result)
+        {
+            if (eventData.Context is not null)
+            {
+                UpdateEntitiesAfterSaving(eventData.Context);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// After saving changes, restore empty strings or collections if applicable.
+        /// </summary>
+        public ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
+        {
+            if (eventData.Context is not null)
+            {
+                UpdateEntitiesAfterSaving(eventData.Context);
+            }
+
+            return ValueTask.FromResult(result);
+        }
+
+        /// <summary>
+        /// Sets entity properties back to their original (non-null empty) values after saving.
+        /// </summary>
+        private void UpdateEntitiesAfterSaving(DbContext context)
+        {
+            if (pending.TryGetValue(context, out var changesToRestore))
+            { 
+                foreach (var change in changesToRestore)
+                {
+                    change.Property.SetValue(change.Entity, change.OriginalValue);
+                }
+                pending.Remove(context);
+            }
+        }
+
+        /// <summary>
+        /// On materializing an entity, convert nulls to empty strings or collections.
+        /// </summary>
         public object InitializedInstance(MaterializationInterceptionData materializationData, object entity)
         {
             foreach (var property in GetNullOnEmptyPropertiesFor(entity.GetType(), materializationData.Context))
@@ -86,6 +149,9 @@ namespace Arebis.Core.EntityFramework
             return entity;
         }
 
+        /// <summary>
+        /// Return attribute and property info of all properties with [StoreEmptyAsNull] attribute of the given type.
+        /// </summary>
         private Tuple<StoreEmptyAsNullAttribute, PropertyInfo>[] GetNullOnEmptyPropertiesFor(Type type, DbContext context)
         {
             if (metaCache.TryGetValue(type, out var properties))
@@ -116,6 +182,9 @@ namespace Arebis.Core.EntityFramework
             }
         }
 
+        /// <summary>
+        /// Tests whether the given enumerable is empty.
+        /// </summary>
         private static bool IsEnumerableEmpty(IEnumerable e)
         {
             foreach (var item in e) return false;

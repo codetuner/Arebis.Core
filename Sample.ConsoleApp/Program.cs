@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OpenAI.Chat;
+using Sample.ConsoleApp;
+using Microsoft.EntityFrameworkCore;
+using Arebis.Types.Collections.Generic;
 
 // Setup HostApplicationBuilder to support dependency injection:
 // See: https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-usage
@@ -65,6 +68,48 @@ if (false)
     var emailSendService = host.Services.GetRequiredService<IEmailSendService>();
     // Send a test email:
     await emailSendService.SendEmail("it@onlinedogshows.eu", "Testing EmailSendService", "<h1>Hi, a little test mail.</h1>");
+}
+
+// Test Entity Framework Core with JsonValueConverter and StoreEmptyAsNullAttribute:
+if (false)
+{
+    int id;
+    var options = new DbContextOptionsBuilder<MyDbContext>()
+        .UseSqlServer("Data Source=(local);Initial Catalog=Playground;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True")
+        .Options;
+    using (var context = new MyDbContext(options))
+    {
+        var customer = context.Customers.CreateProxy();
+        customer.Name = "John Doe";
+        //customer.Properties = new DefaultDictionary<string, string>
+        //{
+        //    ["Age"] = "30",
+        //    ["Country"] = "USA"
+        //};
+
+        context.Customers.Add(customer);
+        await context.SaveChangesAsync();
+        id = customer.Id;
+
+        Console.WriteLine("=========================================");
+        Console.WriteLine($"Customer: {customer.Name}");
+        Console.WriteLine($"Properties: {string.Join(", ", customer.Properties.Select(kv => $"{kv.Key}={kv.Value}"))}");
+        Console.WriteLine("=========================================");
+
+    }
+
+    using (var context = new MyDbContext(options))
+    {
+        var customer = context.Customers.Find(id);
+
+        if (customer != null)
+        {
+            Console.WriteLine("=========================================");
+            Console.WriteLine($"Customer: {customer.Name}");
+            Console.WriteLine($"Properties: {string.Join(", ", customer.Properties.Select(kv => $"{kv.Key}={kv.Value}"))}");
+            Console.WriteLine("=========================================");
+        }
+    }
 }
 
 // Stop the host:
