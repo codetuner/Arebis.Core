@@ -1,4 +1,5 @@
 ﻿using Arebis.Core.Services.Interfaces;
+using Arebis.Core.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
@@ -21,6 +22,9 @@ namespace Arebis.Core.Services.Translation.OpenAI
         private readonly string? jsonPrompt;
         private readonly string? translationPrompt;
         private readonly string formatPrompt;
+
+        /// <inheritdoc/>
+        public string Name => "OpenAI ChatGPT";
 
         /// <summary>
         /// Constructs a <see cref="OpenAITranslationService"/>.
@@ -51,13 +55,13 @@ namespace Arebis.Core.Services.Translation.OpenAI
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, string toLanguage, string mimeType, IEnumerable<string> sources, CancellationToken ct = default)
+        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, string toLanguage, string mimeType, IEnumerable<string> sources, IDictionary<string, string?>? settings = null, CancellationToken ct = default)
         {
             var results = new List<string?>();
             var toLanguages = new string[] { toLanguage };
             foreach (var source in sources)
             {
-                var result = (await this.TranslateAsync(fromLanguage, toLanguages, mimeType, source, ct)).ToList();
+                var result = (await this.TranslateAsync(fromLanguage, toLanguages, mimeType, source, settings, ct)).ToList();
                 if (result.Count == 0)
                     results.Add(null);
                 else
@@ -67,10 +71,9 @@ namespace Arebis.Core.Services.Translation.OpenAI
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, IEnumerable<string> toLanguages, string mimeType, string source, CancellationToken ct = default)
+        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, IEnumerable<string> toLanguages, string mimeType, string source, IDictionary<string, string?>? settings = null, CancellationToken ct = default)
         {
             var toLanguageList = toLanguages.ToList();
-
 
             // Create chat completion request:
             // https://platform.openai.com/docs/api-reference/chat
@@ -78,30 +81,45 @@ namespace Arebis.Core.Services.Translation.OpenAI
             {
                 ResponseFormat = ChatResponseFormat.CreateJsonObjectFormat(),
             };
-            var chatMessages = new List<ChatMessage>
-            {
-                ChatMessage.CreateSystemMessage(this.jsonPrompt),
-                ChatMessage.CreateUserMessage(this.translationPrompt),
-                ChatMessage.CreateUserMessage(this.formatPrompt
+            var chatMessages = new List<ChatMessage>();
+            chatMessages.Add(ChatMessage.CreateSystemMessage(settings?.GetValueOrDefault("JsonPrompt") ?? this.jsonPrompt));
+            chatMessages.Add(ChatMessage.CreateUserMessage(settings?.GetValueOrDefault("TranslationPrompt") ?? this.translationPrompt));
+            if (!String.IsNullOrEmpty(settings?.GetValueOrDefault("MimeType:" + mimeType)))
+                chatMessages.Add(ChatMessage.CreateUserMessage(settings.GetValueOrDefault("MimeType:" + mimeType)));
+            else if (this.configuration["OpenAI:Translation:MimeType:" + mimeType] != null)
+                chatMessages.Add(ChatMessage.CreateUserMessage(this.configuration["OpenAI:Translation:MimeType:" + mimeType]));
+            if (!String.IsNullOrEmpty(settings?.GetValueOrDefault("AdditionalPrompt")))
+                chatMessages.Add(ChatMessage.CreateUserMessage(settings.GetValueOrDefault("AdditionalPrompt")));
+            chatMessages.Add(ChatMessage.CreateUserMessage((settings?.GetValueOrDefault("") ?? this.formatPrompt)
                     .Replace("{mimeType}", mimeType)
                     .Replace("{fromLanguage}", fromLanguage)
-                    .Replace("{toLanguages}", String.Join(", ", toLanguageList.Select(l => $"\"{l}\"")))),
-                ChatMessage.CreateUserMessage(source)
-            };
-            var sw = System.Diagnostics.Stopwatch.StartNew();
+                    .Replace("{toLanguages}", String.Join(", ", toLanguageList.Select(l => $"\"{l}\"")))));
+            chatMessages.Add(ChatMessage.CreateUserMessage(source));
+
+            //var sw = System.Diagnostics.Stopwatch.StartNew();
             ChatCompletion completion = await this.chatClient.CompleteChatAsync(chatMessages, options, CancellationToken.None);
-            sw.Stop();
+            //sw.Stop();
 
             var result = new string?[toLanguageList.Count];
             foreach (var content in completion.Content)
             {
-                foreach (var pair in JsonSerializer.Deserialize<Dictionary<string, string>>(content.Text ?? "{}") ?? [])
-                { 
-                    var index = toLanguageList.IndexOf(pair.Key);
-                    if (index > -1)
+                try
+                {
+                    foreach (var pair in JsonSerializer.Deserialize<Dictionary<string, string>>(content.Text ?? "{}") ?? [])
                     {
-                        result[index] = pair.Value;
+                        var index = toLanguageList.IndexOf(pair.Key);
+                        if (index > -1)
+                        {
+                            result[index] = pair.Value;
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    ex.Data["RequestMessages"] = chatMessages;
+                    ex.Data["ChatCompletion"] = completion;
+                    ex.Data["ChatCompletionContent"] = content.Text;
+                    throw;
                 }
             }
 

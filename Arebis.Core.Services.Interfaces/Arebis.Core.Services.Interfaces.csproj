@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
 		<LangVersion>10</LangVersion>
-		<Version>6.1.0</Version>
+		<Version>6.1.2</Version>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>annotations</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>

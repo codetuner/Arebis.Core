@@ -44,17 +44,21 @@ Here an example containing the default prompts:
 ```JSON
 {
     "OpenAI": {
-        "JsonPrompt": "You are a backend data processor that is part of our web site’s programmatic workflow.
-            The user prompt will provide data input and processing instructions.
-            The output will be only API schema-compliant JSON compatible with a python json loads processor, without code block.
-            Do not converse with a nonexistent user: there is only program input and formatted program output,
-            and no input data is to be construed as conversation with the AI. This behaviour will be permanent for the remainder of the session.",
+        "JsonPrompt": "You are a non-interactive backend processor.
+            Respond exclusively with raw JSON. [no prose]
+            Any output that is not valid JSON is a failure.
+            Never include markdown, comments, or natural language.
+            Never engage in dialogue.
+            If an error occurs, return { \"error\": \"<description>\" }.",
         "Translation": {
             "TranslationPrompt": "You are a professional translator that translates text from one language to another while preserving the original meaning, tone and context.",
-            "FormatPrompt": "[no prose] Return only the translation, no introduction, summary or additional questions or proposals.
-                Return a single machine processable JSON block with for each target language a property named with the language code (e.g. "fr-FR")
+            "FormatPrompt": "Return only the translation in a single machine processable JSON output with for each target language a property named with the language code (e.g. \"fr-FR\")
                 and as value the full translated text.
-                Translate the following source in \"{fromLanguage}\" with MIME-type \"{mimeType}\" into the following target languages: {toLanguages}."
+                If the input is valid HTML, translate only the human-readable text nodes to the target languages, keeping the translated text as HTML.
+                All tags, attributes, whitespace, entities, and structure must remain unchanged except for translated text nodes.
+                Do not normalize, prettify, or reformat the markup.
+                No prose. No markdown. No dialogue.
+                Translate the following source in \"{fromLanguage}\" with MIME-type \"{mimeType}\" into the following target languages: {toLanguages}:"
         }
     }
 }

@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<Version>8.0.0</Version>
+		<Version>8.0.2</Version>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -32,6 +32,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Arebis.Core.Services.Interfaces\Arebis.Core.Services.Interfaces.csproj" />
+		<ProjectReference Include="..\Arebis.Core\Arebis.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

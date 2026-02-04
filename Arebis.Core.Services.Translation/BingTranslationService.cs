@@ -23,6 +23,9 @@ namespace Arebis.Core.Services.Translation
         private readonly ILogger logger;
         private readonly IHttpClientFactory? httpClientFactory;
 
+        /// <inheritdoc/>
+        public string Name => "Bing Translation";
+
         /// <summary>
         /// Constructs a <see cref="BingTranslationService"/>.
         /// </summary>
@@ -34,7 +37,7 @@ namespace Arebis.Core.Services.Translation
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, string toLanguage, string mimeType, IEnumerable<string> sources, CancellationToken ct = default)
+        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, string toLanguage, string mimeType, IEnumerable<string> sources, IDictionary<string, string?>? settings = null, CancellationToken ct = default)
         {
             var result = new List<string?>();
             var responseObjects = await TranslateInternalAsync(fromLanguage, new string[] { toLanguage }, mimeType, sources, ct);
@@ -47,7 +50,7 @@ namespace Arebis.Core.Services.Translation
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, IEnumerable<string> toLanguages, string mimeType, string source, CancellationToken ct = default)
+        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, IEnumerable<string> toLanguages, string mimeType, string source, IDictionary<string, string?>? settings = null, CancellationToken ct = default)
         {
             var result = new List<string?>();
             var responseObjects = await TranslateInternalAsync(fromLanguage, toLanguages, mimeType, new string[] { source }, ct);

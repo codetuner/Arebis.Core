@@ -35,3 +35,4 @@ Known implementations:
 - Arebis.Core.Services.Translation.BingTranslationService
 - Arebis.Core.Services.Translation.DeepLTranslationService
 - Arebis.Core.Services.Translation.GoogleTranslationService
+- Arebis.Core.Services.Translation.OpenAI.OpenAITranslationService

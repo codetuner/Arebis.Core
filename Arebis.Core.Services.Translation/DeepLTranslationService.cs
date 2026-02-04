@@ -21,6 +21,9 @@ namespace Arebis.Core.Services.Translation
         private readonly ILogger logger;
         private readonly IHttpClientFactory? httpClientFactory;
 
+        /// <inheritdoc/>
+        public string Name => "DeepL";
+        
         /// <summary>
         /// Constructs a <see cref="DeepLTranslationService"/>.
         /// </summary>
@@ -77,7 +80,7 @@ namespace Arebis.Core.Services.Translation
         public string? IgnoreTags { get; set; }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, IEnumerable<string> toLanguages, string mimeType, string source, CancellationToken ct = default)
+        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, IEnumerable<string> toLanguages, string mimeType, string source, IDictionary<string, string?>? settings = null, CancellationToken ct = default)
         {
             var result = new List<string?>();
             var sources = new string[] { source };
@@ -85,7 +88,7 @@ namespace Arebis.Core.Services.Translation
             {
                 try
                 {
-                    var texts = await this.TranslateAsync(fromLanguage, toLanguage, mimeType, sources, ct);
+                    var texts = await this.TranslateAsync(fromLanguage, toLanguage, mimeType, sources, settings, ct);
                     result.Add(texts.FirstOrDefault());
                 }
                 catch (Exception ex)
@@ -101,7 +104,7 @@ namespace Arebis.Core.Services.Translation
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, string toLanguage, string mimeType, IEnumerable<string> sources, CancellationToken ct = default)
+        public async Task<IEnumerable<string?>> TranslateAsync(string fromLanguage, string toLanguage, string mimeType, IEnumerable<string> sources, IDictionary<string, string?>? settings = null, CancellationToken ct = default)
         {
             var result = new List<string?>();
             var sourcesEnumerator = sources.GetEnumerator();
