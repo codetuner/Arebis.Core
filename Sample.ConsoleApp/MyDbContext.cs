@@ -4,6 +4,7 @@ using Arebis.Types.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -36,15 +37,18 @@ namespace Sample.ConsoleApp
     }
 
     [Table("Customer")]
-    public class Customer
+    public class Customer : IContextualEntity<MyDbContext>
     {
+        [Key]
         public virtual int Id { get; set; }
      
         public virtual string Name { get; set; } = string.Empty;
 
         [StoreEmptyAsNull]
-        [Converter(typeof(JsonValueConverter<DefaultDictionary<string, string>>))]
+        [Converter(typeof(JsonValueConverter<DefaultDictionary<string, string>>)/*, typeof(JsonValueComparer<DefaultDictionary<string, string>>)*/)]
         public virtual DefaultDictionary<string, string> Properties { get; set; } = [];
+        
+        public MyDbContext? Context { get; set; }
     }
 
 /*

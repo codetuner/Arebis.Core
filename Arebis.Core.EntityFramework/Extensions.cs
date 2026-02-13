@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Arebis.Core.Source;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Arebis.Core.EntityFramework
 {
@@ -117,14 +118,15 @@ namespace Arebis.Core.EntityFramework
         }
 
         /// <summary>
-        /// Marks a contextual entity as modified.
+        /// Marks a contextual entity as modified as well as all it's non-key properties (or only the given properties).
         /// </summary>
-        public static void MarkModified<TDbContext>(this IContextualEntity<TDbContext> entity)
+        public static void MarkModified<TDbContext>(this IContextualEntity<TDbContext> entity, params string[] onlyProperties)
             where TDbContext : DbContext
         {
             var context = entity.Context;
             if (context != null)
             {
+                // Mark the entity as modified if it is not already marked as such.
                 var entry = context.Entry(entity);
                 switch (entry.State)
                 {
@@ -134,6 +136,26 @@ namespace Arebis.Core.EntityFramework
                     case EntityState.Detached:
                         entry.State = EntityState.Modified;
                         break;
+                }
+
+                // Mark properties as modified:
+                if (onlyProperties.Length > 0)
+                {
+                    // Only mark the specified properties as modified.
+                    foreach (var propertyName in onlyProperties)
+                    {
+                        entry.Property(propertyName).IsModified = true;
+                    }
+                }
+                else
+                {
+                    // Mark all properties as modified, except key properties.
+                    var keyProperties = (IEnumerable<IProperty>)(entry.Metadata.FindPrimaryKey()?.Properties ?? new List<IProperty>());
+                    foreach (var property in entry.Properties)
+                    {
+                        if (keyProperties.Any(p => p.Name == property.Metadata.Name)) continue;
+                        property.IsModified = true;
+                    }
                 }
             }
         }

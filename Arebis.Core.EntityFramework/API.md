@@ -50,13 +50,16 @@
   - [FindOrFailAsync\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-FindOrFailAsync``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[],System-Threading-CancellationToken- 'Arebis.Core.EntityFramework.Extensions.FindOrFailAsync``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Object[],System.Threading.CancellationToken)')
   - [FindOrFail\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-FindOrFail``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[]- 'Arebis.Core.EntityFramework.Extensions.FindOrFail``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Object[])')
   - [GetDbContext\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-GetDbContext``1-Microsoft-EntityFrameworkCore-DbSet{``0}- 'Arebis.Core.EntityFramework.Extensions.GetDbContext``1(Microsoft.EntityFrameworkCore.DbSet{``0})')
-  - [MarkModified\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-MarkModified``1-Arebis-Core-EntityFramework-IContextualEntity{``0}- 'Arebis.Core.EntityFramework.Extensions.MarkModified``1(Arebis.Core.EntityFramework.IContextualEntity{``0})')
+  - [MarkModified\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-MarkModified``1-Arebis-Core-EntityFramework-IContextualEntity{``0},System-String[]- 'Arebis.Core.EntityFramework.Extensions.MarkModified``1(Arebis.Core.EntityFramework.IContextualEntity{``0},System.String[])')
   - [OrderBy\`\`1(query,orderByExpression)](#M-Arebis-Core-EntityFramework-Extensions-OrderBy``1-System-Linq-IQueryable{``0},System-String- 'Arebis.Core.EntityFramework.Extensions.OrderBy``1(System.Linq.IQueryable{``0},System.String)')
   - [ThenBy\`\`1(query,orderByExpression)](#M-Arebis-Core-EntityFramework-Extensions-ThenBy``1-System-Linq-IOrderedQueryable{``0},System-String- 'Arebis.Core.EntityFramework.Extensions.ThenBy``1(System.Linq.IOrderedQueryable{``0},System.String)')
 - [IContextualEntity\`1](#T-Arebis-Core-EntityFramework-IContextualEntity`1 'Arebis.Core.EntityFramework.IContextualEntity`1')
   - [Context](#P-Arebis-Core-EntityFramework-IContextualEntity`1-Context 'Arebis.Core.EntityFramework.IContextualEntity`1.Context')
 - [IInterceptingEntity](#T-Arebis-Core-EntityFramework-IInterceptingEntity 'Arebis.Core.EntityFramework.IInterceptingEntity')
   - [OnSaving()](#M-Arebis-Core-EntityFramework-IInterceptingEntity-OnSaving-Microsoft-EntityFrameworkCore-ChangeTracking-EntityEntry- 'Arebis.Core.EntityFramework.IInterceptingEntity.OnSaving(Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry)')
+- [JsonValueComparer\`1](#T-Arebis-Core-EntityFramework-ValueConversion-JsonValueComparer`1 'Arebis.Core.EntityFramework.ValueConversion.JsonValueComparer`1')
+  - [#ctor()](#M-Arebis-Core-EntityFramework-ValueConversion-JsonValueComparer`1-#ctor 'Arebis.Core.EntityFramework.ValueConversion.JsonValueComparer`1.#ctor')
+  - [SerializerOptions](#P-Arebis-Core-EntityFramework-ValueConversion-JsonValueComparer`1-SerializerOptions 'Arebis.Core.EntityFramework.ValueConversion.JsonValueComparer`1.SerializerOptions')
 - [JsonValueConverter](#T-Arebis-Core-EntityFramework-ValueConversion-JsonValueConverter 'Arebis.Core.EntityFramework.ValueConversion.JsonValueConverter')
   - [SerializerOptions](#P-Arebis-Core-EntityFramework-ValueConversion-JsonValueConverter-SerializerOptions 'Arebis.Core.EntityFramework.ValueConversion.JsonValueConverter.SerializerOptions')
 - [JsonValueConverter\`1](#T-Arebis-Core-EntityFramework-ValueConversion-JsonValueConverter`1 'Arebis.Core.EntityFramework.ValueConversion.JsonValueConverter`1')
@@ -643,12 +646,12 @@ Get the DbContext of a DbSet.
 
 This method has no parameters.
 
-<a name='M-Arebis-Core-EntityFramework-Extensions-MarkModified``1-Arebis-Core-EntityFramework-IContextualEntity{``0}-'></a>
+<a name='M-Arebis-Core-EntityFramework-Extensions-MarkModified``1-Arebis-Core-EntityFramework-IContextualEntity{``0},System-String[]-'></a>
 ### MarkModified\`\`1() `method`
 
 ##### Summary
 
-Marks a contextual entity as modified.
+Marks a contextual entity as modified as well as all it's non-key properties (or only the given properties).
 
 ##### Parameters
 
@@ -734,6 +737,35 @@ True if the method may have perofrmed changes on entities, false otherwise.
 ##### Parameters
 
 This method has no parameters.
+
+<a name='T-Arebis-Core-EntityFramework-ValueConversion-JsonValueComparer`1'></a>
+## JsonValueComparer\`1 `type`
+
+##### Namespace
+
+Arebis.Core.EntityFramework.ValueConversion
+
+##### Summary
+
+A value comparer that compares values by their Json representation.
+
+<a name='M-Arebis-Core-EntityFramework-ValueConversion-JsonValueComparer`1-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='P-Arebis-Core-EntityFramework-ValueConversion-JsonValueComparer`1-SerializerOptions'></a>
+### SerializerOptions `property`
+
+##### Summary
+
+Options to use when serializing values to compare.
 
 <a name='T-Arebis-Core-EntityFramework-ValueConversion-JsonValueConverter'></a>
 ## JsonValueConverter `type`

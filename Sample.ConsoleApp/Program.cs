@@ -1,6 +1,7 @@
 ﻿using Arebis.Core.Services.Interfaces;
 using Arebis.Core.Services.Translation;
 using Arebis.Core.Services.Translation.OpenAI;
+using Arebis.Core.EntityFramework;
 using Arebis.Core.Services.Email.MailKit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,23 +80,21 @@ if (false)
         .Options;
     using (var context = new MyDbContext(options))
     {
-        var customer = context.Customers.CreateProxy();
-        customer.Name = "John Doe";
-        //customer.Properties = new DefaultDictionary<string, string>
-        //{
-        //    ["Age"] = "30",
-        //    ["Country"] = "USA"
-        //};
+        //var customer = context.Customers.AddNew();
+        var customer = context.Customers.Find(17) ?? throw new Exception("Customer not found");
+        customer.Name = "John Doe " + DateTime.Now.ToString();
+        customer.Properties["Age"] = "30";
+        customer.Properties["Country"] = "USA";
 
-        context.Customers.Add(customer);
+        customer.MarkModified();
+
         await context.SaveChangesAsync();
         id = customer.Id;
 
         Console.WriteLine("=========================================");
-        Console.WriteLine($"Customer: {customer.Name}");
+        Console.WriteLine($"Customer {customer.Id}: {customer.Name}");
         Console.WriteLine($"Properties: {string.Join(", ", customer.Properties.Select(kv => $"{kv.Key}={kv.Value}"))}");
         Console.WriteLine("=========================================");
-
     }
 
     using (var context = new MyDbContext(options))
@@ -105,7 +104,7 @@ if (false)
         if (customer != null)
         {
             Console.WriteLine("=========================================");
-            Console.WriteLine($"Customer: {customer.Name}");
+            Console.WriteLine($"Customer {customer.Id}: {customer.Name}");
             Console.WriteLine($"Properties: {string.Join(", ", customer.Properties.Select(kv => $"{kv.Key}={kv.Value}"))}");
             Console.WriteLine("=========================================");
         }
