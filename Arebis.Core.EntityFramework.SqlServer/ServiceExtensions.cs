@@ -24,13 +24,14 @@ namespace Arebis.Core.EntityFramework.SqlServer
         {
             services.AddScoped<DbContextOptions<TDbContext>>(serviceProvider =>
             {
-                var builder = new DbContextOptionsBuilder<TDbContext>();
+                var optionsBuilder = new DbContextOptionsBuilder<TDbContext>();
+                optionsBuilder.UseApplicationServiceProvider(serviceProvider);
                 var source = serviceProvider.GetRequiredService<SqlConnectionSource>();
                 var connection = source[connectionName];
-                builder.UseSqlServer(connection, sqlServerOptionsAction);
-                optionsAction?.Invoke(builder);
+                optionsBuilder.UseSqlServer(connection, sqlServerOptionsAction);
+                optionsAction?.Invoke(optionsBuilder);
 
-                return builder
+                return optionsBuilder
                     .Options;
             });
 
