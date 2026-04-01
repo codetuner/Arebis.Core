@@ -1,0 +1,10 @@
+﻿@model TranslationsModel
+
+<h1>Translations result</h1>
+
+@foreach (var item in Model.Translations)
+{
+    @* <div>@Html.Raw(item[1])</div> *@
+    <textarea class="form-control">@item[1]</textarea>
+    <hr />
+}

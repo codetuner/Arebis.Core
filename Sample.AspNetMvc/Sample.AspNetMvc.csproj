@@ -11,6 +11,8 @@
     <ProjectReference Include="..\Arebis.Core.AspNet.Mvc.Sircl\Arebis.Core.AspNet.Mvc.Sircl.csproj" />
     <ProjectReference Include="..\Arebis.Core.AspNet.Mvc\Arebis.Core.AspNet.Mvc.csproj" />
     <ProjectReference Include="..\Arebis.Core.AspNet\Arebis.Core.AspNet.csproj" />
+    <ProjectReference Include="..\Arebis.Core.Services.Translation.OpenAI\Arebis.Core.Services.Translation.OpenAI.csproj" />
+    <ProjectReference Include="..\Arebis.Core.Services.Translation\Arebis.Core.Services.Translation.csproj" />
     <ProjectReference Include="..\Arebis.Core\Arebis.Core.csproj" />
   </ItemGroup>
 
