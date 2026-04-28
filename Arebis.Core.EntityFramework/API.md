@@ -670,7 +670,7 @@ Performs ordering given a string expression.
 | ---- | ---- | ----------- |
 | query | [System.Linq.IQueryable{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IQueryable 'System.Linq.IQueryable{``0}') | The query to order. |
 | orderByExpression | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The property (path) to order by. Append " ASC" or " DESC" to be explicit about the ordering direction.
-Can contain multiple terms separated by comma, i.e. "Name, Town ASC, Country DESC". |
+Can contain multiple terms separated by comma, i.e. "Name, Address.Town ASC, Country DESC". |
 
 <a name='M-Arebis-Core-EntityFramework-Extensions-ThenBy``1-System-Linq-IOrderedQueryable{``0},System-String-'></a>
 ### ThenBy\`\`1(query,orderByExpression) `method`
@@ -685,7 +685,7 @@ Performs further ordering given a string expression.
 | ---- | ---- | ----------- |
 | query | [System.Linq.IOrderedQueryable{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IOrderedQueryable 'System.Linq.IOrderedQueryable{``0}') | The query to order. |
 | orderByExpression | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The property (path) to order by. Append " ASC" or " DESC" to be explicit about the ordering direction.
-Can contain multiple terms separated by comma, i.e. "Name, Town ASC, Country DESC". |
+Can contain multiple terms separated by comma, i.e. "Name, Address.Town ASC, Country DESC". |
 
 <a name='T-Arebis-Core-EntityFramework-IContextualEntity`1'></a>
 ## IContextualEntity\`1 `type`

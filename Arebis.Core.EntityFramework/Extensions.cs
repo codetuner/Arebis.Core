@@ -165,7 +165,7 @@ namespace Arebis.Core.EntityFramework
         /// </summary>
         /// <param name="query">The query to order.</param>
         /// <param name="orderByExpression">The property (path) to order by. Append " ASC" or " DESC" to be explicit about the ordering direction.
-        /// Can contain multiple terms separated by comma, i.e. "Name, Town ASC, Country DESC".
+        /// Can contain multiple terms separated by comma, i.e. "Name, Address.Town ASC, Country DESC".
         /// </param>
         /// <see href="https://stackoverflow.com/a/64085775"/>
         public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> query, string orderByExpression)
@@ -181,7 +181,10 @@ namespace Arebis.Core.EntityFramework
                 orderByMethod = strs[1].Equals("DESC", StringComparison.OrdinalIgnoreCase) ? "OrderByDescending" : "OrderBy";
 
             ParameterExpression pe = Expression.Parameter(query.ElementType);
-            MemberExpression me = Expression.Property(pe, propertyName);
+            string[] propertyPath = propertyName.Split('.');
+            MemberExpression me = Expression.Property(pe, propertyPath[0]);
+            for (int i = 1; i < propertyPath.Length; i++)
+                me = Expression.Property(me, propertyPath[i]);
 
             MethodCallExpression orderByCall = Expression.Call(typeof(Queryable), orderByMethod, new Type[] { query.ElementType, me.Type }, query.Expression
                 , Expression.Quote(Expression.Lambda(me, pe)));
@@ -201,7 +204,7 @@ namespace Arebis.Core.EntityFramework
         /// </summary>
         /// <param name="query">The query to order.</param>
         /// <param name="orderByExpression">The property (path) to order by. Append " ASC" or " DESC" to be explicit about the ordering direction.
-        /// Can contain multiple terms separated by comma, i.e. "Name, Town ASC, Country DESC".
+        /// Can contain multiple terms separated by comma, i.e. "Name, Address.Town ASC, Country DESC".
         /// </param>
         /// <see href="https://stackoverflow.com/a/64085775"/>
         public static IOrderedQueryable<T> ThenBy<T>(this IOrderedQueryable<T> query, string orderByExpression)
@@ -217,7 +220,10 @@ namespace Arebis.Core.EntityFramework
                 orderByMethod = strs[1].Equals("DESC", StringComparison.OrdinalIgnoreCase) ? "ThenByDescending" : "ThenBy";
 
             ParameterExpression pe = Expression.Parameter(query.ElementType);
-            MemberExpression me = Expression.Property(pe, propertyName);
+            string[] propertyPath = propertyName.Split('.');
+            MemberExpression me = Expression.Property(pe, propertyPath[0]);
+            for (int i = 1; i < propertyPath.Length; i++)
+                me = Expression.Property(me, propertyPath[i]);
 
             MethodCallExpression orderByCall = Expression.Call(typeof(Queryable), orderByMethod, new Type[] { query.ElementType, me.Type }, query.Expression
                 , Expression.Quote(Expression.Lambda(me, pe)));
