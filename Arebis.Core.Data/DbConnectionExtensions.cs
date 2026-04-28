@@ -16,17 +16,19 @@ namespace Arebis.Core.Data
         /// <summary>
         /// Opens the connection if it is not currently open.
         /// </summary>
-        public static void EnsureOpen(this IDbConnection conn)
+        public static IDbConnection EnsureOpen(this IDbConnection conn)
         {
             if (conn.State != System.Data.ConnectionState.Open) conn.Open();
+            return conn;
         }
 
         /// <summary>
         /// Opens the connection if it is not currently open.
         /// </summary>
-        public static async Task EnsureOpenAsync(this DbConnection conn)
+        public static async Task<DbConnection> EnsureOpenAsync(this DbConnection conn)
         {
             if (conn.State != System.Data.ConnectionState.Open) await conn.OpenAsync();
+            return conn;
         }
 
         /// <summary>
