@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -115,6 +116,25 @@ namespace Arebis.Core.Extensions
         public static int If(this int i, Func<int, bool> condition, int matchValue)
         {
             return condition(i) ? matchValue : i;
+        }
+
+        /// <summary>
+        /// Round a decimal value to a certain number of decimals, using MidpointRounding.AwayFromZero.
+        /// </summary>
+        [return:NotNullIfNotNull(nameof(value))]
+        public static decimal? RoundMoney(this decimal? value, int decimals = 2)
+        {
+            if (!value.HasValue) return null;
+            return Math.Round(value.Value, decimals, MidpointRounding.AwayFromZero);
+        }
+
+        /// <summary>
+        /// Round a decimal value to a certain number of decimals, using MidpointRounding.AwayFromZero.
+        /// </summary>
+        [return:NotNullIfNotNull(nameof(value))]
+        public static decimal RoundMoney(this decimal value, int decimals = 2)
+        {
+            return Math.Round(value, decimals, MidpointRounding.AwayFromZero);
         }
     }
 }
