@@ -113,6 +113,84 @@ namespace Arebis.Core.Tests.Extensions
         }
 
         [TestMethod]
+        public void SynchroniseWithOtherTests()
+        {
+            Func<int, char, bool> comparer = (i, c) => c == (char)('0' + i);
+
+            {
+                var source = new int[] { 5, 6, 7 };
+                var target = (new char[] { '6', '7', '8' }).ToList();
+                source.SynchroniseWithOther(target, comparer, (i) => target.Add((char)('0' + i)));
+                CollectionAssert.AreEquivalent(source.Select(i => (char)('0' + i)).ToList(), target);
+            }
+            {
+                // All source items are added, target starts empty:
+                var source = new int[] { 5, 6, 7 };
+                var target = new List<char>();
+                var added = new List<int>();
+                var removed = new List<char>();
+                source.SynchroniseWithOther(target, comparer, e => { added.Add(e); target.Add((char)('0' + e)); }, e => { removed.Add(e); target.Remove(e); });
+                Assert.AreEqual(3, added.Count);
+                Assert.AreEqual(0, removed.Count);
+                Assert.AreEqual(3, target.Count);
+            }
+            {
+                // Source and target fully match, nothing is added or removed:
+                var source = new int[] { 5, 6, 7 };
+                var target = new List<char>() { '5', '6', '7' };
+                var added = new List<int>();
+                var removed = new List<char>();
+                source.SynchroniseWithOther(target, comparer, e => { added.Add(e); target.Add((char)('0' + e)); }, e => { removed.Add(e); target.Remove(e); });
+                Assert.AreEqual(0, added.Count);
+                Assert.AreEqual(0, removed.Count);
+                Assert.AreEqual(3, target.Count);
+            }
+            {
+                // Source is empty, all target items are removed:
+                var source = new int[0];
+                var target = new List<char>() { '5', '6', '7' };
+                var added = new List<int>();
+                var removed = new List<char>();
+                source.SynchroniseWithOther(target, comparer, e => { added.Add(e); target.Add((char)('0' + e)); }, e => { removed.Add(e); target.Remove(e); });
+                Assert.AreEqual(0, added.Count);
+                Assert.AreEqual(3, removed.Count);
+                Assert.AreEqual(0, target.Count);
+            }
+            {
+                // Mix of items to add, remove and leave remaining:
+                var source = new int[] { 5, 6, 7 };
+                var target = new List<char>() { '6', '7', '8', '9' };
+                var added = new List<int>();
+                var removed = new List<char>();
+                source.SynchroniseWithOther(target, comparer, e => { added.Add(e); target.Add((char)('0' + e)); }, e => { removed.Add(e); target.Remove(e); });
+                Assert.AreEqual(1, added.Count);
+                Assert.AreEqual(5, added[0]);
+                Assert.AreEqual(2, removed.Count);
+                Assert.AreEqual('8', removed[0]);
+                Assert.AreEqual('9', removed[1]);
+                Assert.AreEqual(3, target.Count);
+                Assert.AreEqual('6', target[0]);
+                Assert.AreEqual('7', target[1]);
+                Assert.AreEqual('5', target[2]);
+            }
+            {
+                // Duplicate items in source: only the first duplicate matches, the second is added:
+                var source = new int[] { 5, 5, 6 };
+                var target = new List<char>() { '5', '6' };
+                var added = new List<int>();
+                var removed = new List<char>();
+                source.SynchroniseWithOther(target, comparer, e => { added.Add(e); target.Add((char)('0' + e)); }, e => { removed.Add(e); target.Remove(e); });
+                Assert.AreEqual(1, added.Count);
+                Assert.AreEqual(5, added[0]);
+                Assert.AreEqual(0, removed.Count);
+                Assert.AreEqual(3, target.Count);
+                Assert.AreEqual('5', target[0]);
+                Assert.AreEqual('6', target[1]);
+                Assert.AreEqual('5', target[2]);
+            }
+        }
+
+        [TestMethod]
         public void TakeWithSubstTests()
         {
             {

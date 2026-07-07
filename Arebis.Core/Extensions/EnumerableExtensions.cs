@@ -196,7 +196,7 @@ namespace Arebis.Core.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source collection.</param>
-        /// <param name="target">The target to synchronise to.</param>
+        /// <param name="target">The target to synchronise to. That is the collection where items are added or removed to match the source collection.</param>
         /// <param name="comparer">Comparer to use. Object.Equals if null or missing.</param>
         /// <param name="apply">Whether to update the target collection to have it holding the same elements as the source.</param>
         /// <param name="onAdded">Action to take on elements available in the source but not in the target collection.</param>
@@ -239,6 +239,38 @@ namespace Arebis.Core.Extensions
 
             // Return source for fluent syntax:
             return source;
+        }
+
+        /// <summary>
+        /// Synchronises a source with a target collection where both collections have different element types.
+        /// </summary>
+        /// <typeparam name="T">Element type of the source collection.</typeparam>
+        /// <typeparam name="U">Element type of the target collection.</typeparam>
+        /// <param name="source">The source collection.</param>
+        /// <param name="target">The target to synchronise to. That is the collection where items are added or removed to match the source collection.</param>
+        /// <param name="comparer">Comparer to use. Object.Equals if null or missing.</param>
+        /// <param name="add">Performs the acction of adding an element to the target.</param>
+        /// <param name="remove">Performs the action of removing an element from the target. If null, the element is removed from the target collection directly.</param>
+        public static void SynchroniseWithOther<T, U>(this IEnumerable<T> source, ICollection<U> target, Func<T, U, bool> comparer, Action<T> add, Action<U>? remove = null)
+        {
+            var toRemove = target.ToList();
+            foreach (var item in source)
+            {
+                var index = toRemove.IndexWhere(e => comparer(item, e));
+                if (index == -1)
+                {
+                    add.Invoke(item);
+                }
+                else
+                {
+                    toRemove.RemoveAt(index);
+                }
+            }
+            foreach (var item in toRemove)
+            {
+                if (remove != null) remove.Invoke(item);
+                else target.Remove(item);
+            }
         }
 
         /// <summary>
