@@ -45,6 +45,8 @@ namespace Arebis.Core.Services.Email.MailKit
             // Set recipients:
             foreach(var recipient in message.Recipients)
             {
+                if (String.IsNullOrEmpty(recipient.Address)) continue;
+
                 var mailboxAddress = new MailboxAddress(recipient.Name ?? string.Empty, recipient.Address);
                 switch(recipient.RecipientType)
                 {
