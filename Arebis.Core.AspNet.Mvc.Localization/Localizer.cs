@@ -16,6 +16,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Collections.Concurrent;
 
 namespace Arebis.Core.AspNet.Mvc.Localization
 {
@@ -382,7 +383,7 @@ namespace Arebis.Core.AspNet.Mvc.Localization
                 }
                 // Also add default culture:
                 if (!cultureList.Contains(defaultCultureName)) cultureList.Add(null);
-                // Store in cahce and return:
+                // Store in cache and return:
                 return candidateCultures[culture.Name] = cultureList.ToArray();
             }
         }
@@ -390,6 +391,6 @@ namespace Arebis.Core.AspNet.Mvc.Localization
         /// <summary>
         /// Cache for list of cultures to probe given the request culture.
         /// </summary>
-        private readonly static Dictionary<string, string?[]> candidateCultures = new();
+        private readonly static ConcurrentDictionary<string, string?[]> candidateCultures = new();
     }
 }
