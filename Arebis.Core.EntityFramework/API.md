@@ -49,6 +49,7 @@
   - [FindOrFailAsync\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-FindOrFailAsync``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[]- 'Arebis.Core.EntityFramework.Extensions.FindOrFailAsync``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Object[])')
   - [FindOrFailAsync\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-FindOrFailAsync``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[],System-Threading-CancellationToken- 'Arebis.Core.EntityFramework.Extensions.FindOrFailAsync``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Object[],System.Threading.CancellationToken)')
   - [FindOrFail\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-FindOrFail``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Object[]- 'Arebis.Core.EntityFramework.Extensions.FindOrFail``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Object[])')
+  - [FindSingleOrDefaultWhereAsync\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-FindSingleOrDefaultWhereAsync``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Linq-Expressions-Expression{System-Func{``0,System-Boolean}},System-Boolean,System-Threading-CancellationToken- 'Arebis.Core.EntityFramework.Extensions.FindSingleOrDefaultWhereAsync``1(Microsoft.EntityFrameworkCore.DbSet{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Threading.CancellationToken)')
   - [GetDbContext\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-GetDbContext``1-Microsoft-EntityFrameworkCore-DbSet{``0}- 'Arebis.Core.EntityFramework.Extensions.GetDbContext``1(Microsoft.EntityFrameworkCore.DbSet{``0})')
   - [MarkModified\`\`1()](#M-Arebis-Core-EntityFramework-Extensions-MarkModified``1-Arebis-Core-EntityFramework-IContextualEntity{``0},System-String[]- 'Arebis.Core.EntityFramework.Extensions.MarkModified``1(Arebis.Core.EntityFramework.IContextualEntity{``0},System.String[])')
   - [OrderBy\`\`1(query,orderByExpression)](#M-Arebis-Core-EntityFramework-Extensions-OrderBy``1-System-Linq-IQueryable{``0},System-String- 'Arebis.Core.EntityFramework.Extensions.OrderBy``1(System.Linq.IQueryable{``0},System.String)')
@@ -630,6 +631,17 @@ This method has no parameters.
 ##### Summary
 
 Finds an entity by primary key or throws NullReferenceException if not found.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Arebis-Core-EntityFramework-Extensions-FindSingleOrDefaultWhereAsync``1-Microsoft-EntityFrameworkCore-DbSet{``0},System-Linq-Expressions-Expression{System-Func{``0,System-Boolean}},System-Boolean,System-Threading-CancellationToken-'></a>
+### FindSingleOrDefaultWhereAsync\`\`1() `method`
+
+##### Summary
+
+Finds an entity matching a given predicate by searching loaded entities first and optionally fallback to a DB search.
 
 ##### Parameters
 

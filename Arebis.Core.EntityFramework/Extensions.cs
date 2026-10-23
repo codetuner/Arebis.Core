@@ -89,6 +89,22 @@ namespace Arebis.Core.EntityFramework
         }
 
         /// <summary>
+        /// Finds an entity matching a given predicate by searching loaded entities first and optionally fallback to a DB search.
+        /// </summary>
+        public static async Task<TEntity?> FindSingleOrDefaultWhereAsync<TEntity>(this DbSet<TEntity> set, Expression<Func<TEntity,bool>> predicate, bool fallbackToDbQuery = true, CancellationToken cancellationToken = default)
+            where TEntity : class
+        {
+            var entityEntry = set.GetDbContext()?.ChangeTracker.Entries<TEntity>().SingleOrDefault(e => predicate.Compile().Invoke(e.Entity));
+            var entity = entityEntry?.Entity;
+            if (entity == null && fallbackToDbQuery)
+            {
+                entity = await set.SingleOrDefaultAsync(predicate, cancellationToken);
+            }
+
+            return entity;
+        }
+
+        /// <summary>
         /// Creates new entity or entity proxy and adds it to the context.
         /// </summary>
         public static TEntity AddNew<TEntity>(this DbSet<TEntity> set, params object[] constructorArgs)
