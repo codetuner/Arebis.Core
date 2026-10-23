@@ -12,6 +12,10 @@ Common .NET Core extensions and extension methods.
 The `Current` class provides access to the current application context such as the current DateTime in a way that mocking is possible.
 The class also provides a `SoftRecycle` event that can be used to trigger a soft recycle of the application, which is useful in scenarios like web applications where you want to refresh the application state without a full restart.
 
+#### `Disposables`
+
+A disposable collection of disposable objects that can be disposed of together.
+
 #### `LiveAssert`
 
 Assertion methods to ease validation in business methods.
