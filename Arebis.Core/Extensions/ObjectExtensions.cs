@@ -19,6 +19,21 @@ namespace Arebis.Core.Extensions
 	public static class ObjectExtensions
 	{
         /// <summary>
+        /// Performs an action on an object (if it is not null) (i.e. initialize it) and returns the object.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// var person = new Person().With(p => p.Name = "John").With(p => p.Age = 30);
+        /// </code>
+        /// </example>
+        [return: NotNullIfNotNull("obj")]
+        public static T With<T>(this T obj, Action<T> action)
+        {
+            if (obj != null) action(obj);
+            return obj;
+        }
+
+        /// <summary>
         /// Returns a dictionary with all properties of the object and their values.
         /// Returns null if given object is null.
         /// </summary>
